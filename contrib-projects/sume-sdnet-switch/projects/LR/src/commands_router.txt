@@ -1,0 +1,14 @@
+// commands l2_switch:
+
+// table_cam_add_entry dmac forward 00:00:00:00:01:01 => 0b00000100
+// table_cam_add_entry dmac forward 00:00:00:00:01:02 => 0b00010000
+
+
+// commands Router:
+
+table_cam_add_entry ipv4_nhop set_nhop 192.168.0.1 => 192.168.0.1
+table_cam_add_entry ipv4_nhop set_nhop 10.0.0.1 => 10.0.0.1
+table_cam_add_entry forward_table set_dmac 192.168.0.1 => 00:00:01:00:00:01 0b00000100
+table_cam_add_entry forward_table set_dmac 10.0.0.1 => 00:00:01:00:00:04 0b00010000
+table_cam_add_entry send_frame set_smac 0b00000100 => 00:00:01:00:00:02
+table_cam_add_entry send_frame set_smac 0b00010000 => 00:00:01:00:00:03
