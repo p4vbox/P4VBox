@@ -1,0 +1,45 @@
+//
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was developed by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
+//
+// Description:
+//              Simple commands for firewall
+// Create Date:
+//              19.06.2019
+//
+// @NETFPGA_LICENSE_HEADER_START@
+//
+// Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+// license agreements.  See the NOTICE file distributed with this work for
+// additional information regarding copyright ownership.  NetFPGA licenses this
+// file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+// "License"); you may not use this file except in compliance with the
+// License.  You may obtain a copy of the License at:
+//
+//   http://www.netfpga-cic.org
+//
+// Unless required by applicable law or agreed to in writing, Work distributed
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations under the License.
+//
+// @NETFPGA_LICENSE_HEADER_END@
+//
+
+// Topology:
+//
+// SUME(Port1) = 0b00000100       SUME(Port2) = 0b00010000
+// SUME(MAC) = 00:00:01:00:00:02  SUME(MAC) = 00:00:01:00:00:03
+//
+// h1(MAC) = 00:00:01:00:00:01    h2(MAC) = 00:00:01:00:00:04
+// h1(IP) = 192.168.0.1           h2(IP) = 10.0.0.1
+
+table_cam_add_entry forward_table forward 0b00000001 => 0b01000000
+table_cam_add_entry forward_table forward 0b00000100 => 0b00010000
+table_cam_add_entry forward_table forward 0b00010000 => 0b00000100
+table_cam_add_entry forward_table forward 0b01000000 => 0b00000001
+table_cam_add_entry firewall_src drop 4444 =>
+table_cam_add_entry firewall_dst drop 1234 =>
