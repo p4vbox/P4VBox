@@ -1,0 +1,38 @@
+Project: l2_router  Dataset 1
+  Parallel switches #: 2
+  Parallel switches names: l2_switch, router
+  Clock period: 1.826
+  Total packets: 16384
+  Packets length: 64 bytes
+  Processing start: 10816.5 ns
+  End Processing:: 270752.0 ns
+  Packet processing total time: 259935.5
+  Average processing time per package: 15.8652038574
+  Total data: 1048576 bytes
+  Bandwidth: 88367.6966935 Mbps
+
+Project: l2_router  Dataset 2
+  Parallel switches #: 2
+  Parallel switches names: l2_switch, router
+  Clock period: 1.826
+  Total packets: 4096
+  Packets length: 256 bytes
+  Processing start: 10816.5 ns
+  End Processing:: 270000.0 ns
+  Packet processing total time: 259183.5
+  Average processing time per package: 63.2772216797
+  Total data: 1048576 bytes
+  Bandwidth: 88624.0884311 Mbps
+
+Project: l2_router  Dataset 3
+  Parallel switches #: 2
+  Parallel switches names: l2_switch, router
+  Clock period: 1.826
+  Total packets: 700
+  Packets length: 699 x 1500 bytes + 1 x 76 bytes
+  Processing start: 10816.5 ns
+  End Processing:: 269980.0 ns
+  Packet processing total time: 259163.5
+  Average processing time per package: 370.233571429
+  Total data: 1050000 bytes
+  Bandwidth: 88751.2913286 Mbps
