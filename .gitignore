@@ -7,10 +7,15 @@
 *.bak
 *.log
 *.backup.*
+*.bit
+core
 
 vivado.jou
 component.xml
 rom_data.txt
+seed
+
+.Xil/
 xgui/
 ip_proj/
 
@@ -32,5 +37,3 @@ lib/hw/std/cores/axi_sim_transactor_v1_0_0/hdl/axis_sim_pkg/
 lib/hw/std/cores/axi_sim_transactor_v1_0_0/hdl/lib_pkg_v1_0/
 lib/hw/std/cores/axi_sim_transactor_v1_0_0/hdl/lib_srl_fifo_v1_0/
 lib/hw/std/cores/axis_sim_stim_v1_0_0/hdl/axis_sim_pkg/
-
-seed
