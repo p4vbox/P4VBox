@@ -48,12 +48,15 @@
 
 
 from nf_sim_tools import *
-import random
+import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
 NUM_PKTS = 8
 NUM_VLANS = 1
+LEN_PKT = 256
+# Time between packets
+ENTER_RATE = 1
 
 ###########
 # pkt generation tools
@@ -120,10 +123,10 @@ def write_pcap_files():
 # generate testdata #
 #####################
 MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "00:00:00:00:01:00"
-MAC_addr[nf_id_map["nf1"]] = "00:00:00:00:01:01"
-MAC_addr[nf_id_map["nf2"]] = "00:00:00:00:01:02"
-MAC_addr[nf_id_map["nf3"]] = "00:00:00:00:01:03"
+MAC_addr[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
+MAC_addr[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
+MAC_addr[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
+MAC_addr[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
 
 IP_addr = {}
 IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
@@ -155,8 +158,8 @@ for i in range(NUM_PKTS):
         vlan_prio += 1
 
     # generete ping packet = IP( , ttl=20) / ICMP()
-    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / ICMP()
-    pkt = pad_pkt(pkt, 64)
+    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / UDP(sport=20415, dport=1234) / ('a'*(LEN_PKT-46))
+    pkt = pad_pkt(pkt, LEN_PKT)
     ingress = inv_nf_id_map[src_ind]
     egress = inv_nf_id_map[dst_ind]
     applyPkt(pkt, ingress, i)

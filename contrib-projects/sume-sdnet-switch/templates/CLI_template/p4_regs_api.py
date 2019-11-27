@@ -4,10 +4,10 @@
 # Copyright (c) 2015 University of Cambridge
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -44,12 +44,12 @@ libsume=cdll.LoadLibrary(lib_path)
 libsume.regread.argtypes = [c_uint]
 libsume.regwrite.argtypes= [c_uint, c_uint]
 
-EXTERN_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/SimpleSumeSwitch_extern_defines.json")
+EXTERN_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4_PROJECT_NAME"] + "_extern_defines.json")
 
 ERROR_CODE = -1
 
 """
-Read the SimpleSumeSwitch_reg_defines.txt file 
+Read the SimpleSumeSwitch_reg_defines.txt file
 """
 def read_extern_defines():
     with open(EXTERN_DEFINES_FILE) as f:
@@ -78,13 +78,12 @@ def reg_read(reg_name, index):
     address = get_address(reg_name, index)
     if address == ERROR_CODE:
         return ERROR_CODE
-#    print "reading address : {0}".format(hex(address)) 
+#    print "reading address : {0}".format(hex(address))
     return libsume.regread(address)
 
 def reg_write(reg_name, index, val):
     address = get_address(reg_name, index)
     if address == ERROR_CODE:
         return ERROR_CODE
-#    print "writing address : {0}".format(hex(address)) 
+#    print "writing address : {0}".format(hex(address))
     return libsume.regwrite(address, val)
-

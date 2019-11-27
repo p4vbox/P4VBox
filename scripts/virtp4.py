@@ -13,9 +13,9 @@ projSume = ""
 
 def getArgs():
     global args
-    parser = argparse.ArgumentParser(prog="virtp4", usage="%(prog)s name_p4_switch_0 name_p4_switch_1 ... name_p4_switch_N  [options] [--help]", description="Virtualize P4 Switches with VirtP4 Architecture.")
+    parser = argparse.ArgumentParser(prog="virtp4", usage="./%(prog)s.py name_p4_switch_0 name_p4_switch_1 ... name_p4_switch_N  [options] [--help]", description="Virtualize P4 Switches with VirtP4 Architecture.")
     parser.add_argument("switches", nargs="+", metavar="<string>", help="The name of first P4 switch to virtualize, i.e: l2_switch, router ")
-    parser.add_argument("-B", type=str, metavar="<hexadecimal>", default="0x44020000", help="The Base Address of virtual switches (base address)")
+    parser.add_argument("-name", type=str, metavar="<string>", default=os.environ["P4_PROJECT_NAME"], help="This will replace the environment variables to match with the given switch name (This flag removes the need to update the P4_PROJECT_NAME variable in virtp4_setting.sh script).")
     parser.add_argument("-t", action="store_true", help="This will only run gen_testdate_<p4_switch>.py from testdata/ folder to generate packets for test (src.pcap and dst.pcap).")
     parser.add_argument("-c", action="store_true", help="This will only compile <p4_switch>.p4 from src/ folder to verify syntax and create tables.")
     parser.add_argument("-s", action="store_true", help="This will compile, generate testdata and run p4_switch simulation (simulation generated from SDNet with src.pcap and dst.pcap).")
@@ -29,21 +29,38 @@ def getArgs():
     parser.add_argument("--bandwidth_64", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_bandwidth to calc bandwidth times to packets with 64 bytes of lenght")
     parser.add_argument("--bandwidth_256", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_bandwidth to calc bandwidth times to packets with 256 bytes of lenght")
     parser.add_argument("--bandwidth_1500", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_bandwidth to calc bandwidth times to packets with 1500 bytes of lenght")
+    parser.add_argument("--BASE_ADDRESS", type=str, metavar="<hexadecimal>", default="0x44020000", help="The Base Address of virtual switches (base address)")
     args = parser.parse_args()
 
 def setEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
+
+    if( len(args.switches) == 1 ):
+        os.environ["P4_PROJECT_NAME"] = str(args.switches[0])
+    else:
+        os.environ["P4_PROJECT_NAME"] = args.name
+
+    # Adding all switch in one string and export this in environment
+    # variables to pass this switches as parameters to tcl
+    os.environ["VIRTP4_PROJ_SWITCHES"] = ':'.join(args.switches)
+    os.environ["P4_PROJECT_DIR"] = os.environ["SUME_SDNET"] + "/projects/" + os.environ["P4_PROJECT_NAME"]
+    os.environ["NF_DESIGN_DIR"] = os.environ["P4_PROJECT_DIR"] + "/" + os.environ["NF_PROJECT_NAME"]
+    os.environ["PYTHONPATH"] = os.environ["SUME_SDNET"] + "/bin:" + os.environ["SUME_FOLDER"] + "/tools/scripts/:" + os.environ["NF_DESIGN_DIR"] + "/lib/Python:" + os.environ["SUME_FOLDER"] + "/tools/scripts/NFTest"
+    os.environ["P4_SWITCH_BASE_ADDR"] = args.BASE_ADDRESS
+    os.environ["P4_SWITCH"] = os.environ["P4_PROJECT_NAME"]
+
     projName = os.environ["P4_PROJECT_NAME"]
     projDir = os.environ["P4_PROJECT_DIR"]
     projDesignDir = os.environ["NF_DESIGN_DIR"]
     projSume = os.environ["SUME_FOLDER"]
 
-    os.environ["P4_SWITCH_BASE_ADDR"] = args.B
-    os.environ['P4_SWITCH'] = projName
-    # Adding all switch in one string and export this in environment
-    # variables to pass this switches as parameters to tcl
-    proj_env_switches = ':'.join(args.switches)
-    os.environ["VIRTP4_PROJ_SWITCHES"]=proj_env_switches
+    print(os.environ["P4_PROJECT_NAME"])
+    print(os.environ["P4_PROJECT_DIR"])
+    print(os.environ["NF_DESIGN_DIR"])
+    print(os.environ["PYTHONPATH"])
+    # P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
+    # NF_DESIGN_DIR=${P4_PROJECT_DIR}/${NF_PROJECT_NAME}
+    # PYTHONPATH=.:${SUME_SDNET}/bin:${SUME_FOLDER}/tools/scripts/:${NF_DESIGN_DIR}/lib/Python:${SUME_FOLDER}/tools/scripts/NFTest
 
 def printEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
@@ -216,7 +233,7 @@ def main():
 
     if ( args.sim ):
         initWorkspace()
-        os.environ['P4_SWITCH'] = projName
+        os.environ["P4_SWITCH"] = projName
         genTestdata()
         simSume()
         sys.exit(0)
@@ -227,32 +244,32 @@ def main():
 
     if( args.c and not(args.t) ):
         for p4_switch in args.switches:
-            os.environ['P4_SWITCH'] = p4_switch
+            os.environ["P4_SWITCH"] = p4_switch
             genSource(p4_switch)
         sys.exit(0)
 
     if( args.t ):
         if ( args.testdata_all ):
             for p4_switch in args.switches:
-                os.environ['P4_SWITCH'] = p4_switch
+                os.environ["P4_SWITCH"] = p4_switch
                 genTestdata()
-        os.environ['P4_SWITCH'] = projName
+        os.environ["P4_SWITCH"] = projName
         genTestdata()
         sys.exit(0)
 
     if ( args.testdata_all ):
         # Need environment update: P4_SWITCH
         for p4_switch in args.switches:
-            os.environ['P4_SWITCH'] = p4_switch
+            os.environ["P4_SWITCH"] = p4_switch
             genTestdata()
             buildIp(p4_switch)
-        os.environ['P4_SWITCH'] = projName
+        os.environ["P4_SWITCH"] = projName
         genTestdata()
     else:
-        os.environ['P4_SWITCH'] = projName
+        os.environ["P4_SWITCH"] = projName
         genTestdata()
         for p4_switch in args.switches:
-            os.environ['P4_SWITCH'] = p4_switch
+            os.environ["P4_SWITCH"] = p4_switch
             buildIp(p4_switch)
 
     if( args.s ):

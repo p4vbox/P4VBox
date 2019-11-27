@@ -39,6 +39,9 @@ import sss_sdnet_tuples
 
 NUM_PKTS = 8
 NUM_VLANS = 1
+LEN_PKT = 256
+# Time between packets
+ENTER_RATE = 1
 
 ###########
 # pkt generation tools
@@ -122,24 +125,24 @@ def printPacketsParam(i, fb, sH, dH, sL4, dL4):
 #           |               Port1 = 0b00000100 | Port2 = 0b00010000          |
 #   H1(MAC) = 00:00:01:00:00:01                                      H2(MAC) = 00:00:01:00:00:04
 #    H1(IP) = 192.168.0.1                                             H2(IP) = 10.0.0.1
-#    H1(L4) = 4444 or 1234                                            H2(L4) = 1111
+#    H1(L4) = 1234 or 8888                                            H2(L4) = 20201
 #
 #                   Firewall lock policy:
 # +---------------------------------------------------------+
 # |         UNLOCKED          |           LOCKED            |
 # +---------------------------+-----------------------------+
 # |         H1 -> H2          |          H1 -> H2           |
-# |       1234 -> 1111        |        4444 -> 1111         |
+# |       8888 -> 20201        |        1234 -> 20201         |
 # +---------------------------+-----------------------------+
 # |         H2 -> H1          |          H2 -> H1           |
-# |       1111 -> 4444        |        1111 -> 1234         |
+# |       20201 -> 1234        |        20201 -> 8888         |
 # +---------------------------+-----------------------------+
 
 MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "00:00:00:01:00:00"
-MAC_addr[nf_id_map["nf1"]] = "00:00:00:01:00:01"
-MAC_addr[nf_id_map["nf2"]] = "00:00:00:01:00:02"
-MAC_addr[nf_id_map["nf3"]] = "00:00:00:01:00:03"
+MAC_addr[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
+MAC_addr[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
+MAC_addr[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
+MAC_addr[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
 
 IP_addr = {}
 IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
@@ -148,9 +151,11 @@ IP_addr[nf_id_map["nf2"]] = "10.0.1.2"
 IP_addr[nf_id_map["nf3"]] = "10.0.1.3"
 
 L4_addr = {}
-L4_addr["firewall_src"] = "4444"
-L4_addr["firewall_dst"] = "1234"
-L4_addr["host_2"] = "1111"
+L4_addr["firewall_src"] = "1234"
+L4_addr["firewall_dst"] = "8888"
+L4_addr["host_2"] = "20201"
+L4_addr["host_0"] = "31204"
+L4_addr["host_3"] = "10415"
 
 vlan_id = 3
 vlan_prio = 0
@@ -193,11 +198,11 @@ for i in range(NUM_PKTS):
             src_L4 = L4_addr["host_2"]
             dst_L4 = L4_addr["firewall_src"]
 
-    printPacketsParam(i, firewall_block, host_src, host_dst, src_L4, dst_L4)
+    # printPacketsParam(i, firewall_block, host_src, host_dst, src_L4, dst_L4)
 
     # generete ping packet = IP( , ttl=20) / ICMP()
-    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[host_src], dst=IP_addr[host_dst], ttl=20) / TCP(sport=int(src_L4), dport=int(dst_L4))
-    pkt = pad_pkt(pkt, 64)
+    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[host_src], dst=IP_addr[host_dst], ttl=20) / UDP(sport=int(src_L4), dport=int(dst_L4)) / ('a'*(LEN_PKT-46))
+    pkt = pad_pkt(pkt, LEN_PKT)
     ingress = inv_nf_id_map[host_src]
     egress = inv_nf_id_map[host_dst]
     applyPkt(pkt, ingress, i)

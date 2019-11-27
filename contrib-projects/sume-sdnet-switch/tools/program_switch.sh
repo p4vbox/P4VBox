@@ -43,22 +43,25 @@ fi
 
 if [ "$xilinx_tool_path" == "" ]; then
 	echo
-	echo Source Xilinx tool to run xsct command for programming a bit file.
+	echo Source Xilinx tool to run xsct command for programming a bit file. 
 	echo
 	exit 1
 fi
 
-echo
-rmmod -v sume_riffa
-echo
+rmmod sume_riffa
 
-xsct ${SUME_SDNET}/tools/run_xsct.tcl -tclargs $bitimage
+# xsct ${SUME_SDNET}/tools/run_xsct.tcl -tclargs $bitimage
+
+djtgcfg enum
+djtgcfg init -d NetSUME
+echo
+djtgcfg prog -d NetSUME -i 0 -f $bitimage
+echo
+lspci -vxx | grep -i xilinx
 
 bash ${SUME_SDNET}/tools/pci_rescan_run.sh
 
-echo
-rmmod -v sume_riffa
-echo
+rmmod sume_riffa
 
 modprobe sume_riffa
 
@@ -68,3 +71,8 @@ ifconfig nf2 up
 ifconfig nf3 up
 
 bash $configWrites
+
+echo
+echo
+
+ifconfig -a

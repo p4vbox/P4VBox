@@ -4,21 +4,11 @@
 
 BIT_FOLDER=./bitstreams
 
+PROJECTS_DIR = ${SUME_SDNET}/projects/
+PROJECTS_DIR_INSTANCES := $(shell cd $(PROJECTS_DIR) && find . -maxdepth 1 -type d)
+PROJECTS_DIR_INSTANCES := $(basename $(patsubst ./%,%,$(PROJECTS_DIR_INSTANCES)))
+
 all: clean
-
-lib_cores:
-	make -C ${SUME_FOLDER}/lib/hw/xilinx/cores/tcam_v1_1_0/ update
-	make -C ${SUME_FOLDER}/lib/hw/xilinx/cores/tcam_v1_1_0/ all
-	make -C ${SUME_FOLDER}/lib/hw/xilinx/cores/cam_v1_1_0/ update
-	make -C ${SUME_FOLDER}/lib/hw/xilinx/cores/cam_v1_1_0/ all
-	make -C ${SUME_SDNET}/sw/sume all
-	make -C ${SUME_FOLDER} all
-
-	# cd $DRIVER_FOLDER
-	# make all
-	# make install
-	# modprobe sume_riffa
-	# lsmod | grep sume_riffa
 
 program_fpga_nf_loopback: init_sume
 	vivado -nolog -nojournal -mode batch -source ${BIT_FOLDER}/download.tcl -tclargs 0 ${BIT_FOLDER}/nf_sume_10g_loopback.bit
@@ -34,5 +24,16 @@ init_sume:
 	djtgcfg init -d NetSUME
 
 clean:
-	rm -fv *.log *.jou *.Xil
+	rm -rf .Xil
+	rm -rf $(shell find -name *.log -o -name *.jou)
 	make -C ${P4_PROJECT_DIR} clean
+
+projectsclean:
+	for lib in $(PROJECTS_DIR_INSTANCES) ; do \
+		if test -f $(PROJECTS_DIR)/$$lib/Makefile; \
+			then $(MAKE) -C $(PROJECTS_DIR)/$$lib/ clean; \
+		fi; \
+	done;
+	@echo "/////////////////////////////////////////";
+	@echo "//projects cleaned.";
+	@echo "/////////////////////////////////////////";

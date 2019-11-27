@@ -33,16 +33,15 @@
 
 
 from nf_sim_tools import *
-import random, numpy
+import random
 from collections import OrderedDict
 import sss_sdnet_tuples
 
-NUM_PKTS = 699
+NUM_PKTS = 8
 NUM_VLANS = 1
-LEN_PKT = 1500
-LEN_PKT_LAST = 76
+LEN_PKT = 256
 # Time between packets
-ENTER_RATE = 0.0685
+ENTER_RATE = 1
 
 ###########
 # pkt generation tools
@@ -140,10 +139,10 @@ def printPacketsParam(i, fb, sH, dH, sL4, dL4):
 # +---------------------------+-----------------------------+
 
 MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "00:00:00:01:00:00"
-MAC_addr[nf_id_map["nf1"]] = "00:00:00:01:00:01"
-MAC_addr[nf_id_map["nf2"]] = "00:00:00:01:00:02"
-MAC_addr[nf_id_map["nf3"]] = "00:00:00:01:00:03"
+MAC_addr[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
+MAC_addr[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
+MAC_addr[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
+MAC_addr[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
 
 IP_addr = {}
 IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
@@ -161,80 +160,53 @@ L4_addr["host_3"] = "10415"
 vlan_id = 3
 vlan_prio = 0
 firewall_block = True
-total_packets = ((NUM_PKTS/(4.0*10.0))/ENTER_RATE) - (0.1/ENTER_RATE)
 
 # create some packets
-for i in numpy.arange(0, ((NUM_PKTS/(4.0*10.0))/ENTER_RATE), (0.1/ENTER_RATE)):
+for i in range(NUM_PKTS):
     # Definning priority:
     vlan_prio += 1
     if ( vlan_prio > 4 ):
         vlan_prio = 1
 
     # Switch host source and setting MAC address:
-    for j in range(4):
-        if j == 0:
-            host_src = 0
-            host_dst = 3
-        elif j == 1:
-            host_src = 1
-            host_dst = 2
-        elif j == 2:
-            host_src = 2
-            host_dst = 1
-        elif j == 3:
-            host_src = 3
-            host_dst = 0
+    host_src = random.randint(1,2)
 
-        src_MAC = MAC_addr[host_src]
-        dst_MAC = MAC_addr[host_dst]
+    if host_src == 1:
+        host_dst = 2
+    elif host_src == 2:
+        host_dst = 1
 
-        # Firewall block logic:
-        if ( i == (NUM_PKTS - 1) ):
-            firewall_block = False
-        else:
-            if (host_src == 1 or host_dst == 2):
-                firewall_block = not(firewall_block)
-            else:
-                firewall_block = False
+    src_MAC = MAC_addr[host_src]
+    dst_MAC = MAC_addr[host_dst]
 
-        if ( firewall_block ):
-            if ( 1 == host_src ):
-                src_L4 = L4_addr["firewall_src"]
-                dst_L4 = L4_addr["host_2"]
-            elif ( 2 == host_src ):
-                src_L4 = L4_addr["host_2"]
-                dst_L4 = L4_addr["firewall_dst"]
-            elif ( 3 == host_src ):
-                src_L4 = L4_addr["host_3"]
-                dst_L4 = L4_addr["host_0"]
-            elif ( 0 == host_src ):
-                src_L4 = L4_addr["host_0"]
-                dst_L4 = L4_addr["host_3"]
-        else:
-            if ( 1 == host_src ):
-                src_L4 = L4_addr["firewall_dst"]
-                dst_L4 = L4_addr["host_2"]
-            elif ( 2 == host_src ):
-                src_L4 = L4_addr["host_2"]
-                dst_L4 = L4_addr["firewall_src"]
-            elif ( 3 == host_src ):
-                src_L4 = L4_addr["host_3"]
-                dst_L4 = L4_addr["host_0"]
-            elif ( 0 == host_src ):
-                src_L4 = L4_addr["host_0"]
-                dst_L4 = L4_addr["host_3"]
+    # Firewall block logic:
+    firewall_block = not(firewall_block)
 
-        # printPacketsParam(i, firewall_block, host_src, host_dst, src_L4, dst_L4) # Print to debug
+    if ( firewall_block ):
+        if ( 1 == host_src ):
+            src_L4 = L4_addr["firewall_src"]
+            dst_L4 = L4_addr["host_2"]
 
-        if ( (i >= total_packets) and (j == 3) ):
-            LEN_PKT = LEN_PKT_LAST
+        elif ( 2 == host_src ):
+            src_L4 = L4_addr["host_2"]
+            dst_L4 = L4_addr["firewall_dst"]
+    else:
+        if ( 1 == host_src ):
+            src_L4 = L4_addr["firewall_dst"]
+            dst_L4 = L4_addr["host_2"]
+        elif ( 2 == host_src ):
+            src_L4 = L4_addr["host_2"]
+            dst_L4 = L4_addr["firewall_src"]
 
-        pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[host_src], dst=IP_addr[host_dst], ttl=20) / UDP(sport=int(src_L4), dport=int(dst_L4)) / ('a'*(LEN_PKT-46))
-        pkt = pad_pkt(pkt, LEN_PKT)
-        ingress = inv_nf_id_map[host_src]
-        egress = inv_nf_id_map[host_dst]
-        applyPkt(pkt, ingress, i)
-        expPkt(pkt, egress, firewall_block)
+    # printPacketsParam(i, firewall_block, host_src, host_dst, src_L4, dst_L4)
+
+    # generete ping packet = IP( , ttl=20) / ICMP()
+    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[host_src], dst=IP_addr[host_dst], ttl=20) / UDP(sport=int(src_L4), dport=int(dst_L4)) / ('a'*(LEN_PKT-46))
+    pkt = pad_pkt(pkt, LEN_PKT)
+    ingress = inv_nf_id_map[host_src]
+    egress = inv_nf_id_map[host_dst]
+    applyPkt(pkt, ingress, i)
+    expPkt(pkt, egress, firewall_block)
 
 print("\n")
 write_pcap_files()

@@ -45,14 +45,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
+// DMA Address
+// table_cam_add_entry dmac forward 02:53:55:4d:45:00 => 0b00000001
+// table_cam_add_entry dmac forward 02:53:55:4d:45:01 => 0b00000100
+// table_cam_add_entry dmac forward 02:53:55:4d:45:02 => 0b00010000
+// table_cam_add_entry dmac forward 02:53:55:4d:45:03 => 0b01000000
 
-// Original commands.txt:
-// table_add dmac forward 0x800e00010002 => 2
-// table_add dmac forward 0x800e00010001 => 1
-//
-
-
-table_cam_add_entry dmac forward 02:53:55:4d:45:00 => 0b00000001
-table_cam_add_entry dmac forward 02:53:55:4d:45:01 => 0b00000100
-table_cam_add_entry dmac forward 02:53:55:4d:45:02 => 0b00010000
-table_cam_add_entry dmac forward 02:53:55:4d:45:03 => 0b01000000
+// MAC Address
+table_cam_add_entry dmac forward 00:18:3e:02:0d:a0 => 0b00000001
+table_cam_add_entry dmac forward 00:18:3e:02:0d:a1 => 0b00000100
+table_cam_add_entry dmac forward 00:18:3e:02:0d:a2 => 0b00010000
+table_cam_add_entry dmac forward 00:18:3e:02:0d:a3 => 0b01000000

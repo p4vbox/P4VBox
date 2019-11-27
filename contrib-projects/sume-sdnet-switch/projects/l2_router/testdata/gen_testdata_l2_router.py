@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
 #
-# Copyright (c) 2017 Stephen Ibanez
+# Copyright (c) 2018 Mateus Saquetti
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
-# under National Science Foundation under Grant No. CNS-0855268,
-# the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
-# as part of the DARPA MRC research programme.
+# This software was developed by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Modified to generate multiple testdatas for virtual switches
+# Create Date:
+#              10.06.2018
 #
 # @NETFPGA_LICENSE_HEADER_START@
 #
@@ -38,11 +40,13 @@ import sss_sdnet_tuples
 ####################
 # Global variables #
 ####################
-NUM_PKTS = 16384
-LEN_PKT = 64
+NUM_PKTS = 8
 NUM_VLANS = 2
+LEN_PKT = 256
 # Time between packets
-ENTER_RATE = 1.825
+ENTER_RATE = 1
+vlan_id = 1
+vlan_prio = 0
 
 ########################
 # pkt generation tools #
@@ -105,6 +109,22 @@ def write_pcap_files():
     for i in nf_applied.keys():
         print "nf{0}_applied times: ".format(i), [p.time for p in nf_applied[i]]
 
+##########################
+# Topology for l2_switch #
+##########################
+
+MAC_addr = {}
+MAC_addr[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
+MAC_addr[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
+MAC_addr[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
+MAC_addr[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
+
+IP_addr = {}
+IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
+IP_addr[nf_id_map["nf1"]] = "10.0.1.1"
+IP_addr[nf_id_map["nf2"]] = "10.0.1.2"
+IP_addr[nf_id_map["nf3"]] = "10.0.1.3"
+
 #######################
 # Topology for router #
 #######################
@@ -121,86 +141,100 @@ def write_pcap_files():
 #
 
 MAC_addr_H = {}
-MAC_addr_H[nf_id_map["nf0"]] = "00:00:00:01:00:01"
-MAC_addr_H[nf_id_map["nf1"]] = "00:00:00:01:01:02"
-MAC_addr_H[nf_id_map["nf2"]] = "00:00:00:01:02:03"
-MAC_addr_H[nf_id_map["nf3"]] = "00:00:00:01:03:04"
+MAC_addr_H[nf_id_map["nf0"]] = "00:00:00:00:00:a0"
+MAC_addr_H[nf_id_map["nf1"]] = "00:00:00:00:00:a1"
+MAC_addr_H[nf_id_map["nf2"]] = "00:00:00:00:00:a2"
+MAC_addr_H[nf_id_map["nf3"]] = "00:00:00:00:00:a3"
 
 MAC_addr_S = {}
-MAC_addr_S[nf_id_map["nf0"]] = "00:00:01:00:00:01"
-MAC_addr_S[nf_id_map["nf1"]] = "00:00:01:00:00:02"
-MAC_addr_S[nf_id_map["nf2"]] = "00:00:01:00:00:03"
-MAC_addr_S[nf_id_map["nf3"]] = "00:00:01:00:00:04"
+MAC_addr_S[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
+MAC_addr_S[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
+MAC_addr_S[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
+MAC_addr_S[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
 
 IP_addr_H = {}
-IP_addr_H[nf_id_map["nf0"]] = "192.168.0.1"
-IP_addr_H[nf_id_map["nf1"]] = "192.168.0.2"
-IP_addr_H[nf_id_map["nf2"]] = "192.168.0.3"
-IP_addr_H[nf_id_map["nf3"]] = "192.168.0.4"
+IP_addr_H[nf_id_map["nf0"]] = "192.168.0.0"
+IP_addr_H[nf_id_map["nf1"]] = "192.168.0.1"
+IP_addr_H[nf_id_map["nf2"]] = "192.168.0.2"
+IP_addr_H[nf_id_map["nf3"]] = "192.168.0.3"
 
-vlan_id = 1
-vlan_prio = 0
 
-# create pkgs
-for i in numpy.arange(0, ((NUM_PKTS/(4.0*10.0))/ENTER_RATE), (0.1/ENTER_RATE)):
+pkt_src_host = -1
+src_ind = -1
+# create some packets
+for i in numpy.arange(0, NUM_PKTS, ENTER_RATE):
 
-    pkt_src_host = 0
-    pkt_dst_host = 0
-    # Definig addresses to send and receive packets
-    for j in range(4):
-        pkt_src_host = j
-        if pkt_src_host == 0:
-            # H0 -> H3 | Apply: H0 -> SPort0 | Expected: SPort3 -> H3
-            pkt_dst_host = 3
-        elif pkt_src_host == 1:
-            # H1 -> H2 | Apply: H1 -> SPort1 | Expected: SPort2 -> H2
+    # create packets for l2_switch
+    if (vlan_id == 1 or vlan_id == 3) :
+        # switch src host (H1 or H2)
+        src_ind = random.randint(1,2)
+        if src_ind == 1:
+            dst_ind = 2
+        elif src_ind == 2:
+            dst_ind = 1
+        else:
+            sys.exit(1)
+
+        src_MAC = MAC_addr[src_ind]
+        dst_MAC = MAC_addr[dst_ind]
+        src_IP = IP_addr[src_ind]
+        dst_IP = IP_addr[dst_ind]
+
+        pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(ttl=64, chksum=0x7ce7, src=src_IP, dst=dst_IP) / UDP(sport=20415, dport=1234) / ('a'*(LEN_PKT-46))
+        pkt = pad_pkt(pkt, LEN_PKT)
+        ingress = inv_nf_id_map[src_ind]
+        egress = inv_nf_id_map[dst_ind]
+        applyPkt(pkt, ingress, i)
+        drop = False
+        expPkt(pkt, egress, drop)
+
+    elif (vlan_id == 2 or vlan_id == 4) :
+        # switch src host (H1 or H2)
+        pkt_src_host = random.randint(1,2)
+
+        if pkt_src_host == 1:
+            # H1 -> H2
             pkt_dst_host = 2
-        elif pkt_src_host == 2:
-            # H2 -> H1 | Apply: H2 -> SPort2 | Expected: SPort1 -> H1
-            pkt_dst_host = 1
-        elif pkt_src_host == 3:
-            # H3 -> H0 | Apply: H3 -> SPort3 | Expected: SPort0 -> H0
-            pkt_dst_host = 0
-
-        # Deffining the addresses(IP[src,dst], MAC_applied[src,dst], MAC_expected[src,dst])
-        src_IP = IP_addr_H[pkt_src_host]
-        dst_IP = IP_addr_H[pkt_dst_host]
-
-        if (vlan_id == 2 or vlan_id == 4):
+            src_IP = IP_addr_H[pkt_src_host]
+            dst_IP = IP_addr_H[pkt_dst_host]
+            # APPLY = Left: H1 -> SPort1
             src_MAC_app = MAC_addr_H[pkt_src_host]
             dst_MAC_app = MAC_addr_S[pkt_src_host]
+            # EXPECTED = Right: Sport2 -> H2
             src_MAC_exp = MAC_addr_S[pkt_dst_host]
             dst_MAC_exp = MAC_addr_H[pkt_dst_host]
-
-            # create input pkts
-            pkt_app = Ether(src=src_MAC_app, dst=dst_MAC_app) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(ttl=64, chksum=0x7ce7, src=src_IP, dst=dst_IP) / UDP() / ('a'*(LEN_PKT - 46))
-            pkt_app = pad_pkt(pkt_app, LEN_PKT)
-            ingress = inv_nf_id_map[pkt_src_host]
-            applyPkt(pkt_app, ingress, i)
-            # create expected pkts
-            drop = False
-            # router P4 code decrement the ttl but dont tach in chksum, them we need force ttl and chksum fields
-            pkt_exp = Ether(src=src_MAC_exp, dst=dst_MAC_exp) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(ttl=63, chksum=0x7ce7, src=src_IP, dst=dst_IP) / UDP() / ('a'*(LEN_PKT - 46))
-            pkt_exp = pad_pkt(pkt_exp, LEN_PKT)
-            egress = inv_nf_id_map[pkt_dst_host]
-            expPkt(pkt_exp, egress, drop)
-        elif (vlan_id == 1 or vlan_id == 3):
+        elif pkt_src_host == 2:
+            # H2 -> H1
+            pkt_dst_host = 1
+            src_IP = IP_addr_H[pkt_src_host]
+            dst_IP = IP_addr_H[pkt_dst_host]
+            # APPLY = Right: H2 -> Sport2
             src_MAC_app = MAC_addr_H[pkt_src_host]
-            dst_MAC_app = MAC_addr_H[pkt_dst_host]
-            # create input pkts
-            pkt_app = Ether(src=src_MAC_app, dst=dst_MAC_app) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP) / UDP() / ('a'*(LEN_PKT - 46))
-            pkt_app = pad_pkt(pkt_app, LEN_PKT)
-            ingress = inv_nf_id_map[pkt_src_host]
-            egress = inv_nf_id_map[pkt_dst_host]
-            drop = False
-            applyPkt(pkt_app, ingress, i)
-            expPkt(pkt_app, egress, drop)
+            dst_MAC_app = MAC_addr_S[pkt_src_host]
+            # EXP = Left: Sport1 -> H1
+            src_MAC_exp = MAC_addr_S[pkt_dst_host]
+            dst_MAC_exp = MAC_addr_H[pkt_dst_host]
+        else:
+            sys.exit(1)
+
+        # create input pkts for router
+        pkt_app = Ether(src=src_MAC_app, dst=dst_MAC_app) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(ttl=64, chksum=0x7ce7, src=src_IP, dst=dst_IP) / UDP(sport=20415, dport=1234) / ('a'*(LEN_PKT-46))
+        pkt_app = pad_pkt(pkt_app, LEN_PKT)
+        ingress = inv_nf_id_map[pkt_src_host]
+        applyPkt(pkt_app, ingress, i)
+        # create expected pkts
+        drop = False
+        # router P4 code decrement the ttl but dont tach in chksum, them we need force ttl and chksum fields
+        pkt_exp = Ether(src=src_MAC_exp, dst=dst_MAC_exp) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(ttl=63, chksum=0x7ce7, src=src_IP, dst=dst_IP) / UDP(sport=10415, dport=8888)  / ('a'*(LEN_PKT-46))
+        pkt_exp = pad_pkt(pkt_exp, LEN_PKT)
+        egress = inv_nf_id_map[pkt_dst_host]
+        expPkt(pkt_exp, egress, drop)
 
     if vlan_id < NUM_VLANS :
         vlan_id += 1
-        # vlan_prio += 1
+        vlan_prio += 1
     else :
         vlan_id = 1
-        # vlan_prio = 1
+        vlan_prio = 1
 
 write_pcap_files()
