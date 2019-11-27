@@ -221,4 +221,4 @@ open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim.wcfg}
 puts "\n Open waveform to top level: VirtP4/scripts/tools/waveforms/virtp4_sim_top.wcfg \n"
 open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim_top.wcfg}
 
-run 130us
+run 380us

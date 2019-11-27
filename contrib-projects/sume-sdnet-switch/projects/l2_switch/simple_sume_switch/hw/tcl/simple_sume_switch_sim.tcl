@@ -26,8 +26,29 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the simulation of multiple virtual switches
+#
+# Create date:
+#       12.12.2018
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
-# Set variables.
+# Get VirtP4 variables from enviroment
+set arg_p4_switches $::env(VIRTP4_PROJ_SWITCHES)
+set p4_switches [split $arg_p4_switches :]
+
+# Set Project variables.
 set design $::env(NF_PROJECT_NAME)
 set top top_sim
 set sim_top top_tb
@@ -46,13 +67,13 @@ set test_name [lindex $argv 0]
 #####################################
 # Read IP Addresses and export registers
 #####################################
-source $::env(NF_DESIGN_DIR)/hw/tcl/$::env(NF_PROJECT_NAME)_defines.tcl
+source $::env(NF_DESIGN_DIR)/hw/tcl/$::env(NF_PROJECT_NAME)_defines.tcl -notrace
 
 # Build project.
 create_project -name ${design} -force -dir "$::env(NF_DESIGN_DIR)/hw/${proj_dir}" -part ${device}
 set_property source_mgmt_mode DisplayOnly [current_project]
 set_property top ${top} [current_fileset]
-puts "Creating User Datapath reference project"
+puts "\n Creating User Datapath reference project \n"
 
 create_fileset -constrset -quiet constraints
 file copy ${public_repo_dir}/ ${repo_dir}
@@ -66,17 +87,24 @@ set_property is_enabled true [get_files ${project_constraints}]
 
 update_ip_catalog
 
-# source ../hw/create_ip/nf_sume_sdnet0.tcl  # only need this if have sdnet_to_sume fifo in wrapper
-create_ip -name nf_sume_sdnet0 -vendor NetFPGA -library NetFPGA -module_name nf_sume_sdnet0_ip
-set_property generate_synth_checkpoint false [get_files nf_sume_sdnet0_ip.xci]
-reset_target all [get_ips nf_sume_sdnet0_ip]
-generate_target all [get_ips nf_sume_sdnet0_ip]
 
-create_ip -name input_arbiter -vendor NetFPGA -library NetFPGA -module_name input_arbiter_ip
-set_property -dict [list CONFIG.C_BASEADDR $INPUT_ARBITER_BASEADDR] [get_ips input_arbiter_ip]
-set_property generate_synth_checkpoint false [get_files input_arbiter_ip.xci]
-reset_target all [get_ips input_arbiter_ip]
-generate_target all [get_ips input_arbiter_ip]
+puts "\n All P4 switches = ${p4_switches} \n"
+foreach p4_switch $p4_switches {
+  set p4_switch_name nf_sdnet_${p4_switch}
+  puts "\nCreating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
+  #source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
+  create_ip -name ${p4_switch_name} -vendor NetFPGA -library NetFPGA -module_name ${p4_switch_name}_ip
+  set_property generate_synth_checkpoint false [get_files ${p4_switch_name}_ip.xci]
+  reset_target all [get_ips ${p4_switch_name}_ip]
+  generate_target all [get_ips ${p4_switch_name}_ip]
+}
+
+
+create_ip -name input_arbiter_drr -vendor NetFPGA -library NetFPGA -module_name input_arbiter_drr_ip
+set_property -dict [list CONFIG.C_BASEADDR $INPUT_ARBITER_BASEADDR] [get_ips input_arbiter_drr_ip]
+set_property generate_synth_checkpoint false [get_files input_arbiter_drr_ip.xci]
+reset_target all [get_ips input_arbiter_drr_ip]
+generate_target all [get_ips input_arbiter_drr_ip]
 
 create_ip -name sss_output_queues -vendor NetFPGA -library NetFPGA -module_name sss_output_queues_ip
 set_property -dict [list CONFIG.C_BASEADDR $OUTPUT_QUEUES_BASEADDR] [get_ips sss_output_queues_ip]
@@ -85,13 +113,13 @@ reset_target all [get_ips sss_output_queues_ip]
 generate_target all [get_ips sss_output_queues_ip]
 
 #Add ID block
-create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.3 -module_name identifier_ip
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name identifier_ip
 set_property -dict [list CONFIG.Interface_Type {AXI4} CONFIG.AXI_Type {AXI4_Lite} CONFIG.AXI_Slave_Type {Memory_Slave} CONFIG.Use_AXI_ID {false} CONFIG.Load_Init_File {true} CONFIG.Coe_File {/../../../../../../create_ip/id_rom16x32.coe} CONFIG.Fill_Remaining_Memory_Locations {true} CONFIG.Remaining_Memory_Locations {DEADDEAD} CONFIG.Memory_Type {Simple_Dual_Port_RAM} CONFIG.Use_Byte_Write_Enable {true} CONFIG.Byte_Size {8} CONFIG.Assume_Synchronous_Clk {true} CONFIG.Write_Width_A {32} CONFIG.Write_Depth_A {1024} CONFIG.Read_Width_A {32} CONFIG.Operating_Mode_A {READ_FIRST} CONFIG.Write_Width_B {32} CONFIG.Read_Width_B {32} CONFIG.Operating_Mode_B {READ_FIRST} CONFIG.Enable_B {Use_ENB_Pin} CONFIG.Register_PortA_Output_of_Memory_Primitives {false} CONFIG.Register_PortB_Output_of_Memory_Primitives {false} CONFIG.Use_RSTB_Pin {true} CONFIG.Reset_Type {ASYNC} CONFIG.Port_A_Write_Rate {50} CONFIG.Port_B_Clock {100} CONFIG.Port_B_Enable_Rate {100}] [get_ips identifier_ip]
 set_property generate_synth_checkpoint false [get_files identifier_ip.xci]
 reset_target all [get_ips identifier_ip]
 generate_target all [get_ips identifier_ip]
 
-create_ip -name clk_wiz -vendor xilinx.com -library ip -version 5.3 -module_name clk_wiz_ip
+create_ip -name clk_wiz -vendor xilinx.com -library ip -version 6.0 -module_name clk_wiz_ip
 set_property -dict [list CONFIG.PRIM_IN_FREQ {200.00} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {200.000} CONFIG.USE_SAFE_CLOCK_STARTUP {true} CONFIG.RESET_TYPE {ACTIVE_LOW} CONFIG.CLKIN1_JITTER_PS {50.0} CONFIG.CLKOUT1_DRIVES {BUFGCE} CONFIG.CLKOUT2_DRIVES {BUFGCE} CONFIG.CLKOUT3_DRIVES {BUFGCE} CONFIG.CLKOUT4_DRIVES {BUFGCE} CONFIG.CLKOUT5_DRIVES {BUFGCE} CONFIG.CLKOUT6_DRIVES {BUFGCE} CONFIG.CLKOUT7_DRIVES {BUFGCE} CONFIG.MMCM_CLKFBOUT_MULT_F {5.000} CONFIG.MMCM_CLKIN1_PERIOD {5.0} CONFIG.MMCM_CLKOUT0_DIVIDE_F {5.000} CONFIG.RESET_PORT {resetn} CONFIG.CLKOUT1_JITTER {98.146} CONFIG.CLKOUT1_PHASE_ERROR {89.971}] [get_ips clk_wiz_ip]
 set_property generate_synth_checkpoint false [get_files clk_wiz_ip.xci]
 reset_target all [get_ips clk_wiz_ip]
@@ -154,19 +182,17 @@ generate_target all [get_ips axi_sim_transactor_ip]
 
 update_ip_catalog
 
-source $::env(NF_DESIGN_DIR)/hw/tcl/control_sub_sim.tcl
+source $::env(NF_DESIGN_DIR)/hw/tcl/control_sub_sim.tcl -notrace
 
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/axi_clocking.v"
 
-## MOD SAQUETTI
+
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_p4_interface.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_p4_interface.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/nf_datapath.v"
-##
-
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/top_sim.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/nf_datapath.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/top_tb.v"
 
 update_compile_order -fileset sources_1
@@ -187,164 +213,12 @@ set output [exec python $::env(NF_DESIGN_DIR)/test/${test_name}/run.py]
 puts $output
 
 set_property xsim.view {} [get_filesets sim_1]
-launch_xsim -simset sim_1 -mode behavioral
+launch_simulation -simset sim_1 -mode behavioral
 
-# Add top level datapath IO
-## MOD SAQUETTI
-# set nf_datapath top_tb/top_sim/nf_datapath_0/
-# add_wave_divider {input arbiter input signals}
-# add_wave $nf_datapath/s_axis_0_tdata -color blue
-# add_wave $nf_datapath/s_axis_0_tkeep -color blue
-# add_wave $nf_datapath/s_axis_0_tuser -color blue
-# add_wave $nf_datapath/s_axis_0_tvalid -color blue
-# add_wave $nf_datapath/s_axis_0_tready -color blue
-# add_wave $nf_datapath/s_axis_0_tlast -color blue
-# add_wave $nf_datapath/s_axis_1_tdata -color gold
-# add_wave $nf_datapath/s_axis_1_tkeep -color gold
-# add_wave $nf_datapath/s_axis_1_tuser -color gold
-# add_wave $nf_datapath/s_axis_1_tvalid -color gold
-# add_wave $nf_datapath/s_axis_1_tready -color gold
-# add_wave $nf_datapath/s_axis_1_tlast -color gold
-# add_wave $nf_datapath/s_axis_2_tdata -color orange
-# add_wave $nf_datapath/s_axis_2_tkeep -color orange
-# add_wave $nf_datapath/s_axis_2_tuser -color orange
-# add_wave $nf_datapath/s_axis_2_tvalid -color orange
-# add_wave $nf_datapath/s_axis_2_tready -color orange
-# add_wave $nf_datapath/s_axis_2_tlast -color orange
-# add_wave $nf_datapath/s_axis_3_tdata -color purple
-# add_wave $nf_datapath/s_axis_3_tkeep -color purple
-# add_wave $nf_datapath/s_axis_3_tuser -color purple
-# add_wave $nf_datapath/s_axis_3_tvalid -color purple
-# add_wave $nf_datapath/s_axis_3_tready -color purple
-# add_wave $nf_datapath/s_axis_3_tlast -color purple
-# add_wave $nf_datapath/s_axis_4_tdata -color cyan
-# add_wave $nf_datapath/s_axis_4_tkeep -color cyan
-# add_wave $nf_datapath/s_axis_4_tuser -color cyan
-# add_wave $nf_datapath/s_axis_4_tvalid -color cyan
-# add_wave $nf_datapath/s_axis_4_tready -color cyan
-# add_wave $nf_datapath/s_axis_4_tlast -color cyan
-#
-# add_wave_divider {output queues output signals}
-# add_wave $nf_datapath/m_axis_0_tdata -color blue
-# add_wave $nf_datapath/m_axis_0_tkeep -color blue
-# add_wave $nf_datapath/m_axis_0_tuser -color blue
-# add_wave $nf_datapath/m_axis_0_tvalid -color blue
-# add_wave $nf_datapath/m_axis_0_tready -color blue
-# add_wave $nf_datapath/m_axis_0_tlast -color blue
-# add_wave $nf_datapath/m_axis_1_tdata -color gold
-# add_wave $nf_datapath/m_axis_1_tkeep -color gold
-# add_wave $nf_datapath/m_axis_1_tuser -color gold
-# add_wave $nf_datapath/m_axis_1_tvalid -color gold
-# add_wave $nf_datapath/m_axis_1_tready -color gold
-# add_wave $nf_datapath/m_axis_1_tlast -color gold
-# add_wave $nf_datapath/m_axis_2_tdata -color orange
-# add_wave $nf_datapath/m_axis_2_tkeep -color orange
-# add_wave $nf_datapath/m_axis_2_tuser -color orange
-# add_wave $nf_datapath/m_axis_2_tvalid -color orange
-# add_wave $nf_datapath/m_axis_2_tready -color orange
-# add_wave $nf_datapath/m_axis_2_tlast -color orange
-# add_wave $nf_datapath/m_axis_3_tdata -color purple
-# add_wave $nf_datapath/m_axis_3_tkeep -color purple
-# add_wave $nf_datapath/m_axis_3_tuser -color purple
-# add_wave $nf_datapath/m_axis_3_tvalid -color purple
-# add_wave $nf_datapath/m_axis_3_tready -color purple
-# add_wave $nf_datapath/m_axis_3_tlast -color purple
-# add_wave $nf_datapath/m_axis_4_tdata -color cyan
-# add_wave $nf_datapath/m_axis_4_tkeep -color cyan
-# add_wave $nf_datapath/m_axis_4_tuser -color cyan
-# add_wave $nf_datapath/m_axis_4_tvalid -color cyan
-# add_wave $nf_datapath/m_axis_4_tready -color cyan
-# add_wave $nf_datapath/m_axis_4_tlast -color cyan
+puts "\n Open waveform to nf_datapath: VirtP4/scripts/tools/waveforms/virtp4_sim.wcfg \n"
+open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim.wcfg}
 
-## Add top level AXI Lite control signals to P4_SWITCH
-#add_wave_divider {Top-Level SDNet Control Signals}
-#add_wave top_tb/top_sim/M02_AXI_araddr
-#add_wave top_tb/top_sim/M02_AXI_arprot
-#add_wave top_tb/top_sim/M02_AXI_arready
-#add_wave top_tb/top_sim/M02_AXI_arvalid
-#add_wave top_tb/top_sim/M02_AXI_awaddr
-#add_wave top_tb/top_sim/M02_AXI_awprot
-#add_wave top_tb/top_sim/M02_AXI_awready
-#add_wave top_tb/top_sim/M02_AXI_awvalid
-#add_wave top_tb/top_sim/M02_AXI_bready
-#add_wave top_tb/top_sim/M02_AXI_bresp
-#add_wave top_tb/top_sim/M02_AXI_bvalid
-#add_wave top_tb/top_sim/M02_AXI_rdata
-#add_wave top_tb/top_sim/M02_AXI_rready
-#add_wave top_tb/top_sim/M02_AXI_rresp
-#add_wave top_tb/top_sim/M02_AXI_rvalid
-#add_wave top_tb/top_sim/M02_AXI_wdata
-#add_wave top_tb/top_sim/M02_AXI_wready
-#add_wave top_tb/top_sim/M02_AXI_wstrb
-#add_wave top_tb/top_sim/M02_AXI_wvalid
+puts "\n Open waveform to top level: VirtP4/scripts/tools/waveforms/virtp4_sim_top.wcfg \n"
+open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim_top.wcfg}
 
-# Add SDNet Interface Signals
-## MOD SAQUETTI
-# set sdnet_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet0_wrapper_1/inst/SimpleSumeSwitch_inst/
-# add_wave_divider {SDNet Control Interface}
-# add_wave top_tb/top_sim/nf_datapath_0/nf_sume_sdnet0_wrapper_1/inst/internal_rst_done -color yellow
-# add_wave $sdnet_ip/control_S_AXI_AWADDR
-# add_wave $sdnet_ip/control_S_AXI_AWVALID
-# add_wave $sdnet_ip/control_S_AXI_AWREADY
-# add_wave $sdnet_ip/control_S_AXI_WDATA
-# add_wave $sdnet_ip/control_S_AXI_WSTRB
-# add_wave $sdnet_ip/control_S_AXI_WVALID
-# add_wave $sdnet_ip/control_S_AXI_WREADY
-# add_wave $sdnet_ip/control_S_AXI_BRESP
-# add_wave $sdnet_ip/control_S_AXI_BVALID
-# add_wave $sdnet_ip/control_S_AXI_BREADY
-# add_wave $sdnet_ip/control_S_AXI_ARADDR
-# add_wave $sdnet_ip/control_S_AXI_ARVALID
-# add_wave $sdnet_ip/control_S_AXI_ARREADY
-# add_wave $sdnet_ip/control_S_AXI_RDATA
-# add_wave $sdnet_ip/control_S_AXI_RRESP
-# add_wave $sdnet_ip/control_S_AXI_RVALID
-# add_wave $sdnet_ip/control_S_AXI_RREADY
-#
-# set nf_sume_sdnet0_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet0_wrapper_1/inst/
-# add_wave_divider {nf_sume_sdnet0 input interface}
-# add_wave $sdnet_ip/clk_lookup_rst
-# add_wave $sdnet_ip/clk_lookup
-# add_wave $nf_sume_sdnet0_ip/s_axis_tdata -radix hex
-# add_wave $nf_sume_sdnet0_ip/s_axis_tkeep -radix hex
-# add_wave $nf_sume_sdnet0_ip/s_axis_tvalid
-# add_wave $nf_sume_sdnet0_ip/s_axis_tready
-# add_wave $nf_sume_sdnet0_ip/s_axis_tlast
-#
-# add_wave_divider {SDNet Tuple-In}
-# add_wave $nf_sume_sdnet0_ip/sume_tuple_in_VALID
-# add_wave $nf_sume_sdnet0_ip/s_axis_tuser -radix hex
-# add_wave $nf_sume_sdnet0_ip/in_pkt_len
-# add_wave $nf_sume_sdnet0_ip/in_src_port
-# add_wave $nf_sume_sdnet0_ip/in_dst_port
-#
-# add_wave_divider {nf_sume_sdnet0 output interface}
-# add_wave $sdnet_ip/clk_lookup_rst
-# add_wave $sdnet_ip/clk_lookup
-# add_wave $nf_sume_sdnet0_ip/m_axis_tdata -radix hex
-# add_wave $nf_sume_sdnet0_ip/m_axis_tkeep -radix hex
-# add_wave $nf_sume_sdnet0_ip/m_axis_tvalid
-# add_wave $nf_sume_sdnet0_ip/m_axis_tready
-# add_wave $nf_sume_sdnet0_ip/m_axis_tlast
-#
-# add_wave_divider {SDNet Tuple-Out}
-# add_wave $nf_sume_sdnet0_ip/sume_tuple_out_VALID
-# add_wave $nf_sume_sdnet0_ip/m_axis_tuser -radix hex
-# add_wave $nf_sume_sdnet0_ip/out_pkt_len
-# add_wave $nf_sume_sdnet0_ip/out_src_port
-# add_wave $nf_sume_sdnet0_ip/out_dst_port
-#
-# set const_reg_ip /top_tb/top_sim/nf_datapath_0/nf_sume_sdnet0_wrapper_1/inst/SimpleSumeSwitch_inst/const_reg_rw_0/
-# add_wave_divider {const reg extern signals}
-# add_wave $const_reg_ip
-#
-# add_wave_divider {const cpu reg signals}
-# add_wave $const_reg_ip/const_cpu_regs_inst
-
-
-## MOD SAQUETTI
-open_wave_config {/root/bitbucket/reconfigurable_switch_mateus/projects/waveforms/sim_2ips_wave.wcfg}
-##
-
-
-run 60us
+run 380us

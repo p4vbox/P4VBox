@@ -32,7 +32,7 @@ typedef bit<16> Layer4Addr_t;
 #define VLAN_TYPE 0x8100
 #define IPV4_TYPE 0x0800
 #define TCP_TYPE 6
-#define UDP_TYPE 11
+#define UDP_TYPE 17
 
 // standard Ethernet header
 header Ethernet_h {

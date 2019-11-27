@@ -1,19 +1,52 @@
+//
+// Copyright (c) 2018 Mateus Saquetti
+// All rights reserved.
+//
+// This software was developed by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
+//
+// Description:
+//              Simple router for SUME switch
+// Create Date:
+//              10.06.2018
+//
+// @NETFPGA_LICENSE_HEADER_START@
+//
+// Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+// license agreements.  See the NOTICE file distributed with this work for
+// additional information regarding copyright ownership.  NetFPGA licenses this
+// file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+// "License"); you may not use this file except in compliance with the
+// License.  You may obtain a copy of the License at:
+//
+//   http://www.netfpga-cic.org
+//
+// Unless required by applicable law or agreed to in writing, Work distributed
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations under the License.
+//
+// @NETFPGA_LICENSE_HEADER_END@
+//
+
+
 #include <core.p4>
 #include <sume_switch.p4>
-// #include <v1model.p4>
+
+typedef bit<48> EthAddr_t;
+typedef bit<32> IPv4Addr_t;
 
 #define VLAN_TYPE   0x8100
+#define IPV4_TYPE 0x0800
 
-struct routing_metadata_t {
-    bit<32> nhop_ipv4;
-}
-
-header ethernet_t {
-    bit<48> dstAddr;
-    bit<48> srcAddr;
+// standard Ethernet header
+header Ethernet_h {
+    EthAddr_t dstAddr;
+    EthAddr_t srcAddr;
     bit<16> etherType;
 }
 
+// standard Vlan header
 header Vlan_h {
     bit<3> prio;
     bit<1> dropEligible;
@@ -21,24 +54,38 @@ header Vlan_h {
     bit<16> etherType;
 }
 
-header ipv4_t {
-    bit<4>  version;
-    bit<4>  ihl;
-    bit<8>  diffserv;
+// IPv4 header without options
+header IPv4_h {
+    bit<4> version;
+    bit<4> ihl;
+    bit<8> tos;
     bit<16> totalLen;
     bit<16> identification;
-    bit<3>  flags;
+    bit<3> flags;
     bit<13> fragOffset;
-    bit<8>  ttl;
-    bit<8>  protocol;
+    bit<8> ttl;
+    bit<8> protocol;
     bit<16> hdrChecksum;
-    bit<32> srcAddr;
-    bit<32> dstAddr;
+    IPv4Addr_t srcAddr;
+    IPv4Addr_t dstAddr;
 }
 
+
+// List of all recognized headers
+struct Parsed_packet {
+    Ethernet_h ethernet;
+    Vlan_h vlan;
+    IPv4_h ipv4;
+}
+
+struct routing_metadata_t {
+    bit<32> nhop_ipv4;
+}
+
+// user defined metadata: can be used to shared information between
+// TopParser, TopPipe, and TopDeparser
 struct user_metadata_t {
     routing_metadata_t routing_metadata;
-    // bit<8> unused;
 }
 
 // digest data to be sent to CPU if desired. MUST be 256 bits!
@@ -46,47 +93,43 @@ struct digest_data_t {
     bit<256>  unused;
 }
 
-struct Parsed_packet {
-    ethernet_t ethernet;
-    Vlan_h vlan;
-    ipv4_t     ipv4;
-}
-
+// Parser Implementation
 @Xilinx_MaxPacketRegion(16384)
-parser TopParser(packet_in packet,
+parser TopParser(packet_in pkt_in,
                  out Parsed_packet hdr,
-                 out user_metadata_t meta,
+                 out user_metadata_t user_metadata,
                  out digest_data_t digest_data,
                  inout sume_metadata_t sume_metadata) {
+    state start {
+        transition parse_ethernet;
+    }
+
     state parse_ethernet {
-        packet.extract(hdr.ethernet);
+        pkt_in.extract(hdr.ethernet);
         digest_data.unused =0;
-        // meta.unused = 0;
-        meta.routing_metadata.nhop_ipv4 = 32w0;
+        user_metadata.routing_metadata.nhop_ipv4 = 32w0;
         transition select(hdr.ethernet.etherType) {
             VLAN_TYPE: parse_vlan;
-            default: accept;
+            default: reject;
         }
     }
 
     state parse_vlan {
-        packet.extract(hdr.vlan);
+        pkt_in.extract(hdr.vlan);
         transition select(hdr.vlan.etherType) {
             16w0x800: parse_ipv4;
             default: accept;
         }
     }
+
     state parse_ipv4 {
-        packet.extract(hdr.ipv4);
+        pkt_in.extract(hdr.ipv4);
         transition accept;
-    }
-    state start {
-        transition parse_ethernet;
     }
 }
 
 control TopPipe(inout Parsed_packet hdr,
-                inout user_metadata_t meta,
+                inout user_metadata_t user_metadata,
                 inout digest_data_t digest_data,
                 inout sume_metadata_t sume_metadata) {
     // control verifyChecksum
@@ -116,7 +159,7 @@ control TopPipe(inout Parsed_packet hdr,
         sume_metadata.drop = 1;
     }
     action set_nhop(bit<32> nhop_ipv4) {
-        meta.routing_metadata.nhop_ipv4 = nhop_ipv4;
+        user_metadata.routing_metadata.nhop_ipv4 = nhop_ipv4;
         hdr.ipv4.ttl = hdr.ipv4.ttl + 8w255;
     }
     action set_smac(bit<48> smac) {
@@ -128,7 +171,7 @@ control TopPipe(inout Parsed_packet hdr,
             drop;
         }
         key = {
-            meta.routing_metadata.nhop_ipv4: exact;
+            user_metadata.routing_metadata.nhop_ipv4: exact;
         }
         size = 64;
     }
@@ -184,21 +227,19 @@ control TopPipe(inout Parsed_packet hdr,
 
 }
 
+// Deparser Implementation
 @Xilinx_MaxPacketRegion(16384)
-control TopDeparser(packet_out packet,
+control TopDeparser(packet_out pkt_out,
                     in Parsed_packet hdr,
                     in user_metadata_t user_metadata,
                     inout digest_data_t digest_data,
                     inout sume_metadata_t sume_metadata) {
     apply {
-        packet.emit(hdr.ethernet);
-        packet.emit(hdr.vlan);
-        packet.emit(hdr.ipv4);
+        pkt_out.emit(hdr.ethernet);
+        pkt_out.emit(hdr.vlan);
+        pkt_out.emit(hdr.ipv4);
     }
 }
 
-SimpleSumeSwitch(
-	TopParser(),
-	TopPipe(),
-	TopDeparser()
-) main;
+// Instantiate the switch
+SimpleSumeSwitch( TopParser(), TopPipe(), TopDeparser() ) main;

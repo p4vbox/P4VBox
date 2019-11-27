@@ -410,12 +410,12 @@ module nf_datapath #(
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
-      .m_axis_tdata (s_axis_2_opi_tdata),
-      .m_axis_tkeep (s_axis_2_opi_tkeep),
-      .m_axis_tuser (s_axis_2_opi_tuser),
-      .m_axis_tvalid(s_axis_2_opi_tvalid),
-      .m_axis_tready(s_axis_2_opi_tready),
-      .m_axis_tlast (s_axis_2_opi_tlast),
+      .m_axis_tdata (s_axis_0_opi_tdata),
+      .m_axis_tkeep (s_axis_0_opi_tkeep),
+      .m_axis_tuser (s_axis_0_opi_tuser),
+      .m_axis_tvalid(s_axis_0_opi_tvalid),
+      .m_axis_tready(s_axis_0_opi_tready),
+      .m_axis_tlast (s_axis_0_opi_tlast),
       //input_arbiter->input_p4_interface->nf_sume_sdnet
       .s_axis_tdata (m_axis_2_ipi_tdata),
       .s_axis_tkeep (m_axis_2_ipi_tkeep),

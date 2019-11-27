@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -64,13 +64,20 @@ def get_extern_annotations():
     global p4_externs
     for extern_name, extern_dict in p4_externs.items():
         if 'Xilinx_ControlWidth' not in extern_dict['annotations'].keys():
-            print >> sys.stderr, "ERROR: @Xilinx_ControlWidth annotations unspecified for extern: {}".format(extern_name)
+            print >> sys.stderr, "ERROR: @Xilinx_ControlWidth annotations unspecified for extern: {}".format(extern_name) 
             sys.exit(1)
         extern_dict['control_width'] = int(extern_dict['annotations']['Xilinx_ControlWidth'][0])
         if 'Xilinx_MaxLatency' not in extern_dict['annotations'].keys():
-            print >> sys.stderr, "ERROR: @Xilinx_ControlWidth annotations unspecified for extern: {}".format(extern_name)
-            sys.exit(1)
+            print >> sys.stderr, "ERROR: @Xilinx_ControlWidth annotations unspecified for extern: {}".format(extern_name) 
+            sys.exit(1)       
         extern_dict['max_cycles'] = int(extern_dict['annotations']['Xilinx_MaxLatency'][0])
+
+def get_extern_annotation(annotation_name, extern_dict):
+    global p4_externs
+    if annotation_name not in extern_dict['annotations'].keys():
+        print >> sys.stderr, "ERROR: @{} annotation unspecified for extern: {}".format(annotation_name, extern_dict['p4_name'])
+        sys.exit(1)
+    return int(extern_dict['annotations'][annotation_name][0])
 
 """
 Read P4_SWITCH.h to determine the offset address and compute the base address
@@ -133,12 +140,17 @@ def run_replace_cmd(contents, pattern, cmd, extern_dict):
         field_name = searchObj.group(1)
         width = get_field_width(field_name, extern_dict['input_fields'])
         return contents.replace(pattern, str(width))
-
+    
     searchObj = re.search(r"output_width\((.*)\)", cmd)
     if searchObj is not None:
         field_name = searchObj.group(1)
         width = get_field_width(field_name, extern_dict['output_fields'])
         return contents.replace(pattern, str(width))
+    searchObj = re.search(r"annotation\((.*)\)", cmd)
+    if searchObj is not None:
+        annotation_name = searchObj.group(1)
+        annotation_content = get_extern_annotation(annotation_name, extern_dict)
+        return contents.replace(pattern, str(annotation_content))
     elif (cmd == 'extern_name'):
         return contents.replace(pattern, extern_dict['prefix_name'] + '_' + extern_dict['extern_type'])
     elif (cmd == 'module_name'):
@@ -146,9 +158,9 @@ def run_replace_cmd(contents, pattern, cmd, extern_dict):
     elif (cmd == 'prefix_name'):
         return contents.replace(pattern, extern_dict['prefix_name'])
     elif (cmd == 'addr_width'):
-        return contents.replace(pattern, str(extern_dict['control_width']))
+        return contents.replace(pattern, str(extern_dict['control_width'])) 
     elif (cmd == 'max_cycles'):
-        return contents.replace(pattern, str(extern_dict['max_cycles']))
+        return contents.replace(pattern, str(extern_dict['max_cycles'])) 
     else:
         print >> sys.stderr, "WARNING: could not replace {} using command {} for extern {}".format(pattern, cmd, extern_dict['p4_name'])
         return contents
@@ -163,11 +175,11 @@ def write_cpu_regs_module(templates_dir, extern_dir, extern_dict):
     except IOError as e:
         print >> sys.stderr, "ERROR: could not read cpu_regs template files"
         sys.exit(1)
-
+    
     extern_type = extern_dict['extern_type']
     newModule = cpu_regs_template
     newDefines = cpu_regs_defines_template
-    for pattern, cmd in extern_data[extern_type]['replacements'].items():
+    for pattern, cmd in extern_data[extern_type]['replacements'].items(): 
         newModule = run_replace_cmd(newModule, pattern, cmd, extern_dict)
         newDefines = run_replace_cmd(newDefines, pattern, cmd, extern_dict)
 
@@ -206,7 +218,7 @@ def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
             print >> sys.stderr, "ERROR: Could not open hdl template file for extern: {}".format(extern_name)
             sys.exit(1)
         extern_dir = find_extern_hdl_dir(extern_name, P4_SWITCH_dir)
-        module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".HDL", "")
+        module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".HDL", "") 
         extern_dict['module_name'] = module_name
         file_name = module_name + ".v"
         for pattern, cmd in extern_data[extern_type]['replacements'].items():
@@ -223,13 +235,13 @@ def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
         copy_support_files(src_dir, extern_dir, os.path.basename(template_file))
 
 """
-Creates the extern cpp files for use in the SDNet C++ simulation
+Creates the extern cpp files for use in the SDNet C++ simulation 
 """
 def make_cpp_extern_modules(templates_dir, P4_SWITCH_dir):
     global p4_externs
     for extern_name, extern_dict in p4_externs.items():
         extern_type = extern_dict['extern_type']
-        if ('cpp_template_file' in extern_data[extern_type].keys()):
+        if ('cpp_template_file' in extern_data[extern_type].keys()): 
             template_file = extern_data[extern_type]['cpp_template_file']
             try:
                 extern_template = open(os.path.join(templates_dir, template_file)).read()
@@ -239,7 +251,7 @@ def make_cpp_extern_modules(templates_dir, P4_SWITCH_dir):
             extern_dir = find_extern_cpp_dir(extern_name, P4_SWITCH_dir)
             if extern_dir is not None:
                 # SDNet was run without support for CPP simulation
-                module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".TB", "")
+                module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".TB", "") 
                 extern_dict['module_name'] = module_name
                 file_name = module_name + ".hpp"
                 for pattern, cmd in extern_data[extern_type]['replacements'].items():
@@ -247,7 +259,7 @@ def make_cpp_extern_modules(templates_dir, P4_SWITCH_dir):
                 # write extern file
                 with open(os.path.join(extern_dir, file_name), 'w') as f:
                     f.write(extern_template)
-
+    
                 src_dir = os.path.expandvars(os.path.join('$SUME_SDNET/templates',os.path.dirname(template_file)))
                 copy_support_files(src_dir, extern_dir, os.path.basename(template_file))
 
@@ -259,7 +271,7 @@ def dump_extern_defines(P4_SWITCH_dir, testdata_dir, sw_dir, P4_SWITCH_base_addr
 
     extern_defines = OrderedDict()
     for extern_name, extern_dict in p4_externs.items():
-        extern_defines[extern_dict['prefix_name']] = extern_dict
+        extern_defines[extern_dict['prefix_name']] = extern_dict 
 
     # dump to testdata directory
     with open(os.path.join(testdata_dir, EXTERN_DEFINES_FILE.format(P4_SWITCH)), 'w') as f:
@@ -290,8 +302,10 @@ def main():
     make_hdl_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
     make_cpp_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
 
-    dump_extern_defines(args.P4_SWITCH_dir, args.testdata_dir, args.sw_dir, int(args.base_address,0), P4_SWITCH)
+    dump_extern_defines(args.P4_SWITCH_dir, args.testdata_dir, args.sw_dir, int(args.base_address,0), P4_SWITCH) 
 
 
 if __name__ == "__main__":
     main()
+
+

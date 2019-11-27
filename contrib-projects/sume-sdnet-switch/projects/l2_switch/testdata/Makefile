@@ -26,11 +26,25 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the build multiple testdates for virtual switches
+#
+# Create date:
+#       12.12.2018
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
-
-# Makefile to build the testdata
-
-all:
+all: clean
 	./gen_testdata_${P4_SWITCH}.py
 	${SUME_SDNET}/bin/pcap2axi --output Packet_in.axi --bus_width 256 src.pcap
 	${SUME_SDNET}/bin/pcap2axi --output Packet_expect.axi --bus_width 256 dst.pcap

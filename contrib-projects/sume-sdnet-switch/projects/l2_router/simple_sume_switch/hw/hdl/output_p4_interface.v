@@ -34,7 +34,7 @@ module output_p4_interface
     // parameter C_S_AXIS_TUSER_WIDTH=128,
     parameter C_M_AXIS_TUSER_WIDTH=304,
     parameter C_S_AXIS_TUSER_WIDTH=304,
-    parameter NUM_QUEUES=4,
+    parameter NUM_QUEUES=2,
 
     // AXI Registers Data Width
     parameter C_S_AXI_DATA_WIDTH    = 32,

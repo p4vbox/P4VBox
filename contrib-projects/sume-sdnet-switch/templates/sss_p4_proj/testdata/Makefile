@@ -2,10 +2,10 @@
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -26,16 +26,28 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
-
-
-# Makefile to build the testdata
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the build multiple testdates for virtual switches
+#
+# Create date:
+#       12.12.2018
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
 all:
-	./gen_testdata.py
+	./gen_testdata_${P4_SWITCH}.py
 	${SUME_SDNET}/bin/pcap2axi --output Packet_in.axi --bus_width 256 src.pcap
 	${SUME_SDNET}/bin/pcap2axi --output Packet_expect.axi --bus_width 256 dst.pcap
 
 clean:
 	rm -f *.pcap *.txt *.pyc *.axi config_writes.* *_reg_defines.py
-
-

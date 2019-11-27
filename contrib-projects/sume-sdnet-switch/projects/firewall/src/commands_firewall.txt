@@ -41,5 +41,5 @@ table_cam_add_entry forward_table forward 0b00000001 => 0b01000000
 table_cam_add_entry forward_table forward 0b00000100 => 0b00010000
 table_cam_add_entry forward_table forward 0b00010000 => 0b00000100
 table_cam_add_entry forward_table forward 0b01000000 => 0b00000001
-table_cam_add_entry firewall_src drop 4444 =>
-table_cam_add_entry firewall_dst drop 1234 =>
+table_cam_add_entry firewall_src drop 1234 =>
+table_cam_add_entry firewall_dst drop 8888 =>

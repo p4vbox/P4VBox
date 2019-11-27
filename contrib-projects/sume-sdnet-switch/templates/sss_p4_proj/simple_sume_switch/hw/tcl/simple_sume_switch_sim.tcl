@@ -2,10 +2,10 @@
 # Copyright (c) 2015 Georgina Kalogeridou
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -26,8 +26,29 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the simulation of multiple virtual switches
+#
+# Create date:
+#       12.12.2018
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
-# Set variables.
+# Get VirtP4 variables from enviroment
+set arg_p4_switches $::env(VIRTP4_PROJ_SWITCHES)
+set p4_switches [split $arg_p4_switches :]
+
+# Set Project variables.
 set design $::env(NF_PROJECT_NAME)
 set top top_sim
 set sim_top top_tb
@@ -36,23 +57,23 @@ set proj_dir ./project
 set public_repo_dir $::env(SUME_FOLDER)/lib/hw/
 set xilinx_repo_dir $::env(XILINX_VIVADO)/data/ip/xilinx/
 set repo_dir ./ip_repo
-set bit_settings $::env(CONSTRAINTS)/generic_bit.xdc 
+set bit_settings $::env(CONSTRAINTS)/generic_bit.xdc
 set project_constraints $::env(NF_DESIGN_DIR)/hw/constraints/nf_sume_general.xdc
 set nf_10g_constraints $::env(NF_DESIGN_DIR)/hw/constraints/nf_sume_10g.xdc
 
 
-set test_name [lindex $argv 0] 
+set test_name [lindex $argv 0]
 
 #####################################
 # Read IP Addresses and export registers
 #####################################
-source $::env(NF_DESIGN_DIR)/hw/tcl/$::env(NF_PROJECT_NAME)_defines.tcl
+source $::env(NF_DESIGN_DIR)/hw/tcl/$::env(NF_PROJECT_NAME)_defines.tcl -notrace
 
 # Build project.
 create_project -name ${design} -force -dir "$::env(NF_DESIGN_DIR)/hw/${proj_dir}" -part ${device}
-set_property source_mgmt_mode DisplayOnly [current_project]  
+set_property source_mgmt_mode DisplayOnly [current_project]
 set_property top ${top} [current_fileset]
-puts "Creating User Datapath reference project"
+puts "\n Creating User Datapath reference project \n"
 
 create_fileset -constrset -quiet constraints
 file copy ${public_repo_dir}/ ${repo_dir}
@@ -65,11 +86,19 @@ set_property is_enabled true [get_files ${bit_settings}]
 set_property is_enabled true [get_files ${project_constraints}]
 
 update_ip_catalog
-#source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
-create_ip -name nf_sume_sdnet -vendor NetFPGA -library NetFPGA -module_name nf_sume_sdnet_ip
-set_property generate_synth_checkpoint false [get_files nf_sume_sdnet_ip.xci]
-reset_target all [get_ips nf_sume_sdnet_ip]
-generate_target all [get_ips nf_sume_sdnet_ip]
+
+
+puts "\n All P4 switches = ${p4_switches} \n"
+foreach p4_switch $p4_switches {
+  set p4_switch_name nf_sdnet_${p4_switch}
+  puts "\nCreating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
+  #source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
+  create_ip -name ${p4_switch_name} -vendor NetFPGA -library NetFPGA -module_name ${p4_switch_name}_ip
+  set_property generate_synth_checkpoint false [get_files ${p4_switch_name}_ip.xci]
+  reset_target all [get_ips ${p4_switch_name}_ip]
+  generate_target all [get_ips ${p4_switch_name}_ip]
+}
+
 
 create_ip -name input_arbiter_drr -vendor NetFPGA -library NetFPGA -module_name input_arbiter_drr_ip
 set_property -dict [list CONFIG.C_BASEADDR $INPUT_ARBITER_BASEADDR] [get_ips input_arbiter_drr_ip]
@@ -153,11 +182,17 @@ generate_target all [get_ips axi_sim_transactor_ip]
 
 update_ip_catalog
 
-source $::env(NF_DESIGN_DIR)/hw/tcl/control_sub_sim.tcl
+source $::env(NF_DESIGN_DIR)/hw/tcl/control_sub_sim.tcl -notrace
 
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/axi_clocking.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/nf_datapath.v"
+
+
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_p4_interface.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_p4_interface.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/top_sim.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/nf_datapath.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/top_tb.v"
 
 update_compile_order -fileset sources_1
@@ -180,147 +215,10 @@ puts $output
 set_property xsim.view {} [get_filesets sim_1]
 launch_simulation -simset sim_1 -mode behavioral
 
-# Add top level datapath IO
-set nf_datapath top_tb/top_sim/nf_datapath_0/
-add_wave_divider {input arbiter input signals}
-add_wave $nf_datapath/s_axis_0_tdata -color blue
-add_wave $nf_datapath/s_axis_0_tkeep -color blue
-add_wave $nf_datapath/s_axis_0_tuser -color blue
-add_wave $nf_datapath/s_axis_0_tvalid -color blue
-add_wave $nf_datapath/s_axis_0_tready -color blue
-add_wave $nf_datapath/s_axis_0_tlast -color blue
-add_wave $nf_datapath/s_axis_1_tdata -color gold
-add_wave $nf_datapath/s_axis_1_tkeep -color gold
-add_wave $nf_datapath/s_axis_1_tuser -color gold
-add_wave $nf_datapath/s_axis_1_tvalid -color gold
-add_wave $nf_datapath/s_axis_1_tready -color gold
-add_wave $nf_datapath/s_axis_1_tlast -color gold
-add_wave $nf_datapath/s_axis_2_tdata -color orange
-add_wave $nf_datapath/s_axis_2_tkeep -color orange
-add_wave $nf_datapath/s_axis_2_tuser -color orange
-add_wave $nf_datapath/s_axis_2_tvalid -color orange
-add_wave $nf_datapath/s_axis_2_tready -color orange
-add_wave $nf_datapath/s_axis_2_tlast -color orange
-add_wave $nf_datapath/s_axis_3_tdata -color purple
-add_wave $nf_datapath/s_axis_3_tkeep -color purple
-add_wave $nf_datapath/s_axis_3_tuser -color purple
-add_wave $nf_datapath/s_axis_3_tvalid -color purple
-add_wave $nf_datapath/s_axis_3_tready -color purple
-add_wave $nf_datapath/s_axis_3_tlast -color purple
-add_wave $nf_datapath/s_axis_4_tdata -color cyan
-add_wave $nf_datapath/s_axis_4_tkeep -color cyan
-add_wave $nf_datapath/s_axis_4_tuser -color cyan
-add_wave $nf_datapath/s_axis_4_tvalid -color cyan
-add_wave $nf_datapath/s_axis_4_tready -color cyan
-add_wave $nf_datapath/s_axis_4_tlast -color cyan
+puts "\n Open waveform to nf_datapath: VirtP4/scripts/tools/waveforms/virtp4_sim.wcfg \n"
+open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim.wcfg}
 
-add_wave_divider {output queues output signals}
-add_wave $nf_datapath/m_axis_0_tdata -color blue
-add_wave $nf_datapath/m_axis_0_tkeep -color blue
-add_wave $nf_datapath/m_axis_0_tuser -color blue
-add_wave $nf_datapath/m_axis_0_tvalid -color blue
-add_wave $nf_datapath/m_axis_0_tready -color blue
-add_wave $nf_datapath/m_axis_0_tlast -color blue
-add_wave $nf_datapath/m_axis_1_tdata -color gold
-add_wave $nf_datapath/m_axis_1_tkeep -color gold
-add_wave $nf_datapath/m_axis_1_tuser -color gold
-add_wave $nf_datapath/m_axis_1_tvalid -color gold
-add_wave $nf_datapath/m_axis_1_tready -color gold
-add_wave $nf_datapath/m_axis_1_tlast -color gold
-add_wave $nf_datapath/m_axis_2_tdata -color orange
-add_wave $nf_datapath/m_axis_2_tkeep -color orange
-add_wave $nf_datapath/m_axis_2_tuser -color orange
-add_wave $nf_datapath/m_axis_2_tvalid -color orange
-add_wave $nf_datapath/m_axis_2_tready -color orange
-add_wave $nf_datapath/m_axis_2_tlast -color orange
-add_wave $nf_datapath/m_axis_3_tdata -color purple
-add_wave $nf_datapath/m_axis_3_tkeep -color purple
-add_wave $nf_datapath/m_axis_3_tuser -color purple
-add_wave $nf_datapath/m_axis_3_tvalid -color purple
-add_wave $nf_datapath/m_axis_3_tready -color purple
-add_wave $nf_datapath/m_axis_3_tlast -color purple
-add_wave $nf_datapath/m_axis_4_tdata -color cyan
-add_wave $nf_datapath/m_axis_4_tkeep -color cyan
-add_wave $nf_datapath/m_axis_4_tuser -color cyan
-add_wave $nf_datapath/m_axis_4_tvalid -color cyan
-add_wave $nf_datapath/m_axis_4_tready -color cyan
-add_wave $nf_datapath/m_axis_4_tlast -color cyan
+puts "\n Open waveform to top level: VirtP4/scripts/tools/waveforms/virtp4_sim_top.wcfg \n"
+open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim_top.wcfg}
 
-## Add top level AXI Lite control signals to P4_SWITCH
-#add_wave_divider {Top-Level SDNet Control Signals}
-#add_wave top_tb/top_sim/M02_AXI_araddr
-#add_wave top_tb/top_sim/M02_AXI_arprot
-#add_wave top_tb/top_sim/M02_AXI_arready
-#add_wave top_tb/top_sim/M02_AXI_arvalid
-#add_wave top_tb/top_sim/M02_AXI_awaddr
-#add_wave top_tb/top_sim/M02_AXI_awprot
-#add_wave top_tb/top_sim/M02_AXI_awready
-#add_wave top_tb/top_sim/M02_AXI_awvalid
-#add_wave top_tb/top_sim/M02_AXI_bready
-#add_wave top_tb/top_sim/M02_AXI_bresp
-#add_wave top_tb/top_sim/M02_AXI_bvalid
-#add_wave top_tb/top_sim/M02_AXI_rdata
-#add_wave top_tb/top_sim/M02_AXI_rready
-#add_wave top_tb/top_sim/M02_AXI_rresp
-#add_wave top_tb/top_sim/M02_AXI_rvalid
-#add_wave top_tb/top_sim/M02_AXI_wdata
-#add_wave top_tb/top_sim/M02_AXI_wready
-#add_wave top_tb/top_sim/M02_AXI_wstrb
-#add_wave top_tb/top_sim/M02_AXI_wvalid
-
-# Add SDNet Interface Signals
-set sdnet_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/SimpleSumeSwitch_inst/
-add_wave_divider {SDNet Control Interface}
-add_wave top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/internal_rst_done -color yellow
-add_wave $sdnet_ip/control_S_AXI_AWADDR
-add_wave $sdnet_ip/control_S_AXI_AWVALID 
-add_wave $sdnet_ip/control_S_AXI_AWREADY 
-add_wave $sdnet_ip/control_S_AXI_WDATA   
-add_wave $sdnet_ip/control_S_AXI_WSTRB   
-add_wave $sdnet_ip/control_S_AXI_WVALID  
-add_wave $sdnet_ip/control_S_AXI_WREADY  
-add_wave $sdnet_ip/control_S_AXI_BRESP   
-add_wave $sdnet_ip/control_S_AXI_BVALID  
-add_wave $sdnet_ip/control_S_AXI_BREADY  
-add_wave $sdnet_ip/control_S_AXI_ARADDR  
-add_wave $sdnet_ip/control_S_AXI_ARVALID 
-add_wave $sdnet_ip/control_S_AXI_ARREADY 
-add_wave $sdnet_ip/control_S_AXI_RDATA   
-add_wave $sdnet_ip/control_S_AXI_RRESP   
-add_wave $sdnet_ip/control_S_AXI_RVALID  
-add_wave $sdnet_ip/control_S_AXI_RREADY  
-
-set nf_sume_sdnet_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/
-add_wave_divider {nf_sume_sdnet input interface}
-add_wave $sdnet_ip/clk_lookup_rst
-add_wave $sdnet_ip/clk_lookup
-add_wave $nf_sume_sdnet_ip/s_axis_tdata -radix hex
-add_wave $nf_sume_sdnet_ip/s_axis_tkeep -radix hex
-add_wave $nf_sume_sdnet_ip/s_axis_tvalid
-add_wave $nf_sume_sdnet_ip/s_axis_tready
-add_wave $nf_sume_sdnet_ip/s_axis_tlast
-
-add_wave_divider {SDNet Tuple-In}
-add_wave $nf_sume_sdnet_ip/sume_tuple_in_VALID
-add_wave $nf_sume_sdnet_ip/s_axis_tuser -radix hex
-add_wave $nf_sume_sdnet_ip/in_pkt_len
-add_wave $nf_sume_sdnet_ip/in_src_port
-add_wave $nf_sume_sdnet_ip/in_dst_port
-
-add_wave_divider {nf_sume_sdnet output interface}
-add_wave $sdnet_ip/clk_lookup_rst
-add_wave $sdnet_ip/clk_lookup
-add_wave $nf_sume_sdnet_ip/m_axis_tdata -radix hex
-add_wave $nf_sume_sdnet_ip/m_axis_tkeep -radix hex
-add_wave $nf_sume_sdnet_ip/m_axis_tvalid
-add_wave $nf_sume_sdnet_ip/m_axis_tready
-add_wave $nf_sume_sdnet_ip/m_axis_tlast
-
-add_wave_divider {SDNet Tuple-Out}
-add_wave $nf_sume_sdnet_ip/sume_tuple_out_VALID
-add_wave $nf_sume_sdnet_ip/m_axis_tuser -radix hex
-add_wave $nf_sume_sdnet_ip/out_pkt_len
-add_wave $nf_sume_sdnet_ip/out_src_port
-add_wave $nf_sume_sdnet_ip/out_dst_port
-
-run 65us
+run 130us

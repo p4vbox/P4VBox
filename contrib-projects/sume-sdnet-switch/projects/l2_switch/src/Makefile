@@ -26,9 +26,23 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
-
-
-# Makefile to convert the P4 into PX and P4 commands into SDNet tables
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the compile multiple virtual switches
+#
+# Create date:
+#       12.12.2018
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
 all:
 	p4c-sdnet -o ${P4_SWITCH}.sdnet --toplevel_name ${P4_SWITCH} --sdnet_info .sdnet_switch_info_${P4_SWITCH}.dat ${P4_SWITCH}.p4

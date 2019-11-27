@@ -1,0 +1,38 @@
+Project: router - Dataset 1
+	Parallel switches #: 1
+	Parallel switches names: router
+	Clock period: 1.826
+	Total packets: 16384
+	Packets length: 64 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 294216.0 ns
+	Packet processing total time: 283399.5
+	Average processing time per package: 17.2973327637
+	Total data: 1048576 bytes
+	Bandwidth: 81051.3124542 Mbps
+
+Project: router - Dataset 2
+	Parallel switches #: 1
+	Parallel switches names: router
+	Clock period: 1.826
+	Total packets: 4096
+	Packets length: 256 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 293584.0 ns
+	Packet processing total time: 282767.5
+	Average processing time per package: 69.0350341797
+	Total data: 1048576 bytes
+	Bandwidth: 81232.4663332 Mbps
+
+Project: router - Dataset 3
+	Parallel switches #: 1
+	Parallel switches names: router
+	Clock period: 1.826
+	Total packets: 700
+	Packets length: 699 x 1500 bytes + 1 x 76 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 293840.0 ns
+	Packet processing total time: 283023.5
+	Average processing time per package: 404.319285714
+	Total data: 1050000 bytes
+	Bandwidth: 81269.2065862 Mbps

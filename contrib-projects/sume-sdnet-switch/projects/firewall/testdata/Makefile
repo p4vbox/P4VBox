@@ -44,7 +44,7 @@
 #
 ##################################################################################
 
-all:
+all: clean
 	./gen_testdata_${P4_SWITCH}.py
 	${SUME_SDNET}/bin/pcap2axi --output Packet_in.axi --bus_width 256 src.pcap
 	${SUME_SDNET}/bin/pcap2axi --output Packet_expect.axi --bus_width 256 dst.pcap

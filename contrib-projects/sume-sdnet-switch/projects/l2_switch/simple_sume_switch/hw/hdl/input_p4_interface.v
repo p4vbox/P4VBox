@@ -1,13 +1,28 @@
 //////////////////////////////////////////////////////////////////////////////////
-// Affiliation: Universidade Federal do Rio Grande do Sul (UFRGS)
-// Author: Mateus Saquetti Pereira de Carvalho Tirone
+// This software was developed by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
 //
-// Create Date: 06.11.2018 14:44:14
-// Module Name: input_p4_interface
-// Revision: 12/12/2018
+// File:
+//      input_p4_interface.v
+//
+// Module:
+//      input_p4_interface
+//
+// Author:
+//       Mateus Saquetti
+//
+// Description:
+//       This module get the inputs and delivery for correct virtual switch by
+//       VLAN tag
+//
+// Create Date:
+//       06.11.2018
+//
 // Additional Comments:
 //
+//
 //////////////////////////////////////////////////////////////////////////////////
+
 
 `timescale 1ns / 1ps
 
@@ -81,10 +96,10 @@ module input_p4_interface
   localparam VLAN_THRESHOLD_END=96;
 
   localparam NUM_STATES=3;
-  localparam INI_PKT=0;
-  localparam WAIT_PKT=1;
-  localparam WRITE_PKT_PART0=2;
-  localparam WRITE_PKT_PART1=3;
+  localparam WAIT_PKT=0;
+  localparam WRITE_PKT_BEG=1;
+  localparam WRITE_PKT_END=2;
+  localparam END_PKT=3;
 
   // ------------- Regs/ wires -----------
   /* Format of tdata signal:
@@ -106,20 +121,20 @@ module input_p4_interface
   wire [VLAN_WIDTH_ID -1 :0]                vlan_info_id;
 
   reg [NUM_STATES-1:0]                      ipi_state;
-  reg                                       ipi_writepart; // Part of packet identifier
+  reg                                       ipi_end_pkt;
   reg [(( VLAN_WIDTH/2 )) - 1:0]            ipi_vlan_prot_id;
   reg [VLAN_WIDTH_ID -1 :0]                 ipi_vlan_info_id;
 
-  reg [C_S_AXIS_DATA_WIDTH - 1:0]           ipi_tdata_part0;
-  reg [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]   ipi_tkeep_part0;
-  reg [C_M_AXIS_TUSER_WIDTH-1:0]            ipi_tuser_part0;
-  reg                                       ipi_tvalid_part0;
-  reg                                       ipi_tlast_part0;
-  reg [C_S_AXIS_DATA_WIDTH - 1:0]           ipi_tdata_part1;
-  reg [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]   ipi_tkeep_part1;
-  reg [C_M_AXIS_TUSER_WIDTH-1:0]            ipi_tuser_part1;
-  reg                                       ipi_tvalid_part1;
-  reg                                       ipi_tlast_part1;
+  reg [C_S_AXIS_DATA_WIDTH - 1:0]           ipi_tdata;
+  reg [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]   ipi_tkeep;
+  reg [C_M_AXIS_TUSER_WIDTH-1:0]            ipi_tuser;
+  reg                                       ipi_tvalid;
+  reg                                       ipi_tlast;
+  reg [C_S_AXIS_DATA_WIDTH - 1:0]           ipi_tdata_next;
+  reg [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]   ipi_tkeep_next;
+  reg [C_M_AXIS_TUSER_WIDTH-1:0]            ipi_tuser_next;
+  reg                                       ipi_tvalid_next;
+  reg                                       ipi_tlast_next;
 
   // ------------- Logic ------------
 
@@ -132,64 +147,26 @@ module input_p4_interface
 
 
   always @(posedge axis_aclk) begin
-    if( ~axis_resetn ) begin
-      s_axis_tready <= 0;
-
-      ipi_vlan_prot_id <= 0;
-      ipi_vlan_info_id <= 0;
-      ipi_tdata_part0 <= 0;
-      ipi_tkeep_part0 <= 0;
-      ipi_tuser_part0 <= 0;
-      ipi_tvalid_part0 <= 0;
-      ipi_tlast_part0 <= 0;
-      ipi_tdata_part1 <= 0;
-      ipi_tkeep_part1 <= 0;
-      ipi_tuser_part1 <= 0;
-      ipi_tvalid_part1 <= 0;
-      ipi_tlast_part1 <= 0;
-
-      m_axis_0_tdata  <= 0;
-      m_axis_0_tkeep  <= 0;
-      m_axis_0_tuser  <= 0;
-      m_axis_0_tvalid <= 0;
-      m_axis_0_tlast  <= 0;
-      m_axis_1_tdata  <= 0;
-      m_axis_1_tkeep  <= 0;
-      m_axis_1_tuser  <= 0;
-      m_axis_1_tvalid <= 0;
-      m_axis_1_tlast  <= 0;
-      m_axis_2_tdata  <= 0;
-      m_axis_2_tkeep  <= 0;
-      m_axis_2_tuser  <= 0;
-      m_axis_2_tvalid <= 0;
-      m_axis_2_tlast  <= 0;
-      m_axis_3_tdata  <= 0;
-      m_axis_3_tkeep  <= 0;
-      m_axis_3_tuser  <= 0;
-      m_axis_3_tvalid <= 0;
-      m_axis_3_tlast  <= 0;
-
-      ipi_writepart <= 0;
-      ipi_state = INI_PKT;
-    end
-    else begin
+    if( axis_resetn ) begin
       case( ipi_state )
 
-        INI_PKT: begin
-          s_axis_tready <= 0;
+        WAIT_PKT: begin
+          s_axis_tready <= 1;
 
-          ipi_vlan_prot_id <= 0;
-          ipi_vlan_info_id <= 0;
-          ipi_tdata_part0 <= 0;
-          ipi_tkeep_part0 <= 0;
-          ipi_tuser_part0 <= 0;
-          ipi_tvalid_part0 <= 0;
-          ipi_tlast_part0 <= 0;
-          ipi_tdata_part1 <= 0;
-          ipi_tkeep_part1 <= 0;
-          ipi_tuser_part1 <= 0;
-          ipi_tvalid_part1 <= 0;
-          ipi_tlast_part1 <= 0;
+          ipi_end_pkt <= 0;
+          ipi_vlan_prot_id <= vlan_prot_id;
+          ipi_vlan_info_id <= vlan_info_id;
+
+          ipi_tdata  <= s_axis_tdata;
+          ipi_tuser  <= s_axis_tuser;
+          ipi_tkeep  <= s_axis_tkeep;
+          ipi_tvalid <= s_axis_tvalid;
+          ipi_tlast  <= s_axis_tlast;
+          ipi_tdata_next <= 0;
+          ipi_tkeep_next <= 0;
+          ipi_tuser_next <= 0;
+          ipi_tvalid_next<= 0;
+          ipi_tlast_next <= 0;
 
           m_axis_0_tdata  <= 0;
           m_axis_0_tkeep  <= 0;
@@ -216,129 +193,188 @@ module input_p4_interface
           m_axis_3_tlast  <= 0;
           //m_axis_3_tready
 
-          ipi_writepart <= 0;
-          ipi_state = WAIT_PKT;
+          if ( s_axis_tvalid ) begin
+            ipi_state = WRITE_PKT_BEG;
+          end
+          else begin
+            ipi_state = WAIT_PKT;
+          end
         end
 
-        WAIT_PKT: begin
+        WRITE_PKT_BEG: begin
           s_axis_tready <= 1;
-          if( ( s_axis_tvalid == 1 ) && ( s_axis_tlast == 0 ) ) begin
-            ipi_tdata_part0  <= s_axis_tdata;
-            ipi_tuser_part0  <= s_axis_tuser;
-            ipi_tkeep_part0  <= s_axis_tkeep;
-            ipi_tvalid_part0 <= s_axis_tvalid;
-            ipi_tlast_part0  <= s_axis_tlast;
-            ipi_vlan_prot_id <= vlan_prot_id;
-            ipi_vlan_info_id <= vlan_info_id;
-          end
-          else if( ( s_axis_tvalid == 1 ) && ( s_axis_tlast == 1 ) ) begin
-            ipi_tdata_part1  <= s_axis_tdata;
-            ipi_tuser_part1  <= s_axis_tuser;
-            ipi_tkeep_part1  <= s_axis_tkeep;
-            ipi_tvalid_part1 <= s_axis_tvalid;
-            ipi_tlast_part1  <= s_axis_tlast;
-            if ( ipi_vlan_prot_id == 16'h0081 ) begin // 0000 0000 1000 0001
-              ipi_state = WRITE_PKT_PART0;
-              s_axis_tready <= 0;
+
+          ipi_tdata_next  <= s_axis_tdata;
+          ipi_tuser_next  <= s_axis_tuser;
+          ipi_tkeep_next  <= s_axis_tkeep;
+          ipi_tvalid_next <= s_axis_tvalid;
+          ipi_tlast_next  <= s_axis_tlast;
+
+          if ( ipi_vlan_prot_id == 16'h0081 ) begin // 0000 0000 1000 0001
+            ipi_state = WRITE_PKT_END;
+            if ( ipi_vlan_info_id == 12'h001 ) begin // 0000 0000 0001
+              if ( m_axis_0_tready == 1 ) begin
+                m_axis_0_tdata  <= ipi_tdata;
+                m_axis_0_tuser  <= ipi_tuser;
+                m_axis_0_tkeep  <= ipi_tkeep;
+                m_axis_0_tvalid <= ipi_tvalid;
+                m_axis_0_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h002 ) begin // 0000 0000 0002
+              if ( m_axis_1_tready == 1 ) begin
+                m_axis_1_tdata  <= ipi_tdata;
+                m_axis_1_tuser  <= ipi_tuser;
+                m_axis_1_tkeep  <= ipi_tkeep;
+                m_axis_1_tvalid <= ipi_tvalid;
+                m_axis_1_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h003 ) begin // 0000 0000 0003
+              if ( m_axis_2_tready == 1 ) begin
+                m_axis_2_tdata  <= ipi_tdata;
+                m_axis_2_tuser  <= ipi_tuser;
+                m_axis_2_tkeep  <= ipi_tkeep;
+                m_axis_2_tvalid <= ipi_tvalid;
+                m_axis_2_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h004 ) begin // 0000 0000 0004
+              if ( m_axis_3_tready == 1 ) begin
+                m_axis_3_tdata  <= ipi_tdata;
+                m_axis_3_tuser  <= ipi_tuser;
+                m_axis_3_tkeep  <= ipi_tkeep;
+                m_axis_3_tvalid <= ipi_tvalid;
+                m_axis_3_tlast  <= ipi_tlast;
+              end
             end
             else begin
-              ipi_state = INI_PKT;
+              ipi_state = WAIT_PKT;
             end
           end
           else begin
-            ipi_state = ipi_state;
+            ipi_state = WAIT_PKT;
           end
-        end // case: WAIT_PKT
+          if ( s_axis_tlast ) begin
+            ipi_state = WRITE_PKT_END;
+            s_axis_tready <= 0;
+            ipi_end_pkt <= 1;
+          end
+          else begin
+            if( ipi_end_pkt ) begin
+              ipi_state = WAIT_PKT;
+              s_axis_tready <= 1;
+            end
+          end
 
-        WRITE_PKT_PART0: begin
-          s_axis_tready <= 0;
+        end // case: WRITE_PKT_BEG
+
+        WRITE_PKT_END: begin
+          s_axis_tready <= 1;
+
+          ipi_tdata <= s_axis_tdata;
+          ipi_tuser <= s_axis_tuser;
+          ipi_tkeep <= s_axis_tkeep;
+          ipi_tvalid <= s_axis_tvalid;
+          ipi_tlast <= s_axis_tlast;
+
+
+          ipi_state = WRITE_PKT_BEG;
           if ( ipi_vlan_info_id == 12'h001 ) begin // 0000 0000 0001
             if ( m_axis_0_tready == 1 ) begin
-              m_axis_0_tdata  <= ipi_tdata_part0;
-              m_axis_0_tuser  <= ipi_tuser_part0;
-              m_axis_0_tkeep  <= ipi_tkeep_part0;
-              m_axis_0_tvalid <= ipi_tvalid_part0;
-              m_axis_0_tlast  <= ipi_tlast_part0;
-
-              ipi_state = WRITE_PKT_PART1;
+              m_axis_0_tdata  <= ipi_tdata_next;
+              m_axis_0_tuser  <= ipi_tuser_next;
+              m_axis_0_tkeep  <= ipi_tkeep_next;
+              m_axis_0_tvalid <= ipi_tvalid_next;
+              m_axis_0_tlast  <= ipi_tlast_next;
             end
           end
           else if ( ipi_vlan_info_id == 12'h002 ) begin // 0000 0000 0002
             if ( m_axis_1_tready == 1 ) begin
-              m_axis_1_tdata  <= ipi_tdata_part0;
-              m_axis_1_tuser  <= ipi_tuser_part0;
-              m_axis_1_tkeep  <= ipi_tkeep_part0;
-              m_axis_1_tvalid <= ipi_tvalid_part0;
-              m_axis_1_tlast  <= ipi_tlast_part0;
-
-              ipi_state = WRITE_PKT_PART1;
+              m_axis_1_tdata  <= ipi_tdata_next;
+              m_axis_1_tuser  <= ipi_tuser_next;
+              m_axis_1_tkeep  <= ipi_tkeep_next;
+              m_axis_1_tvalid <= ipi_tvalid_next;
+              m_axis_1_tlast  <= ipi_tlast_next;
             end
           end
           else if ( ipi_vlan_info_id == 12'h003 ) begin // 0000 0000 0002
             if ( m_axis_2_tready == 1 ) begin
-              m_axis_2_tdata  <= ipi_tdata_part0;
-              m_axis_2_tuser  <= ipi_tuser_part0;
-              m_axis_2_tkeep  <= ipi_tkeep_part0;
-              m_axis_2_tvalid <= ipi_tvalid_part0;
-              m_axis_2_tlast  <= ipi_tlast_part0;
-
-              ipi_state = WRITE_PKT_PART1;
+              m_axis_2_tdata  <= ipi_tdata_next;
+              m_axis_2_tuser  <= ipi_tuser_next;
+              m_axis_2_tkeep  <= ipi_tkeep_next;
+              m_axis_2_tvalid <= ipi_tvalid_next;
+              m_axis_2_tlast  <= ipi_tlast_next;
             end
           end
           else if ( ipi_vlan_info_id == 12'h004 ) begin // 0000 0000 0002
             if ( m_axis_3_tready == 1 ) begin
-              m_axis_3_tdata  <= ipi_tdata_part0;
-              m_axis_3_tuser  <= ipi_tuser_part0;
-              m_axis_3_tkeep  <= ipi_tkeep_part0;
-              m_axis_3_tvalid <= ipi_tvalid_part0;
-              m_axis_3_tlast  <= ipi_tlast_part0;
-
-              ipi_state = WRITE_PKT_PART1;
+              m_axis_3_tdata  <= ipi_tdata_next;
+              m_axis_3_tuser  <= ipi_tuser_next;
+              m_axis_3_tkeep  <= ipi_tkeep_next;
+              m_axis_3_tvalid <= ipi_tvalid_next;
+              m_axis_3_tlast  <= ipi_tlast_next;
             end
           end
           else begin
-            ipi_state = INI_PKT;
+            ipi_state = WAIT_PKT;
           end
-        end // case: WRITE_PKT_PART0
-
-        WRITE_PKT_PART1: begin
-          s_axis_tready <= 0;
-          if ( ipi_vlan_info_id == 12'h001 ) begin // 0000 0000 0001
-            m_axis_0_tdata  <= ipi_tdata_part1;
-            m_axis_0_tuser  <= ipi_tuser_part1;
-            m_axis_0_tkeep  <= ipi_tkeep_part1;
-            m_axis_0_tvalid <= ipi_tvalid_part1;
-            m_axis_0_tlast  <= ipi_tlast_part1;
+          if ( s_axis_tlast ) begin
+            ipi_state = WRITE_PKT_BEG;
+            s_axis_tready <= 0;
+            ipi_end_pkt <= 1;
           end
-          else if ( ipi_vlan_info_id == 12'h002 ) begin // 0000 0000 0002
-            m_axis_1_tdata  <= ipi_tdata_part1;
-            m_axis_1_tuser  <= ipi_tuser_part1;
-            m_axis_1_tkeep  <= ipi_tkeep_part1;
-            m_axis_1_tvalid <= ipi_tvalid_part1;
-            m_axis_1_tlast  <= ipi_tlast_part1;
+          else begin
+            if( ipi_end_pkt ) begin
+              ipi_state = WAIT_PKT;
+              s_axis_tready <= 1;
+            end
           end
-          else if ( ipi_vlan_info_id == 12'h003 ) begin // 0000 0000 0002
-            m_axis_2_tdata  <= ipi_tdata_part1;
-            m_axis_2_tuser  <= ipi_tuser_part1;
-            m_axis_2_tkeep  <= ipi_tkeep_part1;
-            m_axis_2_tvalid <= ipi_tvalid_part1;
-            m_axis_2_tlast  <= ipi_tlast_part1;
-          end
-          else if ( ipi_vlan_info_id == 12'h004 ) begin // 0000 0000 0002
-            m_axis_3_tdata  <= ipi_tdata_part1;
-            m_axis_3_tuser  <= ipi_tuser_part1;
-            m_axis_3_tkeep  <= ipi_tkeep_part1;
-            m_axis_3_tvalid <= ipi_tvalid_part1;
-            m_axis_3_tlast  <= ipi_tlast_part1;
-          end
-          ipi_state = INI_PKT;
-          ipi_writepart <= 0;
-        end // case: WRITE_PKT_PART1
+        end // case: WRITE_PKT_END
 
       endcase // case(ipi_state)
     end
+    else begin // if ( axis_resetn )
+      s_axis_tready <= 0;
 
+      ipi_vlan_prot_id <= 0;
+      ipi_vlan_info_id <= 0;
+      ipi_tdata <= 0;
+      ipi_tkeep <= 0;
+      ipi_tuser <= 0;
+      ipi_tvalid <= 0;
+      ipi_tlast <= 0;
+      ipi_tdata_next <= 0;
+      ipi_tkeep_next <= 0;
+      ipi_tuser_next <= 0;
+      ipi_tvalid_next <= 0;
+      ipi_tlast_next <= 0;
 
-  end // always @ (*)
+      m_axis_0_tdata  <= 0;
+      m_axis_0_tkeep  <= 0;
+      m_axis_0_tuser  <= 0;
+      m_axis_0_tvalid <= 0;
+      m_axis_0_tlast  <= 0;
+      m_axis_1_tdata  <= 0;
+      m_axis_1_tkeep  <= 0;
+      m_axis_1_tuser  <= 0;
+      m_axis_1_tvalid <= 0;
+      m_axis_1_tlast  <= 0;
+      m_axis_2_tdata  <= 0;
+      m_axis_2_tkeep  <= 0;
+      m_axis_2_tuser  <= 0;
+      m_axis_2_tvalid <= 0;
+      m_axis_2_tlast  <= 0;
+      m_axis_3_tdata  <= 0;
+      m_axis_3_tkeep  <= 0;
+      m_axis_3_tuser  <= 0;
+      m_axis_3_tvalid <= 0;
+      m_axis_3_tlast  <= 0;
+
+      ipi_end_pkt <= 0;
+      ipi_state = WAIT_PKT;
+    end // if ( axis_resetn )
+
+  end // always @(posedge axis_aclk)
 
 endmodule

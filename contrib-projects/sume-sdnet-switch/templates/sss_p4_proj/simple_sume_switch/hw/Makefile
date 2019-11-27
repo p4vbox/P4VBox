@@ -8,10 +8,10 @@
 #  Description:
 #        This makefile is used to generate and compile hw projects
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -33,7 +33,23 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 # Vivado Launch Script
-################################################################################
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to support the simulation of multiple virtual switches
+#
+# Modified date:
+#       04.06.2019
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
 PROJ = ${NF_PROJECT_NAME}
 
@@ -52,7 +68,7 @@ all:
 	@echo "distclean:       Remove all generated projects"
 	@echo ""
 
-.PHONY: clean project export_to_sdk load_elf  
+.PHONY: clean project export_to_sdk load_elf
 
 project: identifier
 	echo "Create reference project under folder /project";\
@@ -112,31 +128,31 @@ identifier:
 	echo FFFF0000 >> rom_data.txt
 	echo FFFF0000 >> rom_data.txt
 	echo FFFF0000 >> rom_data.txt
-	cp ${SUME_FOLDER}/tools/scripts/format_coe.py . && python format_coe.py && rm -f format_coe.py 
+	cp ${SUME_FOLDER}/tools/scripts/format_coe.py . && python format_coe.py && rm -f format_coe.py
 	mv -f id_rom16x32.coe ../hw/create_ip/
 	mv -f rom_data.txt ../hw/create_ip/
 
-sim:	simclean identifier
+sim: simclean identifier
 	cp -f $(NF_DESIGN_DIR)/test/reg_defines_${NF_PROJECT_NAME}.py $(NF_DESIGN_DIR)/test/${TESTNAME}/reg_defines_${NF_PROJECT_NAME}.py
-	vivado -mode batch -source ${NF_DESIGN_DIR}/hw/tcl/${NF_PROJECT_NAME}_sim.tcl -tclargs ${TESTNAME}
-	$(SUME_FOLDER)/tools/scripts/nf_sim_reconcile_axi_logs.py
-	$(SUME_FOLDER)/tools/scripts/nf_sim_registers_axi_logs.py
- 
-reg: 	
-	vivado -mode batch -source $(NF_DESIGN_DIR)/hw/tcl/${NF_PROJECT_NAME}_defines.tcl
-	vivado -mode batch -source $(NF_DESIGN_DIR)/hw/tcl/export_registers.tcl	
-	cd ../sw/embedded/src  && cp ${SUME_FOLDER}/tools/scripts/xparam2regdefines.py . && python xparam2regdefines.py
-	cd ../sw/embedded/src  && rm -f xparam2regdefines.py && mv reg_defines.h ../
-	cd ../sw/embedded && cp ${SUME_FOLDER}/tools/scripts/python_parser.py . && python python_parser.py
-	cd ../sw/embedded && rm -f python_parser.py && mv reg_defines.py ../../test/reg_defines_${NF_PROJECT_NAME}.py 
-	
-simgui: simclean identifier
-	cp -f $(NF_DESIGN_DIR)/test/reg_defines_simple_sume_switch.py $(NF_DESIGN_DIR)/test/${TESTNAME}/reg_defines_simple_sume_switch.py
-	vivado -mode gui -source ${NF_DESIGN_DIR}/hw/tcl/${NF_PROJECT_NAME}_sim.tcl -tclargs ${TESTNAME}
+	vivado -mode batch -source ${NF_DESIGN_DIR}/hw/tcl/${NF_PROJECT_NAME}_sim.tcl -notrace -tclargs ${TESTNAME}
 	$(SUME_FOLDER)/tools/scripts/nf_sim_reconcile_axi_logs.py
 	$(SUME_FOLDER)/tools/scripts/nf_sim_registers_axi_logs.py
 
-simclean: 
+reg:
+	vivado -mode batch -source $(NF_DESIGN_DIR)/hw/tcl/${NF_PROJECT_NAME}_defines.tcl -notrace
+	vivado -mode batch -source $(NF_DESIGN_DIR)/hw/tcl/export_registers.tcl -notrace
+	cd ../sw/embedded/src  && cp ${SUME_FOLDER}/tools/scripts/xparam2regdefines.py . && python xparam2regdefines.py
+	cd ../sw/embedded/src  && rm -f xparam2regdefines.py && mv reg_defines.h ../
+	cd ../sw/embedded && cp ${SUME_FOLDER}/tools/scripts/python_parser.py . && python python_parser.py
+	cd ../sw/embedded && rm -f python_parser.py && mv reg_defines.py ../../test/reg_defines_${NF_PROJECT_NAME}.py
+
+simgui: simclean identifier
+	cp -f $(NF_DESIGN_DIR)/test/reg_defines_simple_sume_switch.py $(NF_DESIGN_DIR)/test/${TESTNAME}/reg_defines_simple_sume_switch.py
+	vivado -mode gui -source ${NF_DESIGN_DIR}/hw/tcl/${NF_PROJECT_NAME}_sim.tcl -notrace -tclargs ${TESTNAME}
+	$(SUME_FOLDER)/tools/scripts/nf_sim_reconcile_axi_logs.py
+	$(SUME_FOLDER)/tools/scripts/nf_sim_registers_axi_logs.py
+
+simclean:
 	rm -rf proj_* vivado*.* *.*~ .Xil* $(NF_DESIGN_DIR)/hw/ip_repo/ $(NF_DESIGN_DIR)/hw/project/
 	rm -rf *[0-9]_{stim,expected,log}.axi
 	rm -f *.axi
@@ -169,5 +185,3 @@ clean:	simclean
 		rm -rfv ip_repo;\
 		rm -rfv ip_proj;\
 		rm -rfv std;\
-                
-

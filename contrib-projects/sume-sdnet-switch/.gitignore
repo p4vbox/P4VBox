@@ -1,3 +1,4 @@
+*.pcap
 *.dat
 *.sdnet
 *.tbl
@@ -12,11 +13,13 @@ sw/sume/rwaxi
 
 projects/contrib-examples/*/simple_sume_switch/hw/project/
 projects/contrib-examples/*/simple_sume_switch/hw/ip_repo/
+projects/contrib-examples/*/simple_sume_switch/sw/embedded/core
 projects/contrib-examples/*/simple_sume_switch/test/ip_repo/
 projects/contrib-examples/*/simple_sume_switch/test/
 
 projects/*/simple_sume_switch/hw/project/
 projects/*/simple_sume_switch/hw/ip_repo/
+projects/*/simple_sume_switch/sw/embedded/core
 projects/*/simple_sume_switch/test/ip_repo/
 projects/*/simple_sume_switch/test/Makefile
 projects/*/simple_sume_switch/test/min_area_pfile.tmp

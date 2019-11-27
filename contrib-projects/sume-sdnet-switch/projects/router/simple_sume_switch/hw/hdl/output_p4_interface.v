@@ -1,11 +1,25 @@
 //////////////////////////////////////////////////////////////////////////////////
-// Affiliation: Universidade Federal do Rio Grande do Sul (UFRGS)
-// Author: Mateus Saquetti Pereira de Carvalho Tirone
+// This software was developed by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
 //
-// Create Date: 06.11.2018 14:44:14
-// Module Name: input_p4_interface
-// Revision: 14/11/2018
+// File:
+//      output_p4_interface.v
+//
+// Module:
+//      output_p4_interface
+//
+// Author:
+//       Mateus Saquetti
+//
+// Description:
+//       This module get the outputd from virtual switch and delivery for output_queues
+//       so that there is no packet loss
+//
+// Create Date:
+//       09.11.2018
+//
 // Additional Comments:
+//
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +34,7 @@ module output_p4_interface
     // parameter C_S_AXIS_TUSER_WIDTH=128,
     parameter C_M_AXIS_TUSER_WIDTH=304,
     parameter C_S_AXIS_TUSER_WIDTH=304,
-    parameter NUM_QUEUES=4,
+    parameter NUM_QUEUES=2,
 
     // AXI Registers Data Width
     parameter C_S_AXI_DATA_WIDTH    = 32,

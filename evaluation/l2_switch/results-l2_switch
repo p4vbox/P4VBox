@@ -1,0 +1,39 @@
+Project: l2_switch  Dataset 1
+	Parallel switches #: 1
+	Parallel switches names: l2_switch
+	Clock period: 1.826
+	Total packets: 16384
+	Packets length: 64 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 270368.0 ns
+	Packet processing total time: 259551.5
+	Average processing time per package: 15.8417663574
+	Total data: 1048576 bytes
+	Bandwidth: 88498.4345067 Mbps
+
+Project: l2_switch  Dataset 2
+	Parallel switches #: 1
+	Parallel switches names: l2_switch
+	Clock period: 1.826
+	Total packets: 4096
+	Packets length: 256 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 269616.0 ns
+	Packet processing total time: 258799.5
+	Average processing time per package: 63.1834716797
+	Total data: 1048576 bytes
+	Bandwidth: 88755.5865598 Mbps
+
+
+Project: l2_switch  Dataset 3
+	Parallel switches #: 1
+	Parallel switches names: l2_switch
+	Clock period: 1.826
+	Total packets: 700
+	Packets length: 699 x 1500 bytes + 1 x 76 bytes
+	Processing start: 10816.5 ns
+	End Processing:: 269788.0 ns
+	Packet processing total time: 258971.5
+	Average processing time per package: 369.959285714
+	Total data: 1050000 bytes
+	Bandwidth: 88817.0910322 Mbps

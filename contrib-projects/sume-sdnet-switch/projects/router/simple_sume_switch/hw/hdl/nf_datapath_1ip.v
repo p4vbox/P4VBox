@@ -40,13 +40,20 @@
 // @NETFPGA_LICENSE_HEADER_END@
 //
 //////////////////////////////////////////////////////////////////////////////////
-// Affiliation: Universidade Federal do Rio Grande do Sul (UFRGS)
-// Author: Mateus Saquetti Pereira de Carvalho Tirone
+// This software was modified by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
 //
-// Modified Date: 14.11.2018 12:00:00
-// Module Name: nf_datapath
-// Revision: 12/11/2018
+// Modified by:
+//       Mateus Saquetti
+//
+// Description:
+//       Modified to support virtual switch parelization
+//
+// Modified Date:
+//       14.11.2018
+//
 // Additional Comments:
+//
 //
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -196,7 +203,7 @@ module nf_datapath #(
     );
 
     localparam C_AXIS_TUSER_DIGEST_WIDTH = 304;
-    localparam Q_SIZE_WIDTH = 16;
+
     //internal connectivity
     //(opi = output_p4_interface)
       //nf_sume_sdnet1->opi
@@ -228,11 +235,6 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tready;
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tlast;
 
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_out;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_out;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_out;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_out;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_out;
       //opi->sss_output_queues
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_opi_tdata;
     (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_opi_tkeep;
@@ -241,11 +243,6 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_opi_tready;
     (* mark_debug = "true" *) wire                                     m_axis_opi_tlast;
 
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_in;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_in;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_in;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_in;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_in;
     //(ipi = input_p4_interface)
       //input_arbiter->ipi
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_ipi_tdata;
@@ -283,10 +280,16 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_3_ipi_tready;
     (* mark_debug = "true" *) wire                                     m_axis_3_ipi_tlast;
 
+    localparam Q_SIZE_WIDTH = 16;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf0_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf1_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf2_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf3_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    dma_q_size;
 
     //Input Arbiter
-      input_arbiter_ip
-    input_arbiter_v1_0 (
+      input_arbiter_drr_ip
+    input_arbiter_drr_v1_0 (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       // input_arbiter->input_p4_interface
@@ -401,9 +404,9 @@ module nf_datapath #(
     );
 
 
-    // SUME SDNet Module 2
-      nf_sume_sdnet1_ip
-    nf_sume_sdnet1_wrapper_1  (
+    // SUME SDNet Module 0
+      nf_sdnet_router_ip
+    sdnet_router  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
@@ -451,6 +454,11 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1:0] bytes_dropped;
     (* mark_debug = "true" *) wire [5-1:0] pkt_dropped;
 
+//    assign nf0_q_size = 'd12;
+//    assign nf1_q_size = 'd13;
+//    assign nf2_q_size = 'd14;
+//    assign nf3_q_size = 'd15;
+//    assign dma_q_size = 'd16;
 
     //Output P4 Interface
       output_p4_interface
