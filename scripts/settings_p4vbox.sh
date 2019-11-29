@@ -5,29 +5,29 @@
 # under National Science Foundation under Grant No. CNS-0855268
 #
 # File:
-#       virtp4_settings.sh
+#       settings_p4vbox.sh
 #
 # Author:
 #       Mateus Saquetti
 #
 # Description:
 #       This script set the environment variables to the P4-NetFPGA lagacy and
-#       the new system VirtP4
+#       the new system P4VBox
 #
 # Create date:
 #       11.12.2018
 #
 # Additional Comments:
 #       Add this lines at your enviroment viriables file (~/.bashrc):
-#       #### VirtP4 #####
-#       export VIRTP4_ENV_SETTINGS=/root/projects/VirtP4/scripts/virtp4_settings.sh
-#       source ${VIRTP4_ENV_SETTINGS}
+#       #### P4VBox #####
+#       export P4VBOX_ENV_SETTINGS=/root/projects/P4VBox/scripts/settings_p4vbox.sh
+#       source ${P4VBOX_ENV_SETTINGS}
 #
 ##################################################################################
 
 export P4_PROJECT_NAME=l2_switch
 export NF_PROJECT_NAME=simple_sume_switch
-export SUME_FOLDER=${HOME}/projects/VirtP4
+export SUME_FOLDER=${HOME}/projects/P4VBox
 export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
 export P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
 export LD_LIBRARY_PATH=${SUME_SDNET}/sw/sume:${LD_LIBRARY_PATH}
@@ -45,7 +45,7 @@ export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
 export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
 export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
-export VIRTP4_FOLDER=${SUME_FOLDER}
-export VIRTP4_SCRIPTS=${SUME_FOLDER}/scripts
-export VIRTP4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-export VIRTP4_ENV_SETTINGS=/home/saquetti/projects/VirtP4/scripts/virtp4_settings.sh
+export P4VBOX_FOLDER=${SUME_FOLDER}
+export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
+export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
+# export P4VBOX=${SUME_FOLDER}/scripts/settings_p4vbox.sh
