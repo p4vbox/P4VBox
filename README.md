@@ -5,7 +5,7 @@ This software was developed by Institute of Informatics of the Federal
 University of Rio Grande do Sul (INF-UFRGS)
 
 Description:
-             Simple readme for VirtP4
+             Simple readme for P4VBox
 Create Date:
              31.05.2019
 
@@ -30,25 +30,25 @@ specific language governing permissions and limitations under the License.
 
 How to clone this repo:
 
-git clone https://mateussaquetti@bitbucket.org/mateussaquetti/virtp4.git VirtP4
+git clone https://mateussaquetti@bitbucket.org/mateussaquetti/p4vbox.git P4VBox
 
 git pull --tags
 
 
 Add this lines at your enviroment viriables file (~/.bashrc)
 
-#### VirtP4 #####
-export VIRTP4_ENV_SETTINGS=/root/projects/VirtP4/scripts/virtp4_settings.sh
-source ${VIRTP4_ENV_SETTINGS}
+#### P4VBox #####
+export P4VBOX=~/projects/P4VBox/scripts/p4vbox_settings.sh
+source ${P4VBOX}
 
 
-How to create a new VirtP4 project:
-$ $VIRTP4_NEWPROJ <name_project>
+How to create a new P4VBox project:
+$ $P4_NEWPROJ <name_project>
 
 Like this:
-$ $VIRTP4_NEWPROJ l2_switch
+$ $P4_NEWPROJ l2_switch
 
-Modify the virtp4_settings.sh with the correctly P4_PROJECT_NAME
+Modify the p4vbox_settings.sh with the correctly P4_PROJECT_NAME
 Write yours p4 program (with extension <name_p4_switch>.p4) on src/ folder
 Write your commands file with topology (witch name: commands_<name_p4_switch>.txt)
 Write your gen_testdata.py (with name: gen_testdata_<num_of_parallel_p4_switchs>ip.py)
