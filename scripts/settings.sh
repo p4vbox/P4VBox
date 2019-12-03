@@ -45,7 +45,6 @@ export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
 export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
 export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
-export P4VBOX_FOLDER=${SUME_FOLDER}
-export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
-export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
+export P4_SCRIPTS=${SUME_FOLDER}/scripts
+export P4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
 # export P4VBOX=${SUME_FOLDER}/scripts/settings_p4vbox.sh

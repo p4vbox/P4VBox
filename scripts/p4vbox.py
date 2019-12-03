@@ -13,9 +13,9 @@ projSume = ""
 
 def getArgs():
     global args
-    parser = argparse.ArgumentParser(prog="virtp4", usage="./%(prog)s.py name_p4_switch_0 name_p4_switch_1 ... name_p4_switch_N  [options] [--help]", description="Virtualize P4 Switches with VirtP4 Architecture.")
+    parser = argparse.ArgumentParser(prog="p4vbox", usage="./%(prog)s.py name_p4_switch_0 name_p4_switch_1 ... name_p4_switch_N  [options] [--help]", description="Virtualize P4 Switches with P4VBox Architecture.")
     parser.add_argument("switches", nargs="+", metavar="<string>", help="The name of first P4 switch to virtualize, i.e: l2_switch, router ")
-    parser.add_argument("-name", type=str, metavar="<string>", default=os.environ["P4_PROJECT_NAME"], help="This will replace the environment variables to match with the given switch name (This flag removes the need to update the P4_PROJECT_NAME variable in virtp4_setting.sh script).")
+    parser.add_argument("-name", type=str, metavar="<string>", default=os.environ["P4_PROJECT_NAME"], help="This will replace the environment variables to match with the given switch name (This flag removes the need to update the P4_PROJECT_NAME variable in setting.sh script).")
     parser.add_argument("-t", action="store_true", help="This will only run gen_testdate_<p4_switch>.py from testdata/ folder to generate packets for test (src.pcap and dst.pcap).")
     parser.add_argument("-c", action="store_true", help="This will only compile <p4_switch>.p4 from src/ folder to verify syntax and create tables.")
     parser.add_argument("-s", action="store_true", help="This will compile, generate testdata and run p4_switch simulation (simulation generated from SDNet with src.pcap and dst.pcap).")
@@ -42,7 +42,7 @@ def setEnv():
 
     # Adding all switch in one string and export this in environment
     # variables to pass this switches as parameters to tcl
-    os.environ["VIRTP4_PROJ_SWITCHES"] = ':'.join(args.switches)
+    os.environ["P4_PROJ_SWITCHES"] = ':'.join(args.switches)
     os.environ["P4_PROJECT_DIR"] = os.environ["SUME_SDNET"] + "/projects/" + os.environ["P4_PROJECT_NAME"]
     os.environ["NF_DESIGN_DIR"] = os.environ["P4_PROJECT_DIR"] + "/" + os.environ["NF_PROJECT_NAME"]
     os.environ["PYTHONPATH"] = os.environ["SUME_SDNET"] + "/bin:" + os.environ["SUME_FOLDER"] + "/tools/scripts/:" + os.environ["NF_DESIGN_DIR"] + "/lib/Python:" + os.environ["SUME_FOLDER"] + "/tools/scripts/NFTest"
@@ -65,7 +65,7 @@ def setEnv():
 def printEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
     print("\n---------------------------------------------")
-    print("            VirtP4 - Enviroment")
+    print("            P4VBox - Enviroment")
     print("---------------------------------------------\n")
     print("Project Name: "+ projName)
     print("    Parallel Switches: "+ str(len(args.switches)))
@@ -83,7 +83,7 @@ def printEnv():
 
 def cleanAll():
     print("\nCleaning Workdir\n")
-    subprocess.call(["make", "-C", os.environ["VIRTP4_SCRIPTS"], "clean"])
+    subprocess.call(["make", "-C", os.environ["P4_SCRIPTS"], "clean"])
 
 def initWorkspace():
     global args; global projName; global projDir; global projDesignDir
@@ -187,11 +187,11 @@ def genSource(switch):
 
 def buildIp(switch):
     print("\nBuilding IP: "+ switch +"\n")
-    subprocess.call([os.environ["VIRTP4_SCRIPTS"] +"/p4_build.sh"], shell=True)
+    subprocess.call([os.environ["P4_SCRIPTS"] +"/p4_build.sh"], shell=True)
 
 def genConfigWrites():
     print("\nGenerating Config Writes:\n")
-    subprocess.call([os.environ["VIRTP4_SCRIPTS"] +"/p4_configWrites.sh"], shell=True)
+    subprocess.call([os.environ["P4_SCRIPTS"] +"/p4_configWrites.sh"], shell=True)
 
 def simSume():
     global projSume
@@ -277,10 +277,10 @@ def main():
 
     genConfigWrites()
 
-    # Need environment update: VIRTP4_PROJ_SWITCHES
+    # Need environment update: P4_PROJ_SWITCHES
     simSume()
 
-    # Need environment update: VIRTP4_PROJ_SWITCHES
+    # Need environment update: P4_PROJ_SWITCHES
     if ( args.imp ):
         synthImpl()
 
