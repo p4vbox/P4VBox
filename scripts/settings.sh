@@ -47,4 +47,4 @@ export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
 export P4_SCRIPTS=${SUME_FOLDER}/scripts
 export P4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-# export P4VBOX=${SUME_FOLDER}/scripts/settings_p4vbox.sh
+# export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
