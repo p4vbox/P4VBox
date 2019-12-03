@@ -16,6 +16,7 @@ rom_data.txt
 seed
 
 .Xil/
+xsim.dir/
 xgui/
 ip_proj/
 
