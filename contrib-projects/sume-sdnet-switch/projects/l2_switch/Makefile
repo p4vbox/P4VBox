@@ -9,7 +9,7 @@
 #       Mateus Saquetti
 #
 # Description:
-#       Makefile to build the P4 module / wrapper IP for use in VirtP4 project
+#       Makefile to build the P4 module / wrapper IP for use in P4VBox project
 #
 # Create date:
 #       15.12.2018

@@ -44,7 +44,7 @@
 #
 ##################################################################################
 
-# Get VirtP4 variables from enviroment
+# Get P4VBox variables from enviroment
 set arg_p4_switches $::env(VIRTP4_PROJ_SWITCHES)
 set p4_switches [split $arg_p4_switches :]
 

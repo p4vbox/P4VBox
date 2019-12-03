@@ -44,7 +44,7 @@
 #
 ##################################################################################
 
-# Get VirtP4 variables from enviroment
+# Get P4VBox variables from enviroment
 set arg_p4_switches $::env(VIRTP4_PROJ_SWITCHES)
 set p4_switches [split $arg_p4_switches :]
 
@@ -215,10 +215,10 @@ puts $output
 set_property xsim.view {} [get_filesets sim_1]
 launch_simulation -simset sim_1 -mode behavioral
 
-puts "\n Open waveform to nf_datapath: VirtP4/scripts/tools/waveforms/virtp4_sim.wcfg \n"
+puts "\n Open waveform to nf_datapath: P4VBox/scripts/tools/waveforms/virtp4_sim.wcfg \n"
 open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim.wcfg}
 
-puts "\n Open waveform to top level: VirtP4/scripts/tools/waveforms/virtp4_sim_top.wcfg \n"
+puts "\n Open waveform to top level: P4VBox/scripts/tools/waveforms/virtp4_sim_top.wcfg \n"
 open_wave_config {../../../../../../scripts/tools/waveforms/virtp4_sim_top.wcfg}
 
 run 130us

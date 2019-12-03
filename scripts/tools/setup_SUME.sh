@@ -44,9 +44,9 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   echo "source /opt/Xilinx/SDNet/2018.2/settings64.sh" >> ~/.bashrc
   echo "##### Vivado 2018 & SDK #####" >> ~/.bashrc
   echo "source /opt/Xilinx/Vivado/2018.2/settings64.sh" >> ~/.bashrc
-  echo "#### VirtP4 #####" >> ~/.bashrc
-  echo "export VIRTP4_ENV_SETTINGS=${HOME}/projects/VirtP4/scripts/virtp4_settings.sh" >> ~/.bashrc
-  echo "source ${VIRTP4_ENV_SETTINGS}" >> ~/.bashrc
+  echo "#### P4VBox #####" >> ~/.bashrc
+  echo "export P4VBOX=${HOME}/projects/P4VBox/scripts/virtp4_settings.sh" >> ~/.bashrc
+  echo "source ${P4VBOX}" >> ~/.bashrc
   echo "#### P4-NetFPGA #####" >> ~/.bashrc
   echo "export P4_NETFPGA=${HOME}/projects/P4-NetFPGA/tools/settings.sh" >> ~/.bashrc
   echo "# source ${P4_NETFPGA}" >> ~/.bashrc
@@ -101,7 +101,7 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 fi
 
 echo " " && echo " "
-read -p "Would you like clone VirtP4? (Y/N): " confirm
+read -p "Would you like clone P4VBox? (Y/N): " confirm
 if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   echo " " && echo " "
   mkdir ~/projects
@@ -111,7 +111,7 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   git pull --tags
   export P4_PROJECT_NAME=l2_switch
   export NF_PROJECT_NAME=simple_sume_switch
-  export SUME_FOLDER=${HOME}/projects/VirtP4
+  export SUME_FOLDER=${HOME}/projects/P4VBox
   export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
   export P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
   export P4_PROJECT_EXAMPLES=${SUME_SDNET}/projects/${CONTRIB_EXAMPLES}/${P4_PROJECT_NAME}
@@ -129,10 +129,9 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
   export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
   export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
-  export VIRTP4_FOLDER=${SUME_FOLDER}
-  export VIRTP4_SCRIPTS=${SUME_FOLDER}/scripts
-  export VIRTP4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-  export VIRTP4_ENV_SETTINGS=${HOME}/projects/VirtP4/scripts/virtp4_settings.sh
+  export P4_SCRIPTS=${SUME_FOLDER}/scripts
+  export P4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
+  export P4VBOX=${P4_SCRIPTS}/settings.sh
   cd $SUME_FOLDER/lib/hw/xilinx/cores/tcam_v1_1_0/ && make update && make
   cd $SUME_FOLDER/lib/hw/xilinx/cores/cam_v1_1_0/ && make update && make
   cd $SUME_SDNET/sw/sume && make

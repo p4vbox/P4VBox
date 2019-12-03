@@ -12,7 +12,7 @@
 //       Mateus Saquetti
 //
 // Description:
-//       This is a template for VirtP4 switch
+//       This is a template for P4VBox switch
 //
 // Create Date:
 //       20.05.2019

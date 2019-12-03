@@ -3,7 +3,7 @@ Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 | Tool Version : Vivado v.2018.2 (lin64) Build 2258646 Thu Jun 14 20:02:38 MDT 2018
 | Date         : Fri Jun 21 10:14:25 2019
 | Host         : mateus-ufrgs-ubuntu14 running 64-bit Ubuntu 14.04.5 LTS
-| Command      : report_utilization -file /root/projects/VirtP4/Reports/Utilization/utilization_firewall.txt -name utilization_firewall
+| Command      : report_utilization -file /root/projects/P4VBox/Reports/Utilization/utilization_firewall.txt -name utilization_firewall
 | Design       : top
 | Device       : 7vx690tffg1761-3
 | Design State : Routed
