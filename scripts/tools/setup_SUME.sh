@@ -45,7 +45,7 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   echo "##### Vivado 2018 & SDK #####" >> ~/.bashrc
   echo "source /opt/Xilinx/Vivado/2018.2/settings64.sh" >> ~/.bashrc
   echo "#### P4VBox #####" >> ~/.bashrc
-  echo "export P4VBOX=${HOME}/projects/P4VBox/scripts/virtp4_settings.sh" >> ~/.bashrc
+  echo "export P4VBOX=${HOME}/projects/P4VBox/scripts/settings.sh" >> ~/.bashrc
   echo "source ${P4VBOX}" >> ~/.bashrc
   echo "#### P4-NetFPGA #####" >> ~/.bashrc
   echo "export P4_NETFPGA=${HOME}/projects/P4-NetFPGA/tools/settings.sh" >> ~/.bashrc

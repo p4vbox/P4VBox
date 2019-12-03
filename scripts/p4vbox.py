@@ -54,14 +54,6 @@ def setEnv():
     projDesignDir = os.environ["NF_DESIGN_DIR"]
     projSume = os.environ["SUME_FOLDER"]
 
-    print(os.environ["P4_PROJECT_NAME"])
-    print(os.environ["P4_PROJECT_DIR"])
-    print(os.environ["NF_DESIGN_DIR"])
-    print(os.environ["PYTHONPATH"])
-    # P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
-    # NF_DESIGN_DIR=${P4_PROJECT_DIR}/${NF_PROJECT_NAME}
-    # PYTHONPATH=.:${SUME_SDNET}/bin:${SUME_FOLDER}/tools/scripts/:${NF_DESIGN_DIR}/lib/Python:${SUME_FOLDER}/tools/scripts/NFTest
-
 def printEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
     print("\n---------------------------------------------")
