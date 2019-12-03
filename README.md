@@ -30,7 +30,7 @@ specific language governing permissions and limitations under the License.
 
 How to clone this repo:
 
-git clone https://mateussaquetti@bitbucket.org/mateussaquetti/p4vbox.git P4VBox
+git clone https://github.com/mateussaquetti/P4VBox.git
 
 git pull --tags
 
@@ -38,7 +38,7 @@ git pull --tags
 Add this lines at your enviroment viriables file (~/.bashrc)
 
 #### P4VBox #####
-export P4VBOX=~/projects/P4VBox/scripts/p4vbox_settings.sh
+export P4VBOX=~/projects/P4VBox/scripts/settings.sh
 source ${P4VBOX}
 
 
