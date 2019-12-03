@@ -52,11 +52,14 @@ import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
-NUM_PKTS = 8
+# NUM_PKTS = Must be divisible by 4
+# ENTER_RATE = Time between packets
+NUM_PKTS = 24
 NUM_VLANS = 1
 LEN_PKT = 256
-# Time between packets
 ENTER_RATE = 1
+VLAN_ID = 1
+VLAN_PRIO = 0
 
 ###########
 # pkt generation tools
@@ -122,11 +125,12 @@ def write_pcap_files():
 #####################
 # generate testdata #
 #####################
+
 MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "00:18:3e:02:0d:a0"
-MAC_addr[nf_id_map["nf1"]] = "00:18:3e:02:0d:a1"
-MAC_addr[nf_id_map["nf2"]] = "00:18:3e:02:0d:a2"
-MAC_addr[nf_id_map["nf3"]] = "00:18:3e:02:0d:a3"
+MAC_addr[nf_id_map["nf0"]] = "08:11:11:11:11:08"
+MAC_addr[nf_id_map["nf1"]] = "08:22:22:22:22:08"
+MAC_addr[nf_id_map["nf2"]] = "08:33:33:33:33:08"
+MAC_addr[nf_id_map["nf3"]] = "08:44:44:44:44:08"
 
 IP_addr = {}
 IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
@@ -134,36 +138,25 @@ IP_addr[nf_id_map["nf1"]] = "10.0.1.1"
 IP_addr[nf_id_map["nf2"]] = "10.0.1.2"
 IP_addr[nf_id_map["nf3"]] = "10.0.1.3"
 
-src_pkts = []
-dst_pkts = []
-
-vlan_id = 1
-vlan_prio = 0
-
+time = 0
 # create some packets
-for i in range(NUM_PKTS):
-    src_ind = random.randint(1,2)
-
-    if src_ind == 1:
-        dst_ind = 2
-    elif src_ind == 2:
-        dst_ind = 1
-
-    src_MAC = MAC_addr[src_ind]
-    dst_MAC = MAC_addr[dst_ind]
-
-    if vlan_prio > 4:
-        vlan_prio = 1
-    else :
-        vlan_prio += 1
-
-    # generete ping packet = IP( , ttl=20) / ICMP()
-    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / UDP(sport=20415, dport=1234) / ('a'*(LEN_PKT-46))
-    pkt = pad_pkt(pkt, LEN_PKT)
-    ingress = inv_nf_id_map[src_ind]
-    egress = inv_nf_id_map[dst_ind]
-    applyPkt(pkt, ingress, i)
-    expPkt(pkt, egress)
-
+for i in range(NUM_PKTS/4):
+    for src_ind in range(4):
+        if src_ind == 0:
+            dst_ind = 1
+        elif src_ind == 1:
+            dst_ind = 0
+        elif src_ind == 2:
+            dst_ind = 3
+        elif src_ind == 3:
+            dst_ind = 2
+        # VLAN_PRIO = 1 if VLAN_PRIO > 4 else VLAN_PRIO +=1
+        pkt = Ether(src=MAC_addr[src_ind], dst=MAC_addr[dst_ind]) / Dot1Q(vlan=VLAN_ID, prio=VLAN_PRIO) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / UDP(sport=20415, dport=1234) / ('A'*(LEN_PKT-46))
+        pkt = pad_pkt(pkt, LEN_PKT)
+        ingress = inv_nf_id_map[src_ind]
+        egress = inv_nf_id_map[dst_ind]
+        applyPkt(pkt, ingress, time)
+        expPkt(pkt, egress)
+        time += 1
 
 write_pcap_files()

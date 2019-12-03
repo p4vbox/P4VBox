@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Stephen Ibanez
+// Copyright (c) 2017 Mateus Saquetti
 // All rights reserved.
 //
 // This software was developed by Stanford University and the University of Cambridge Computer Laboratory
@@ -26,7 +26,6 @@
 //
 // @NETFPGA_LICENSE_HEADER_END@
 //
-//////////////////////////////////////////////////////////////////////////////////
 // This software was modified by Institute of Informatics of the Federal
 // University of Rio Grande do Sul (INF-UFRGS)
 //
@@ -42,17 +41,9 @@
 //
 // Additional Comments:
 //
-//
-//////////////////////////////////////////////////////////////////////////////////
 
-// DMA Address
-// table_cam_add_entry dmac forward 02:53:55:4d:45:00 => 0b00000001
-// table_cam_add_entry dmac forward 02:53:55:4d:45:01 => 0b00000100
-// table_cam_add_entry dmac forward 02:53:55:4d:45:02 => 0b00010000
-// table_cam_add_entry dmac forward 02:53:55:4d:45:03 => 0b01000000
-
-// MAC Address
-table_cam_add_entry dmac forward 00:18:3e:02:0d:a0 => 0b00000001
-table_cam_add_entry dmac forward 00:18:3e:02:0d:a1 => 0b00000100
-table_cam_add_entry dmac forward 00:18:3e:02:0d:a2 => 0b00010000
-table_cam_add_entry dmac forward 00:18:3e:02:0d:a3 => 0b01000000
+table_cam_add_entry dmac forward 08:11:11:11:11:08 => 0b00000001
+table_cam_add_entry dmac forward 08:22:22:22:22:08 => 0b00000100
+table_cam_add_entry dmac forward 08:33:33:33:33:08 => 0b00010000
+table_cam_add_entry dmac forward 08:44:44:44:44:08 => 0b01000000
+table_cam_add_entry dmac forward ff:ff:ff:ff:ff:ff => 0b01010101

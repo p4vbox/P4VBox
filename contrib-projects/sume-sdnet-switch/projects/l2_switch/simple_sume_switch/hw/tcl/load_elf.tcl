@@ -53,7 +53,6 @@
 ##################################################################################
 
 set design [lindex $argv 0]
-set proj_name $::env(P4_PROJECT_NAME)
 set ws "SDK_Workspace"
 
 # open project
@@ -81,6 +80,6 @@ reset_run impl_1 -prev_step
 launch_runs impl_1 -to_step write_bitstream
 wait_on_run impl_1
 open_run impl_1
-write_bitstream -force ../bitfiles/${design}_${proj_name}.bit
+write_bitstream -force ../bitfiles/$design.bit
 
 exit

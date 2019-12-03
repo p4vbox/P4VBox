@@ -31,4 +31,4 @@
 
 
 # Program the switch with the bit file and then configure the tables
-${SUME_SDNET}/tools/program_switch.sh ${NF_PROJECT_NAME}_${P4_PROJECT_NAME}.bit config_writes.sh
+${SUME_SDNET}/tools/program_switch.sh ${P4_PROJECT_NAME}.bit config_writes.sh
