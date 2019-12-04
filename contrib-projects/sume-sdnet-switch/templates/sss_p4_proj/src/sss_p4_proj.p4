@@ -1,26 +1,43 @@
-//////////////////////////////////////////////////////////////////////////////////
-// This software was developed by Institute of Informatics of the Federal
+//
+// Copyright (c) 2017 Stephen Ibanez
+// All rights reserved.
+//
+// This software was developed by Stanford University and the University of Cambridge Computer Laboratory
+// under National Science Foundation under Grant No. CNS-0855268,
+// the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
+// by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
+// as part of the DARPA MRC research programme.
+//
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was modified by Institute of Informatics of the Federal
 // University of Rio Grande do Sul (INF-UFRGS)
 //
-// File:
-//      sss_p4_proj.p4
-//
-// P4 Switch Module:
-//      template
-//
-// Author:
-//       Mateus Saquetti
-//
 // Description:
-//       This is a template for P4VBox switch
-//
+//              Adapted to run in P4VBox architecture
 // Create Date:
-//       20.05.2019
+//              31.05.2019
 //
-// Additional Comments:
+// @NETFPGA_LICENSE_HEADER_START@
 //
+// Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+// license agreements.  See the NOTICE file distributed with this work for
+// additional information regarding copyright ownership.  NetFPGA licenses this
+// file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+// "License"); you may not use this file except in compliance with the
+// License.  You may obtain a copy of the License at:
 //
-//////////////////////////////////////////////////////////////////////////////////
+//   http://www.netfpga-cic.org
+//
+// Unless required by applicable law or agreed to in writing, Work distributed
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations under the License.
+//
+// @NETFPGA_LICENSE_HEADER_END@
+// 
+
 
 #include <core.p4>
 #include <sume_switch.p4>
@@ -28,7 +45,7 @@
 typedef bit<48> EthAddr_t;
 typedef bit<32> IPv4Addr_t;
 
-#define VLAN_TYPE   0x8100
+#define VLAN_TYPE 0x8100
 #define IPV4_TYPE 0x0800
 
 // standard Ethernet header

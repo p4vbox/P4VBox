@@ -20,6 +20,14 @@
 //  Description:
 //        NetFPGA user data path wrapper, wrapping input arbiter, output port lookup and output queues
 //
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was modified by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
+//
+// Description:
+//        Adapted to run in P4VBox architecture
 //
 // @NETFPGA_LICENSE_HEADER_START@
 //
@@ -39,23 +47,6 @@
 //
 // @NETFPGA_LICENSE_HEADER_END@
 //
-//////////////////////////////////////////////////////////////////////////////////
-// This software was modified by Institute of Informatics of the Federal
-// University of Rio Grande do Sul (INF-UFRGS)
-//
-// Modified by:
-//       Mateus Saquetti
-//
-// Description:
-//       Modified to support virtual switch parelization
-//
-// Modified Date:
-//       14.11.2018
-//
-// Additional Comments:
-//
-//
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module nf_datapath #(
@@ -405,8 +396,8 @@ module nf_datapath #(
 
 
     // SUME SDNet Module 0
-      nf_sdnet_<P4_SWITCH>_ip
-    sdnet_<P4_SWITCH>  (
+      nf_sdnet_l2_switch_ip
+    sdnet_l2_switch  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues

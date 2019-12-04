@@ -20,6 +20,14 @@
 //  Description:
 //        NetFPGA user data path wrapper, wrapping input arbiter, output port lookup and output queues
 //
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was modified by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
+//
+// Description:
+//        Adapted to run in P4VBox architecture
 //
 // @NETFPGA_LICENSE_HEADER_START@
 //
@@ -39,16 +47,6 @@
 //
 // @NETFPGA_LICENSE_HEADER_END@
 //
-//////////////////////////////////////////////////////////////////////////////////
-// Affiliation: Universidade Federal do Rio Grande do Sul (UFRGS)
-// Author: Mateus Saquetti Pereira de Carvalho Tirone
-//
-// Modified Date: 14.11.2018 12:00:00
-// Module Name: nf_datapath
-// Revision: 12/11/2018
-// Additional Comments:
-//
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module nf_datapath #(
@@ -426,69 +424,69 @@ module nf_datapath #(
       .s_axis_tready(m_axis_0_ipi_tready),
       .s_axis_tlast (m_axis_0_ipi_tlast),
 
-      .S_AXI_AWADDR(),
-      .S_AXI_AWVALID(),
-      .S_AXI_WDATA(),
-      .S_AXI_WSTRB(),
-      .S_AXI_WVALID(),
-      .S_AXI_BREADY(),
-      .S_AXI_ARADDR(),
-      .S_AXI_ARVALID(),
-      .S_AXI_RREADY(),
-      .S_AXI_ARREADY(),
-      .S_AXI_RDATA(),
-      .S_AXI_RRESP(),
-      .S_AXI_RVALID(),
-      .S_AXI_WREADY(),
-      .S_AXI_BRESP(),
-      .S_AXI_BVALID(),
-      .S_AXI_AWREADY(),
+      .S_AXI_AWADDR(S1_AXI_AWADDR),
+      .S_AXI_AWVALID(S1_AXI_AWVALID),
+      .S_AXI_WDATA(S1_AXI_WDATA),
+      .S_AXI_WSTRB(S1_AXI_WSTRB),
+      .S_AXI_WVALID(S1_AXI_WVALID),
+      .S_AXI_BREADY(S1_AXI_BREADY),
+      .S_AXI_ARADDR(S1_AXI_ARADDR),
+      .S_AXI_ARVALID(S1_AXI_ARVALID),
+      .S_AXI_RREADY(S1_AXI_RREADY),
+      .S_AXI_ARREADY(S1_AXI_ARREADY),
+      .S_AXI_RDATA(S1_AXI_RDATA),
+      .S_AXI_RRESP(S1_AXI_RRESP),
+      .S_AXI_RVALID(S1_AXI_RVALID),
+      .S_AXI_WREADY(S1_AXI_WREADY),
+      .S_AXI_BRESP(S1_AXI_BRESP),
+      .S_AXI_BVALID(S1_AXI_BVALID),
+      .S_AXI_AWREADY(S1_AXI_AWREADY),
       .S_AXI_ACLK (axi_aclk),
       .S_AXI_ARESETN(axi_resetn)
     );
 
 
     // SUME SDNet Module 3
-      nf_sume_sdnet1_ip
-    nf_sume_sdnet1_wrapper_1  (
+      nf_sume_sdnet2_ip
+    nf_sume_sdnet2_wrapper_2  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
-      .m_axis_tdata (s_axis_1_opi_tdata),
-      .m_axis_tkeep (s_axis_1_opi_tkeep),
-      .m_axis_tuser (s_axis_1_opi_tuser),
-      .m_axis_tvalid(s_axis_1_opi_tvalid),
-      .m_axis_tready(s_axis_1_opi_tready),
-      .m_axis_tlast (s_axis_1_opi_tlast),
+      .m_axis_tdata (s_axis_2_opi_tdata),
+      .m_axis_tkeep (s_axis_2_opi_tkeep),
+      .m_axis_tuser (s_axis_2_opi_tuser),
+      .m_axis_tvalid(s_axis_2_opi_tvalid),
+      .m_axis_tready(s_axis_2_opi_tready),
+      .m_axis_tlast (s_axis_2_opi_tlast),
       //input_arbiter->input_p4_interface->nf_sume_sdnet
-      .s_axis_tdata (m_axis_1_ipi_tdata),
-      .s_axis_tkeep (m_axis_1_ipi_tkeep),
+      .s_axis_tdata (m_axis_2_ipi_tdata),
+      .s_axis_tkeep (m_axis_2_ipi_tkeep),
       .s_axis_tuser ({dma_q_size_opi_in,
                       nf3_q_size_opi_in,
                       nf2_q_size_opi_in,
                       nf1_q_size_opi_in,
                       nf0_q_size_opi_in,
-                      m_axis_1_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
-      .s_axis_tvalid(m_axis_1_ipi_tvalid),
-      .s_axis_tready(m_axis_1_ipi_tready),
-      .s_axis_tlast (m_axis_1_ipi_tlast),
-      .S_AXI_AWADDR(),
-      .S_AXI_AWVALID(),
-      .S_AXI_WDATA(),
-      .S_AXI_WSTRB(),
-      .S_AXI_WVALID(),
-      .S_AXI_BREADY(),
-      .S_AXI_ARADDR(),
-      .S_AXI_ARVALID(),
-      .S_AXI_RREADY(),
-      .S_AXI_ARREADY(),
-      .S_AXI_RDATA(),
-      .S_AXI_RRESP(),
-      .S_AXI_RVALID(),
-      .S_AXI_WREADY(),
-      .S_AXI_BRESP(),
-      .S_AXI_BVALID(),
-      .S_AXI_AWREADY(),
+                      m_axis_2_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
+      .s_axis_tvalid(m_axis_2_ipi_tvalid),
+      .s_axis_tready(m_axis_2_ipi_tready),
+      .s_axis_tlast (m_axis_2_ipi_tlast),
+      .S_AXI_AWADDR(S1_AXI_AWADDR),
+      .S_AXI_AWVALID(S1_AXI_AWVALID),
+      .S_AXI_WDATA(S1_AXI_WDATA),
+      .S_AXI_WSTRB(S1_AXI_WSTRB),
+      .S_AXI_WVALID(S1_AXI_WVALID),
+      .S_AXI_BREADY(S1_AXI_BREADY),
+      .S_AXI_ARADDR(S1_AXI_ARADDR),
+      .S_AXI_ARVALID(S1_AXI_ARVALID),
+      .S_AXI_RREADY(S1_AXI_RREADY),
+      .S_AXI_ARREADY(S1_AXI_ARREADY),
+      .S_AXI_RDATA(S1_AXI_RDATA),
+      .S_AXI_RRESP(S1_AXI_RRESP),
+      .S_AXI_RVALID(S1_AXI_RVALID),
+      .S_AXI_WREADY(S1_AXI_WREADY),
+      .S_AXI_BRESP(S1_AXI_BRESP),
+      .S_AXI_BVALID(S1_AXI_BVALID),
+      .S_AXI_AWREADY(S1_AXI_AWREADY),
       .S_AXI_ACLK (axi_aclk),
       .S_AXI_ARESETN(axi_resetn)
     );

@@ -8,6 +8,17 @@
 // by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 // as part of the DARPA MRC research programme.
 //
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was modified by Institute of Informatics of the Federal
+// University of Rio Grande do Sul (INF-UFRGS)
+//
+// Description:
+//              Adapted to run in P4VBox architecture
+// Create Date:
+//              31.05.2019
+//
 // @NETFPGA_LICENSE_HEADER_START@
 //
 // Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
@@ -25,21 +36,17 @@
 // specific language governing permissions and limitations under the License.
 //
 // @NETFPGA_LICENSE_HEADER_END@
-//
-//////////////////////////////////////////////////////////////////////////////////
-// This software was modified by Institute of Informatics of the Federal
-// University of Rio Grande do Sul (INF-UFRGS)
-//
-// Modified by:
-//       Mateus Saquetti
-//
-// Description:
-//
-//
-// Create Date:
-//       
-//
-// Additional Comments:
-//
-//
-//////////////////////////////////////////////////////////////////////////////////
+// 
+
+// Physical ports
+table_cam_add_entry dmac forward 08:11:11:11:11:08 => 0b00000001
+table_cam_add_entry dmac forward 08:22:22:22:22:08 => 0b00000100
+table_cam_add_entry dmac forward 08:33:33:33:33:08 => 0b00010000
+table_cam_add_entry dmac forward 08:44:44:44:44:08 => 0b01000000
+table_cam_add_entry dmac forward ff:ff:ff:ff:ff:ff => 0b01010101
+
+// DMA ports
+table_cam_add_entry dmac forward 02:53:55:4d:45:00 => 0b00000010
+table_cam_add_entry dmac forward 02:53:55:4d:45:01 => 0b00001000
+table_cam_add_entry dmac forward 02:53:55:4d:45:02 => 0b00100000
+table_cam_add_entry dmac forward 02:53:55:4d:45:03 => 0b10000000

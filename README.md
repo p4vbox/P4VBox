@@ -43,10 +43,10 @@ source ${P4VBOX}
 
 
 How to create a new P4VBox project:
-$ $P4_NEWPROJ <name_project>
+$ $P4VBOX_NEWPROJ <name_project>
 
 Like this:
-$ $P4_NEWPROJ l2_switch
+$ $P4VBOX_NEWPROJ l2_switch
 
 Modify the p4vbox_settings.sh with the correctly P4_PROJECT_NAME
 Write yours p4 program (with extension <name_p4_switch>.p4) on src/ folder

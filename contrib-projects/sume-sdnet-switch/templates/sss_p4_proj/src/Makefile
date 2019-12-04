@@ -8,6 +8,17 @@
 # by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
+#
 # @NETFPGA_LICENSE_HEADER_START@
 #
 # Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
@@ -26,23 +37,6 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
-##################################################################################
-# This software was modified by Institute of Informatics of the Federal
-# University of Rio Grande do Sul (INF-UFRGS)
-#
-# Modified by:
-#       Mateus Saquetti
-#
-# Description:
-#       Modified to support the compile multiple virtual switches
-#
-# Create date:
-#       12.12.2018
-#
-# Additional Comments:
-#
-#
-##################################################################################
 
 all:
 	p4c-sdnet -o ${P4_SWITCH}.sdnet --toplevel_name ${P4_SWITCH} --sdnet_info .sdnet_switch_info_${P4_SWITCH}.dat ${P4_SWITCH}.p4

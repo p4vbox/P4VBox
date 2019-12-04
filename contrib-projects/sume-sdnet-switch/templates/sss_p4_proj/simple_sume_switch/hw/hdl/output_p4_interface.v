@@ -1,32 +1,38 @@
-//////////////////////////////////////////////////////////////////////////////////
-// This software was developed by Institute of Informatics of the Federal
+//
+// Copyright (c) 2019 Mateus Saquetti
+// All rights reserved.
+//
+// This software was modified by Institute of Informatics of the Federal
 // University of Rio Grande do Sul (INF-UFRGS)
 //
-// File:
-//      output_p4_interface.v
-//
-// Module:
-//      output_p4_interface
-//
-// Author:
-//       Mateus Saquetti
-//
 // Description:
-//       This module get the outputd from virtual switch and delivery for output_queues
-//       so that there is no packet loss
+//        Adapted to run in P4VBox architecture
 //
-// Create Date:
-//       09.11.2018
+// @NETFPGA_LICENSE_HEADER_START@
 //
-// Additional Comments:
+// Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+// license agreements.  See the NOTICE file distributed with this work for
+// additional information regarding copyright ownership.  NetFPGA licenses this
+// file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+// "License"); you may not use this file except in compliance with the
+// License.  You may obtain a copy of the License at:
 //
+//   http://www.netfpga-cic.org
 //
-//////////////////////////////////////////////////////////////////////////////////
+// Unless required by applicable law or agreed to in writing, Work distributed
+// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+// CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations under the License.
+//
+// @NETFPGA_LICENSE_HEADER_END@
+//
 
 `timescale 1ns / 1ps
 
 module output_p4_interface
 #(
+    // Number of parallel switches
+    parameter NUM_QUEUES=4,
     // Master AXI Stream Data Width
     parameter C_M_AXIS_DATA_WIDTH=256,
     parameter C_S_AXIS_DATA_WIDTH=256,
@@ -34,7 +40,6 @@ module output_p4_interface
     // parameter C_S_AXIS_TUSER_WIDTH=128,
     parameter C_M_AXIS_TUSER_WIDTH=304,
     parameter C_S_AXIS_TUSER_WIDTH=304,
-    parameter NUM_QUEUES=4,
 
     // AXI Registers Data Width
     parameter C_S_AXI_DATA_WIDTH    = 32,

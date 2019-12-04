@@ -1,16 +1,25 @@
 #!/usr/bin/env python
 
 #
+# Copyright (c) 2017 Stephen Ibanez
+# All rights reserved.
+#
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
+# under National Science Foundation under Grant No. CNS-0855268,
+# the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
+# as part of the DARPA MRC research programme.
+#
 # Copyright (c) 2019 Mateus Saquetti
 # All rights reserved.
 #
-# This software was developed by Institute of Informatics of the Federal
+# This software was modified by Institute of Informatics of the Federal
 # University of Rio Grande do Sul (INF-UFRGS)
 #
 # Description:
-#              Modified to generate multiple testdatas for virtual switches
+#              Adapted to run in P4VBox architecture
 # Create Date:
-#              19.06.2019
+#              31.05.2019
 #
 # @NETFPGA_LICENSE_HEADER_START@
 #
@@ -33,12 +42,18 @@
 
 
 from nf_sim_tools import *
-import random
+import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
-NUM_PKTS = 8
+# NUM_PKTS = Must be divisible by 4
+# ENTER_RATE = Time between packets
+NUM_PKTS = 24
 NUM_VLANS = 1
+LEN_PKT = 256
+ENTER_RATE = 1
+VLAN_ID = 1
+VLAN_PRIO = 0
 
 ###########
 # pkt generation tools
@@ -74,19 +89,13 @@ def applyPkt(pkt, ingress, time):
     pkt.time = time
     nf_applied[nf_id_map[ingress]].append(pkt)
 
-def expPkt(pkt, egress, drop):
+def expPkt(pkt, egress):
     pktsExpected.append(pkt)
-
-    sss_sdnet_tuples.sume_tuple_expect['drop'] = drop
-    if ( drop ):
-        sss_sdnet_tuples.sume_tuple_expect['dst_port'] = 0b00000000
-    else:
-        sss_sdnet_tuples.sume_tuple_expect['dst_port'] = nf_port_map[egress]
-
+    sss_sdnet_tuples.sume_tuple_expect['dst_port'] = nf_port_map[egress]
     sss_sdnet_tuples.write_tuples()
-    if egress in ["nf0","nf1","nf2","nf3"] and drop == False:
+    if egress in ["nf0","nf1","nf2","nf3"]:
         nf_expected[nf_id_map[egress]].append(pkt)
-    elif egress == 'bcast' and drop == False:
+    elif egress == 'bcast':
         nf_expected[0].append(pkt)
         nf_expected[1].append(pkt)
         nf_expected[2].append(pkt)
@@ -107,39 +116,15 @@ def write_pcap_files():
     for i in nf_applied.keys():
         print "nf{0}_applied times: ".format(i), [p.time for p in nf_applied[i]]
 
-def printPacketsParam(i, fb, sH, dH, sL4, dL4):
-    print("")
-    print("Packet id:\tBlock:\t\tSource:\t\tDestination:\tSport L4:\tDport L4:")
-    print("Packet "+ str(i) +"\t"+str(fb)+"\t\tHost"+str(sH)+"      --> "+"\tHost"+str(dH)+"\t\t"+sL4+"       --> "+"\t"+dL4)
-
 #####################
 # generate testdata #
 #####################
-# Topology:
-#                   Left                                       Right
-#           H1 ------------------- |    SUME_SWITCH    | ------------------- H2
-#           |                    Port1               Port2                   |
-#           |               Port1 = 0b00000100 | Port2 = 0b00010000          |
-#   H1(MAC) = 00:00:01:00:00:01                                      H2(MAC) = 00:00:01:00:00:04
-#    H1(IP) = 192.168.0.1                                             H2(IP) = 10.0.0.1
-#    H1(L4) = 4444 or 1234                                            H2(L4) = 1111
-#
-#                   Firewall lock policy:
-# +---------------------------------------------------------+
-# |         UNLOCKED          |           LOCKED            |
-# +---------------------------+-----------------------------+
-# |         H1 -> H2          |          H1 -> H2           |
-# |       1234 -> 1111        |        4444 -> 1111         |
-# +---------------------------+-----------------------------+
-# |         H2 -> H1          |          H2 -> H1           |
-# |       1111 -> 4444        |        1111 -> 1234         |
-# +---------------------------+-----------------------------+
 
 MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "00:00:00:01:00:00"
-MAC_addr[nf_id_map["nf1"]] = "00:00:00:01:00:01"
-MAC_addr[nf_id_map["nf2"]] = "00:00:00:01:00:02"
-MAC_addr[nf_id_map["nf3"]] = "00:00:00:01:00:03"
+MAC_addr[nf_id_map["nf0"]] = "08:11:11:11:11:08"
+MAC_addr[nf_id_map["nf1"]] = "08:22:22:22:22:08"
+MAC_addr[nf_id_map["nf2"]] = "08:33:33:33:33:08"
+MAC_addr[nf_id_map["nf3"]] = "08:44:44:44:44:08"
 
 IP_addr = {}
 IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
@@ -147,62 +132,25 @@ IP_addr[nf_id_map["nf1"]] = "10.0.1.1"
 IP_addr[nf_id_map["nf2"]] = "10.0.1.2"
 IP_addr[nf_id_map["nf3"]] = "10.0.1.3"
 
-L4_addr = {}
-L4_addr["firewall_src"] = "4444"
-L4_addr["firewall_dst"] = "1234"
-L4_addr["host_2"] = "1111"
-
-vlan_id = 3
-vlan_prio = 0
-firewall_block = True
-
+time = 0
 # create some packets
-for i in range(NUM_PKTS):
-    # Definning priority:
-    vlan_prio += 1
-    if ( vlan_prio > 4 ):
-        vlan_prio = 1
+for i in range(NUM_PKTS/4):
+    for src_ind in range(4):
+        if src_ind == 0:
+            dst_ind = 1
+        elif src_ind == 1:
+            dst_ind = 0
+        elif src_ind == 2:
+            dst_ind = 3
+        elif src_ind == 3:
+            dst_ind = 2
+        # VLAN_PRIO = 1 if VLAN_PRIO > 4 else VLAN_PRIO +=1
+        pkt = Ether(src=MAC_addr[src_ind], dst=MAC_addr[dst_ind]) / Dot1Q(vlan=VLAN_ID, prio=VLAN_PRIO) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / UDP(sport=20415, dport=1234) / ('A'*(LEN_PKT-46))
+        pkt = pad_pkt(pkt, LEN_PKT)
+        ingress = inv_nf_id_map[src_ind]
+        egress = inv_nf_id_map[dst_ind]
+        applyPkt(pkt, ingress, time)
+        expPkt(pkt, egress)
+        time += 1
 
-    # Switch host source and setting MAC address:
-    host_src = random.randint(1,2)
-
-    if host_src == 1:
-        host_dst = 2
-    elif host_src == 2:
-        host_dst = 1
-
-    src_MAC = MAC_addr[host_src]
-    dst_MAC = MAC_addr[host_dst]
-
-    # Firewall block logic:
-    firewall_block = not(firewall_block)
-
-    if ( firewall_block ):
-        if ( 1 == host_src ):
-            src_L4 = L4_addr["firewall_src"]
-            dst_L4 = L4_addr["host_2"]
-
-        elif ( 2 == host_src ):
-            src_L4 = L4_addr["host_2"]
-            dst_L4 = L4_addr["firewall_dst"]
-    else:
-        if ( 1 == host_src ):
-            src_L4 = L4_addr["firewall_dst"]
-            dst_L4 = L4_addr["host_2"]
-        elif ( 2 == host_src ):
-            src_L4 = L4_addr["host_2"]
-            dst_L4 = L4_addr["firewall_src"]
-
-    printPacketsParam(i, firewall_block, host_src, host_dst, src_L4, dst_L4)
-
-    # generete ping packet = IP( , ttl=20) / ICMP()
-    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=IP_addr[host_src], dst=IP_addr[host_dst], ttl=20) / TCP(sport=int(src_L4), dport=int(dst_L4))
-    pkt = pad_pkt(pkt, 64)
-    ingress = inv_nf_id_map[host_src]
-    egress = inv_nf_id_map[host_dst]
-    applyPkt(pkt, ingress, i)
-    expPkt(pkt, egress, firewall_block)
-
-print("\n")
 write_pcap_files()
-

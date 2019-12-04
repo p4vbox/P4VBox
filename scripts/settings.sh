@@ -1,29 +1,42 @@
-##################################################################################
-# This software was developed by Institute of Informatics of the Federal
-# University of Rio Grande do Sul (INF-UFRGS) basied in setting.sh developed by
-# Stanford University and the University of Cambridge Computer Laboratory
-# under National Science Foundation under Grant No. CNS-0855268
 #
-# File:
-#       settings_p4vbox.sh
+# Copyright (c) 2017 Stephen Ibanez
+# All rights reserved.
 #
-# Author:
-#       Mateus Saquetti
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
+# under National Science Foundation under Grant No. CNS-0855268,
+# the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
+# as part of the DARPA MRC research programme.
+#
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
 #
 # Description:
-#       This script set the environment variables to the P4-NetFPGA lagacy and
-#       the new system P4VBox
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
 #
-# Create date:
-#       11.12.2018
+# @NETFPGA_LICENSE_HEADER_START@
 #
-# Additional Comments:
-#       Add this lines at your enviroment viriables file (~/.bashrc):
-#       #### P4VBox #####
-#       export P4VBOX_ENV_SETTINGS=/root/projects/P4VBox/scripts/settings_p4vbox.sh
-#       source ${P4VBOX_ENV_SETTINGS}
+# Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+# license agreements.  See the NOTICE file distributed with this work for
+# additional information regarding copyright ownership.  NetFPGA licenses this
+# file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+# "License"); you may not use this file except in compliance with the
+# License.  You may obtain a copy of the License at:
 #
-##################################################################################
+#   http://www.netfpga-cic.org
+#
+# Unless required by applicable law or agreed to in writing, Work distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations under the License.
+#
+# @NETFPGA_LICENSE_HEADER_END@
+#
 
 export P4_PROJECT_NAME=l2_switch
 export NF_PROJECT_NAME=simple_sume_switch
@@ -45,6 +58,9 @@ export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
 export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
 export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
-export P4_SCRIPTS=${SUME_FOLDER}/scripts
-export P4_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-# export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
+export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
+export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
+export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
+export P4VBOX_PROGRAM=${P4VBOX_SCRIPTS}/tools/program_sume.sh
+export P4VBOX_LIBRARY=${P4VBOX_SCRIPTS}/tools/make_library.sh
+export P4VBOX_CONFIG_SWITCH=${P4VBOX_SCRIPTS}/tools/config_switch.sh

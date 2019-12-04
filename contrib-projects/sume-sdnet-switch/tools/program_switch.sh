@@ -1,29 +1,44 @@
 #!/bin/bash
-# Copyright (c) 2016 University of Cambridge
-# Copyright (c) 2016 Jong Hun Han
+
+#
+# Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by University of Cambridge Computer Laboratory
-# under the ENDEAVOUR project (grant agreement 644960) as part of
-# the European Union's Horizon 2020 research and innovation programme.
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
+# under National Science Foundation under Grant No. CNS-0855268,
+# the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
+# as part of the DARPA MRC research programme.
+#
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
 #
 # @NETFPGA_LICENSE_HEADER_START@
 #
-# Licensed to NetFPGA Open Systems C.I.C. (NetFPGA) under one or more
-# contributor license agreements. See the NOTICE file distributed with this
-# work for additional information regarding copyright ownership. NetFPGA
-# licenses this file to you under the NetFPGA Hardware-Software License,
-# Version 1.0 (the "License"); you may not use this file except in compliance
-# with the License.  You may obtain a copy of the License at:
+# Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
+# license agreements.  See the NOTICE file distributed with this work for
+# additional information regarding copyright ownership.  NetFPGA licenses this
+# file to you under the NetFPGA Hardware-Software License, Version 1.0 (the
+# "License"); you may not use this file except in compliance with the
+# License.  You may obtain a copy of the License at:
 #
-# http://www.netfpga-cic.org
+#   http://www.netfpga-cic.org
 #
 # Unless required by applicable law or agreed to in writing, Work distributed
-# under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations under the License.
 #
 # @NETFPGA_LICENSE_HEADER_END@
+#
 
 xilinx_tool_path=`which vivado`
 bitimage=$1
@@ -41,20 +56,12 @@ if [ -z $2 ]; then
 	exit 1
 fi
 
-if [ "$xilinx_tool_path" == "" ]; then
-	echo
-	echo Source Xilinx tool to run xsct command for programming a bit file.
-	echo
-	exit 1
-fi
 
 echo
 echo 'Programming SUME with: ' $bitimage
 echo
 
 rmmod sume_riffa
-
-# xsct ${SUME_SDNET}/tools/run_xsct.tcl -tclargs $bitimage
 
 djtgcfg enum
 djtgcfg init -d NetSUME
