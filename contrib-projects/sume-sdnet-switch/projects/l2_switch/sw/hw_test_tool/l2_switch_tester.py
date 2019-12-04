@@ -71,7 +71,10 @@ MAC_addr_H[0] = "08:11:11:11:11:08"
 MAC_addr_H[1] = "08:22:22:22:22:08"
 MAC_addr_H[2] = "08:33:33:33:33:08"
 MAC_addr_H[3] = "08:44:44:44:44:08"
-# MAC_addr_H[4] = "4c:ed:fb:42:09:94"
+# MAC_addr_H[0] = "02:53:55:4d:45:00"
+# MAC_addr_H[1] = "02:53:55:4d:45:01"
+# MAC_addr_H[2] = "02:53:55:4d:45:02"
+# MAC_addr_H[3] = "02:53:55:4d:45:03"
 
 IP_addr_H = {} # IP of Hosts connected to nf0, nf1, nf2, nf3 respectively. Not used in this case!
 IP_addr_H[0] = "10.0.1.0"
