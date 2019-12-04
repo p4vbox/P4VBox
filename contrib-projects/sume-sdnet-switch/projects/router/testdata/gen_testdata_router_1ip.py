@@ -50,7 +50,7 @@ DEF_PKT_SIZE = 256  # default packet size (in bytes)
 HEADER_SIZE = 46    # size of Ether/IP/UDP headers
 DEF_PKT_NUM = 24    # default number of packets to simulation
 VLAN_NUM = 1        # number of vlans (number of p4 switch running in parallel)
-VLAN_ID = 1         # id of vlan matching with IPI architecture ans nf_datapath.v
+VLAN_ID = 2         # id of vlan matching with IPI architecture ans nf_datapath.v
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}
@@ -74,7 +74,7 @@ nf_expected[1] = []
 nf_expected[2] = []
 nf_expected[3] = []
 
-nf_port_map = {"nf0":0b00000001, "nf1":0b00000100, "nf2":0b00010000, "nf3":0b01000000, "dma0":0b00000010}
+nf_port_map = {"nf0":0b00000001, "nf1":0b00000100, "nf2":0b00010000, "nf3":0b01000000, "none":0b00000000}
 nf_id_map = {"nf0":0, "nf1":1, "nf2":2, "nf3":3}
 
 sss_sdnet_tuples.clear_tuple_files()
@@ -88,13 +88,14 @@ def applyPkt(pkt, ingress, time):
     pkt.time = time
     nf_applied[nf_id_map[ingress]].append(pkt)
 
-def expPkt(pkt, egress):
+def expPkt(pkt, egress, drop):
     pktsExpected.append(pkt)
     sss_sdnet_tuples.sume_tuple_expect['dst_port'] = nf_port_map[egress]
+    sss_sdnet_tuples.sume_tuple_expect['drop'] = drop
     sss_sdnet_tuples.write_tuples()
-    if egress in ["nf0","nf1","nf2","nf3"]:
+    if egress in ["nf0","nf1","nf2","nf3"] and drop == False:
         nf_expected[nf_id_map[egress]].append(pkt)
-    elif egress == 'bcast':
+    elif egress == 'bcast' and drop == False:
         nf_expected[0].append(pkt)
         nf_expected[1].append(pkt)
         nf_expected[2].append(pkt)
@@ -126,31 +127,50 @@ MAC_addr_H[nf_id_map["nf2"]] = "08:33:33:33:33:08"
 MAC_addr_H[nf_id_map["nf3"]] = "08:44:44:44:44:08"
 
 IP_addr_H = {}
-IP_addr_H[nf_id_map["nf0"]] = "10.0.1.0"
-IP_addr_H[nf_id_map["nf1"]] = "10.0.1.1"
-IP_addr_H[nf_id_map["nf2"]] = "10.0.1.2"
-IP_addr_H[nf_id_map["nf3"]] = "10.0.1.3"
+IP_addr_H[nf_id_map["nf0"]] = "10.1.1.1"
+IP_addr_H[nf_id_map["nf1"]] = "10.2.2.2"
+IP_addr_H[nf_id_map["nf2"]] = "10.3.3.3"
+IP_addr_H[nf_id_map["nf3"]] = "10.4.4.4"
 
-vlan_prio = 0
-src_ind = 0
+
+MAC_addr_S = {}
+MAC_addr_S[nf_id_map["nf0"]] = "05:11:11:11:11:05"
+MAC_addr_S[nf_id_map["nf1"]] = "05:22:22:22:22:05"
+MAC_addr_S[nf_id_map["nf2"]] = "05:33:33:33:33:05"
+MAC_addr_S[nf_id_map["nf3"]] = "05:44:44:44:44:05"
+
 
 def get_rand_port():
     return random.randint(1, 0xffff)
 
+vlan_prio = 0
+src_ind = 0
+sport = get_rand_port()
+dport = get_rand_port()
+
 # create some packets
 for time in range(DEF_PKT_NUM):
-    src_MAC = MAC_addr_H[src_ind]
-    dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
     src_IP = IP_addr_H[src_ind]
     dst_IP = IP_addr_H[dst_host_map[src_ind]]
-    sport = get_rand_port()
-    dport = get_rand_port()
-    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
-    pkt = pad_pkt(pkt, DEF_PKT_SIZE)
+
+    src_MAC = MAC_addr_H[src_ind]
+    dst_MAC = MAC_addr_S[src_ind]
+    pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    pkt_app = pad_pkt(pkt_app, DEF_PKT_SIZE)
     ingress = inv_nf_id_map[src_ind]
-    egress = inv_nf_id_map[dst_host_map[src_ind]]
-    applyPkt(pkt, ingress, time)
-    expPkt(pkt, egress)
+    applyPkt(pkt_app, ingress, time)
+
+    src_MAC = MAC_addr_S[dst_host_map[src_ind]]
+    dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
+    pkt_exp = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=63, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    pkt_exp = pad_pkt(pkt_exp, DEF_PKT_SIZE)
+    drop = False
+    if (drop):
+        egress = "none"
+    else:
+        egress = inv_nf_id_map[dst_host_map[src_ind]]
+    expPkt(pkt_exp, egress, drop)
+
     src_ind += 1
     vlan_prio += 1
     if (src_ind > 3):

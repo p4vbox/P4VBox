@@ -194,7 +194,7 @@ module nf_datapath #(
     );
 
     localparam C_AXIS_TUSER_DIGEST_WIDTH = 304;
-
+    localparam Q_SIZE_WIDTH = 16;
     //internal connectivity
     //(opi = output_p4_interface)
       //nf_sume_sdnet1->opi
@@ -226,6 +226,11 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tready;
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tlast;
 
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_out;
       //opi->sss_output_queues
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_opi_tdata;
     (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_opi_tkeep;
@@ -234,6 +239,11 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_opi_tready;
     (* mark_debug = "true" *) wire                                     m_axis_opi_tlast;
 
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_in;
     //(ipi = input_p4_interface)
       //input_arbiter->ipi
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_ipi_tdata;
@@ -271,12 +281,6 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_3_ipi_tready;
     (* mark_debug = "true" *) wire                                     m_axis_3_ipi_tlast;
 
-    localparam Q_SIZE_WIDTH = 16;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf0_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf1_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf2_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf3_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    dma_q_size;
 
     //Input Arbiter
       input_arbiter_drr_ip
@@ -396,29 +400,29 @@ module nf_datapath #(
 
 
     // SUME SDNet Module 0
-      nf_sdnet_<sss_p4_proj>_ip
-    sdnet_<sss_p4_proj>  (
+      nf_sume_sdnet0_ip
+    nf_sume_sdnet0_wrapper_0  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
-      .m_axis_tdata (s_axis_<VLAN_ID-1>_opi_tdata),
-      .m_axis_tkeep (s_axis_<VLAN_ID-1>_opi_tkeep),
-      .m_axis_tuser (s_axis_<VLAN_ID-1>_opi_tuser),
-      .m_axis_tvalid(s_axis_<VLAN_ID-1>_opi_tvalid),
-      .m_axis_tready(s_axis_<VLAN_ID-1>_opi_tready),
-      .m_axis_tlast (s_axis_<VLAN_ID-1>_opi_tlast),
+      .m_axis_tdata (s_axis_0_opi_tdata),
+      .m_axis_tkeep (s_axis_0_opi_tkeep),
+      .m_axis_tuser (s_axis_0_opi_tuser),
+      .m_axis_tvalid(s_axis_0_opi_tvalid),
+      .m_axis_tready(s_axis_0_opi_tready),
+      .m_axis_tlast (s_axis_0_opi_tlast),
       //input_arbiter->input_p4_interface->nf_sume_sdnet
-      .s_axis_tdata (m_axis_<VLAN_ID-1>_ipi_tdata),
-      .s_axis_tkeep (m_axis_<VLAN_ID-1>_ipi_tkeep),
+      .s_axis_tdata (m_axis_0_ipi_tdata),
+      .s_axis_tkeep (m_axis_0_ipi_tkeep),
       .s_axis_tuser ({dma_q_size_opi_in,
                       nf3_q_size_opi_in,
                       nf2_q_size_opi_in,
                       nf1_q_size_opi_in,
                       nf0_q_size_opi_in,
-                      m_axis_<VLAN_ID-1>_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
-      .s_axis_tvalid(m_axis_<VLAN_ID-1>_ipi_tvalid),
-      .s_axis_tready(m_axis_<VLAN_ID-1>_ipi_tready),
-      .s_axis_tlast (m_axis_<VLAN_ID-1>_ipi_tlast),
+                      m_axis_0_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
+      .s_axis_tvalid(m_axis_0_ipi_tvalid),
+      .s_axis_tready(m_axis_0_ipi_tready),
+      .s_axis_tlast (m_axis_0_ipi_tlast),
 
       .S_AXI_AWADDR(S1_AXI_AWADDR),
       .S_AXI_AWVALID(S1_AXI_AWVALID),
@@ -442,14 +446,55 @@ module nf_datapath #(
     );
 
 
+    // SUME SDNet Module 1
+      nf_sume_sdnet2_ip
+    nf_sume_sdnet2_wrapper_2  (
+      .axis_aclk(axis_aclk),
+      .axis_resetn(axis_resetn),
+      //nf_sume_sdnet->output_p4_interface->sss_output_queues
+      .m_axis_tdata (s_axis_1_opi_tdata),
+      .m_axis_tkeep (s_axis_1_opi_tkeep),
+      .m_axis_tuser (s_axis_1_opi_tuser),
+      .m_axis_tvalid(s_axis_1_opi_tvalid),
+      .m_axis_tready(s_axis_1_opi_tready),
+      .m_axis_tlast (s_axis_1_opi_tlast),
+      //input_arbiter->input_p4_interface->nf_sume_sdnet
+      .s_axis_tdata (m_axis_1_ipi_tdata),
+      .s_axis_tkeep (m_axis_1_ipi_tkeep),
+      .s_axis_tuser ({dma_q_size_opi_in,
+                      nf3_q_size_opi_in,
+                      nf2_q_size_opi_in,
+                      nf1_q_size_opi_in,
+                      nf0_q_size_opi_in,
+                      m_axis_1_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
+      .s_axis_tvalid(m_axis_1_ipi_tvalid),
+      .s_axis_tready(m_axis_1_ipi_tready),
+      .s_axis_tlast (m_axis_1_ipi_tlast),
+
+      .S_AXI_AWADDR(S1_AXI_AWADDR),
+      .S_AXI_AWVALID(S1_AXI_AWVALID),
+      .S_AXI_WDATA(S1_AXI_WDATA),
+      .S_AXI_WSTRB(S1_AXI_WSTRB),
+      .S_AXI_WVALID(S1_AXI_WVALID),
+      .S_AXI_BREADY(S1_AXI_BREADY),
+      .S_AXI_ARADDR(S1_AXI_ARADDR),
+      .S_AXI_ARVALID(S1_AXI_ARVALID),
+      .S_AXI_RREADY(S1_AXI_RREADY),
+      .S_AXI_ARREADY(S1_AXI_ARREADY),
+      .S_AXI_RDATA(S1_AXI_RDATA),
+      .S_AXI_RRESP(S1_AXI_RRESP),
+      .S_AXI_RVALID(S1_AXI_RVALID),
+      .S_AXI_WREADY(S1_AXI_WREADY),
+      .S_AXI_BRESP(S1_AXI_BRESP),
+      .S_AXI_BVALID(S1_AXI_BVALID),
+      .S_AXI_AWREADY(S1_AXI_AWREADY),
+      .S_AXI_ACLK (axi_aclk),
+      .S_AXI_ARESETN(axi_resetn)
+    );
+
     (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1:0] bytes_dropped;
     (* mark_debug = "true" *) wire [5-1:0] pkt_dropped;
 
-//    assign nf0_q_size = 'd12;
-//    assign nf1_q_size = 'd13;
-//    assign nf2_q_size = 'd14;
-//    assign nf3_q_size = 'd15;
-//    assign dma_q_size = 'd16;
 
     //Output P4 Interface
       output_p4_interface
