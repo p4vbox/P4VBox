@@ -231,6 +231,9 @@ def synthImpl():
     file_src = projDir +"/testdata/config_writes.sh"
     file_dst = projDesignDir +"/bitfiles/"
     subprocess.call(["cp", "-v", file_src, file_dst])
+    file_src = projDesignDir +"/bitfiles/"+ os.environ['NF_PROJECT_NAME'] +".bit"
+    file_dst = projDesignDir +"/bitfiles/"+ projName +".bit"
+    subprocess.call(["mv", "-v", file_src, file_dst])
 
 def openProject():
     print("\nOpenning Project: "+ projName +"\n")
