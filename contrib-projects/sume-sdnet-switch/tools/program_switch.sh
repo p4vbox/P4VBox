@@ -43,10 +43,14 @@ fi
 
 if [ "$xilinx_tool_path" == "" ]; then
 	echo
-	echo Source Xilinx tool to run xsct command for programming a bit file. 
+	echo Source Xilinx tool to run xsct command for programming a bit file.
 	echo
 	exit 1
 fi
+
+echo
+echo 'Programming SUME with: ' $bitimage
+echo
 
 rmmod sume_riffa
 
