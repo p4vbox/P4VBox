@@ -69,7 +69,7 @@ IFACE_H3 = "eth3" # network interface up
 sender = IFACE_H0 # the network interface of the sender
 
 VLANS = 1
-VLAN_ID = 1
+VLAN_ID = 2
 HEADER_SIZE = 46    # size of Ether/Dot1Q/IP/UDP headers
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
@@ -81,10 +81,16 @@ MAC_addr_H[2] = "08:33:33:33:33:08"
 MAC_addr_H[3] = "08:44:44:44:44:08"
 
 IP_addr_H = {} # IP of Hosts connected to nf0, nf1, nf2, nf3 respectively. Not used in this case!
-IP_addr_H[0] = "10.0.1.0"
-IP_addr_H[1] = "10.0.1.1"
-IP_addr_H[2] = "10.0.1.2"
-IP_addr_H[3] = "10.0.1.3"
+IP_addr_H[0] = "10.1.1.1"
+IP_addr_H[1] = "10.2.2.2"
+IP_addr_H[2] = "10.3.3.3"
+IP_addr_H[3] = "10.4.4.4"
+
+MAC_addr_S = {} # MAC of SUME Ports nf[0, 1, 2, 3] connected to Hosts H[0, 1, 2, 3] respectively
+MAC_addr_S[0] = "05:11:11:11:11:05"
+MAC_addr_S[1] = "05:22:22:22:22:05"
+MAC_addr_S[2] = "05:33:33:33:33:05"
+MAC_addr_S[3] = "05:44:44:44:44:05"
 
 
 class SimpleTester(cmd.Cmd):
@@ -99,17 +105,15 @@ class SimpleTester(cmd.Cmd):
         return random.randint(1, 0xffff)
 
     def _make_packet(self, flow_size, src_ind):
-        # src_IP = self._get_rand_IP()
-        # dst_IP = self._get_rand_IP()
         src_MAC = MAC_addr_H[src_ind]
-        dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
+        dst_MAC = MAC_addr_S[src_ind]
         src_IP = IP_addr_H[src_ind]
         dst_IP = IP_addr_H[dst_host_map[src_ind]]
         sport = self._get_rand_port()
         dport = self._get_rand_port()
         # make the data pkts
         vlan_prio = 0
-        pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+        pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
         pkt = pad_pkt(pkt, flow_size)
         return pkt
 

@@ -132,7 +132,6 @@ IP_addr_H[nf_id_map["nf1"]] = "10.2.2.2"
 IP_addr_H[nf_id_map["nf2"]] = "10.3.3.3"
 IP_addr_H[nf_id_map["nf3"]] = "10.4.4.4"
 
-
 MAC_addr_S = {}
 MAC_addr_S[nf_id_map["nf0"]] = "05:11:11:11:11:05"
 MAC_addr_S[nf_id_map["nf1"]] = "05:22:22:22:22:05"
