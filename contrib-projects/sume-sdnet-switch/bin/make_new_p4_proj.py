@@ -75,6 +75,10 @@ def main():
     if rc != 0:
         print >> sys.stderr, "ERROR: could not rename template project P4 source file to desired name"
         sys.exit(1)
+    rc = os.system('mv {0} {1}'.format(os.path.join(src_dir, TEMPLATE_PROJ + '.p4'), os.path.join(src_dir, args.P4_PROJECT_NAME + '.p4')))
+    if rc != 0:
+        print >> sys.stderr, "ERROR: could not rename template project P4 source file to desired name"
+        sys.exit(1)
 
     print "{0} P4 project directory successfully created in projects folder".format(args.P4_PROJECT_NAME)
 
