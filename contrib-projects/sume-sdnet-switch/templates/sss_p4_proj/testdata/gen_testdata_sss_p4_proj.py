@@ -46,14 +46,14 @@ import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
-# NUM_PKTS = Must be divisible by 4
-# ENTER_RATE = Time between packets
-NUM_PKTS = 24
-NUM_VLANS = 1
-LEN_PKT = 256
-ENTER_RATE = 1
-VLAN_ID = 1
-VLAN_PRIO = 0
+DEF_PKT_SIZE = 256  # default packet size (in bytes)
+HEADER_SIZE = 46    # size of Ether/IP/UDP headers
+DEF_PKT_NUM = 24    # default number of packets to simulation
+VLAN_NUM = 1        # number of vlans (number of p4 switch running in parallel)
+VLAN_ID = 1         # id of vlan matching with IPI architecture
+
+dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
+inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}
 
 ###########
 # pkt generation tools
@@ -76,7 +76,6 @@ nf_expected[3] = []
 
 nf_port_map = {"nf0":0b00000001, "nf1":0b00000100, "nf2":0b00010000, "nf3":0b01000000, "dma0":0b00000010}
 nf_id_map = {"nf0":0, "nf1":1, "nf2":2, "nf3":3}
-inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}
 
 sss_sdnet_tuples.clear_tuple_files()
 
@@ -120,37 +119,42 @@ def write_pcap_files():
 # generate testdata #
 #####################
 
-MAC_addr = {}
-MAC_addr[nf_id_map["nf0"]] = "08:11:11:11:11:08"
-MAC_addr[nf_id_map["nf1"]] = "08:22:22:22:22:08"
-MAC_addr[nf_id_map["nf2"]] = "08:33:33:33:33:08"
-MAC_addr[nf_id_map["nf3"]] = "08:44:44:44:44:08"
+MAC_addr_H = {}
+MAC_addr_H[nf_id_map["nf0"]] = "08:11:11:11:11:08"
+MAC_addr_H[nf_id_map["nf1"]] = "08:22:22:22:22:08"
+MAC_addr_H[nf_id_map["nf2"]] = "08:33:33:33:33:08"
+MAC_addr_H[nf_id_map["nf3"]] = "08:44:44:44:44:08"
 
-IP_addr = {}
-IP_addr[nf_id_map["nf0"]] = "10.0.1.0"
-IP_addr[nf_id_map["nf1"]] = "10.0.1.1"
-IP_addr[nf_id_map["nf2"]] = "10.0.1.2"
-IP_addr[nf_id_map["nf3"]] = "10.0.1.3"
+IP_addr_H = {}
+IP_addr_H[nf_id_map["nf0"]] = "10.0.1.0"
+IP_addr_H[nf_id_map["nf1"]] = "10.0.1.1"
+IP_addr_H[nf_id_map["nf2"]] = "10.0.1.2"
+IP_addr_H[nf_id_map["nf3"]] = "10.0.1.3"
 
-time = 0
+vlan_prio = 0
+src_ind = 0
+
+def get_rand_port():
+    return random.randint(1, 0xffff)
+
 # create some packets
-for i in range(NUM_PKTS/4):
-    for src_ind in range(4):
-        if src_ind == 0:
-            dst_ind = 1
-        elif src_ind == 1:
-            dst_ind = 0
-        elif src_ind == 2:
-            dst_ind = 3
-        elif src_ind == 3:
-            dst_ind = 2
-        # VLAN_PRIO = 1 if VLAN_PRIO > 4 else VLAN_PRIO +=1
-        pkt = Ether(src=MAC_addr[src_ind], dst=MAC_addr[dst_ind]) / Dot1Q(vlan=VLAN_ID, prio=VLAN_PRIO) / IP(src=IP_addr[src_ind], dst=IP_addr[dst_ind], ttl=20) / UDP(sport=20415, dport=1234) / ('A'*(LEN_PKT-46))
-        pkt = pad_pkt(pkt, LEN_PKT)
-        ingress = inv_nf_id_map[src_ind]
-        egress = inv_nf_id_map[dst_ind]
-        applyPkt(pkt, ingress, time)
-        expPkt(pkt, egress)
-        time += 1
+for time in range(DEF_PKT_NUM):
+    src_MAC = MAC_addr_H[src_ind]
+    dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
+    src_IP = IP_addr_H[src_ind]
+    dst_IP = IP_addr_H[dst_host_map[src_ind]]
+    sport = get_rand_port()
+    dport = get_rand_port()
+    pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    pkt = pad_pkt(pkt, DEF_PKT_SIZE)
+    ingress = inv_nf_id_map[src_ind]
+    egress = inv_nf_id_map[dst_host_map[src_ind]]
+    applyPkt(pkt, ingress, time)
+    expPkt(pkt, egress)
+    src_ind += 1
+    vlan_prio += 1
+    if (src_ind > 3):
+        src_ind = 0
+        vlan_prio = 0
 
 write_pcap_files()

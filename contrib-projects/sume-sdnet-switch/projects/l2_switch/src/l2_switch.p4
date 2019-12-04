@@ -36,8 +36,7 @@
 // specific language governing permissions and limitations under the License.
 //
 // @NETFPGA_LICENSE_HEADER_END@
-// 
-
+//
 
 #include <core.p4>
 #include <sume_switch.p4>
@@ -63,28 +62,12 @@ header Vlan_h {
     bit<16> etherType;
 }
 
-// IPv4 header without options
-header IPv4_h {
-    bit<4> version;
-    bit<4> ihl;
-    bit<8> tos;
-    bit<16> totalLen;
-    bit<16> identification;
-    bit<3> flags;
-    bit<13> fragOffset;
-    bit<8> ttl;
-    bit<8> protocol;
-    bit<16> hdrChecksum;
-    IPv4Addr_t srcAddr;
-    IPv4Addr_t dstAddr;
-}
 
 
 // List of all recognized headers
 struct Parsed_packet {
     Ethernet_h ethernet;
     Vlan_h vlan;
-    IPv4_h ip;
 }
 
 // user defined metadata: can be used to shared information between
@@ -100,8 +83,8 @@ struct digest_data_t {
 
 // Parser Implementation
 @Xilinx_MaxPacketRegion(16384)
-parser TopParser(packet_in b,
-                 out Parsed_packet p,
+parser TopParser(packet_in pkt_in,
+                 out Parsed_packet hdr,
                  out user_metadata_t user_metadata,
                  out digest_data_t digest_data,
                  inout sume_metadata_t sume_metadata) {
@@ -110,56 +93,59 @@ parser TopParser(packet_in b,
     }
 
     state parse_ethernet {
-        b.extract(p.ethernet);
+        pkt_in.extract(hdr.ethernet);
         user_metadata.unused = 0;
         digest_data.unused = 0;
-        transition select(p.ethernet.etherType) {
+        transition select(hdr.ethernet.etherType) {
             VLAN_TYPE: parse_vlan;
             default: reject;
         }
     }
 
     state parse_vlan {
-        b.extract(p.vlan);
-        transition select(p.vlan.etherType) {
-            IPV4_TYPE: parse_ipv4;
-            default: reject;
-        }
-    }
-
-    state parse_ipv4 {
-        b.extract(p.ip);
+        pkt_in.extract(hdr.vlan);
         transition accept;
     }
 }
 
 // match-action pipeline
-control TopPipe(inout Parsed_packet p,
+control TopPipe(inout Parsed_packet hdr,
                 inout user_metadata_t user_metadata,
                 inout digest_data_t digest_data,
                 inout sume_metadata_t sume_metadata) {
 
-
-
-    apply {
-
+    action forward(bit<8> port) {
+        sume_metadata.dst_port = port;
     }
+    table dmac {
+        actions = {
+            forward;
+        }
+        key = {
+            hdr.ethernet.dstAddr: exact;
+        }
+        size = 64;
+    }
+    apply {
+        dmac.apply();
+    }
+
+
 }
 
 // Deparser Implementation
 @Xilinx_MaxPacketRegion(16384)
-control TopDeparser(packet_out b,
-                    in Parsed_packet p,
+control TopDeparser(packet_out pkt_out,
+                    in Parsed_packet hdr,
                     in user_metadata_t user_metadata,
                     inout digest_data_t digest_data,
                     inout sume_metadata_t sume_metadata) {
     apply {
-        b.emit(p.ethernet);
-        b.emit(p.vlan);
-        b.emit(p.ip);
+        pkt_out.emit(hdr.ethernet);
+        pkt_out.emit(hdr.vlan);
     }
 }
 
 
 // Instantiate the switch
-SimpleSumeSwitch(TopParser(), TopPipe(), TopDeparser()) main;
+SimpleSumeSwitch( TopParser(), TopPipe(), TopDeparser() ) main;
