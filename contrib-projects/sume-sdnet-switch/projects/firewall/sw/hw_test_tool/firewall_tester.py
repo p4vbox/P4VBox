@@ -69,7 +69,7 @@ IFACE_H3 = "eth3" # network interface up
 sender = IFACE_H0 # the network interface of the sender
 
 VLANS = 1
-VLAN_ID = 1
+VLAN_ID = 3
 HEADER_SIZE = 46    # size of Ether/Dot1Q/IP/UDP headers
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
@@ -81,10 +81,13 @@ MAC_addr_H[2] = "08:33:33:33:33:08"
 MAC_addr_H[3] = "08:44:44:44:44:08"
 
 IP_addr_H = {} # IP of Hosts connected to nf0, nf1, nf2, nf3 respectively. Not used in this case!
-IP_addr_H[0] = "10.0.1.0"
-IP_addr_H[1] = "10.0.1.1"
-IP_addr_H[2] = "10.0.1.2"
-IP_addr_H[3] = "10.0.1.3"
+IP_addr_H[0] = "10.1.1.1"
+IP_addr_H[1] = "10.2.2.2"
+IP_addr_H[2] = "10.3.3.3"
+IP_addr_H[3] = "10.4.4.4"
+
+BLOCK_SPORT = 1234
+BLOCK_DPORT = 8888
 
 
 class SimpleTester(cmd.Cmd):
@@ -98,15 +101,36 @@ class SimpleTester(cmd.Cmd):
     def _get_rand_port(self):
         return random.randint(1, 0xffff)
 
+    def _get_rand_block(self):
+        rand_sport = self._get_rand_port()
+        rand_dport = self._get_rand_port()
+        while ((rand_sport == BLOCK_SPORT) or (rand_dport == BLOCK_DPORT)):
+            rand_sport = self._get_rand_port()
+            rand_dport = self._get_rand_port()
+        rand_block = bool(random.getrandbits(1))
+        if ( rand_block ):
+            if ( bool(random.getrandbits(1)) ):
+                rand_sport = BLOCK_SPORT
+            else:
+                rand_dport = BLOCK_DPORT
+
+        return (rand_sport, rand_dport, rand_block)
+
     def _make_packet(self, flow_size, src_ind):
-        # src_IP = self._get_rand_IP()
-        # dst_IP = self._get_rand_IP()
         src_MAC = MAC_addr_H[src_ind]
         dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
         src_IP = IP_addr_H[src_ind]
         dst_IP = IP_addr_H[dst_host_map[src_ind]]
-        sport = self._get_rand_port()
-        dport = self._get_rand_port()
+        (sport, dport, block) = self._get_rand_block()
+        if ( block ):
+            if ( sport == BLOCK_SPORT ):
+                print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Source Port: "+str(sport)
+            elif ( dport == BLOCK_DPORT ):
+                print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Destination Port: "+str(dport)
+            else:
+                print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Unknown motive"
+        else:
+            print "\nSent from H" +str(src_ind)+" to H" +str(dst_host_map[src_ind])
         # make the data pkts
         vlan_prio = 0
         pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
@@ -132,7 +156,6 @@ class SimpleTester(cmd.Cmd):
             else:
                 print >> sys.stderr, "ERROR: usage..."
             pkts.append(pkt)
-        print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
         sendp(pkts, iface=sender)
 
     def _parse_line_gen_packets(self, line):
