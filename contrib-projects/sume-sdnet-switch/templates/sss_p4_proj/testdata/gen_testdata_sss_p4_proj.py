@@ -74,7 +74,7 @@ nf_expected[1] = []
 nf_expected[2] = []
 nf_expected[3] = []
 
-nf_port_map = {"nf0":0b00000001, "nf1":0b00000100, "nf2":0b00010000, "nf3":0b01000000, "dma0":0b00000010}
+nf_port_map = {"nf0":0b00000001, "nf1":0b00000100, "nf2":0b00010000, "nf3":0b01000000, "dma0":0b00000010, "none":0b00000000}
 nf_id_map = {"nf0":0, "nf1":1, "nf2":2, "nf3":3}
 
 sss_sdnet_tuples.clear_tuple_files()
@@ -88,13 +88,14 @@ def applyPkt(pkt, ingress, time):
     pkt.time = time
     nf_applied[nf_id_map[ingress]].append(pkt)
 
-def expPkt(pkt, egress):
+def expPkt(pkt, egress, drop):
     pktsExpected.append(pkt)
     sss_sdnet_tuples.sume_tuple_expect['dst_port'] = nf_port_map[egress]
+    sss_sdnet_tuples.sume_tuple_expect['drop'] = drop
     sss_sdnet_tuples.write_tuples()
-    if egress in ["nf0","nf1","nf2","nf3"]:
+    if egress in ["nf0","nf1","nf2","nf3"] and drop == False:
         nf_expected[nf_id_map[egress]].append(pkt)
-    elif egress == 'bcast':
+    elif egress == 'bcast' and drop == False:
         nf_expected[0].append(pkt)
         nf_expected[1].append(pkt)
         nf_expected[2].append(pkt)
@@ -150,7 +151,7 @@ for time in range(DEF_PKT_NUM):
     ingress = inv_nf_id_map[src_ind]
     egress = inv_nf_id_map[dst_host_map[src_ind]]
     applyPkt(pkt, ingress, time)
-    expPkt(pkt, egress)
+    expPkt(pkt, egress, False)
     src_ind += 1
     vlan_prio += 1
     if (src_ind > 3):
