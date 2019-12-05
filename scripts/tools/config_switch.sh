@@ -49,7 +49,8 @@
 #       Switch# show ip ssh server status
 
 folder=$pwd
-cd ~/projects/
+cd ${P4VBOX_SCRIPTS}/tools
+
 iface=eth2
 switch_ip=10.0.0.3
 switch_log=admin
