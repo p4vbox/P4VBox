@@ -46,18 +46,21 @@ import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
+##########
+# define #
+##########
+
 DEF_PKT_SIZE = 256  # default packet size (in bytes)
 HEADER_SIZE = 46    # size of Ether/IP/UDP headers
 DEF_PKT_NUM = 24    # default number of packets to simulation
-VLAN_NUM = 1        # number of vlans (number of p4 switch running in parallel)
 VLAN_ID = 1         # id of vlan matching with IPI architecture ans nf_datapath.v
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}
 
-###########
-# pkt generation tools
-###########
+########################
+# pkt generation tools #
+########################
 
 pktsApplied = []
 pktsExpected = []

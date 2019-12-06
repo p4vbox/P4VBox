@@ -46,18 +46,31 @@ import random, numpy
 from collections import OrderedDict
 import sss_sdnet_tuples
 
+###########
+# define #
+##########
+
 DEF_PKT_SIZE = 256  # default packet size (in bytes)
-HEADER_SIZE = 46    # size of Ether/IP/UDP headers
-DEF_PKT_NUM = 24    # default number of packets to simulation
-VLAN_NUM = 1        # number of vlans (number of p4 switch running in parallel)
-VLAN_ID = 2         # id of vlan matching with IPI architecture ans nf_datapath.v
+HEADER_SIZE = 46    # headers size: Ether/IP/UDP
+DEF_PKT_NUM = 24    # default packets number to simulation
+DEF_HOST_NUM = 4    # default hosts number in network topology
+src_host = 0        # packets sender host
+vlan_id = 0         # vlan identifier to matching with IPI architecture and nf_datapath.v
+vlan_prio = 0       # vlan priority
 
-dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
-inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}
+dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
+inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
+vlan_id_map = {"l2_switch":1, "router":2}             # map the vlans of parrallel switches
 
-###########
-# pkt generation tools
-###########
+port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
+port_slicing[0] = "router"
+port_slicing[1] = "router"
+port_slicing[2] = "router"
+port_slicing[3] = "router"
+
+########################
+# pkt generation tools #
+########################
 
 pktsApplied = []
 pktsExpected = []
@@ -142,38 +155,44 @@ MAC_addr_S[nf_id_map["nf3"]] = "05:44:44:44:44:05"
 def get_rand_port():
     return random.randint(1, 0xffff)
 
-vlan_prio = 0
-src_ind = 0
 sport = get_rand_port()
 dport = get_rand_port()
 
 # create some packets
 for time in range(DEF_PKT_NUM):
-    src_IP = IP_addr_H[src_ind]
-    dst_IP = IP_addr_H[dst_host_map[src_ind]]
+    vlan_id = vlan_id_map[port_slicing[src_host]]
+    src_IP = IP_addr_H[src_host]
+    dst_IP = IP_addr_H[dst_host_map[src_host]]
 
-    src_MAC = MAC_addr_H[src_ind]
-    dst_MAC = MAC_addr_S[src_ind]
-    pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    if ( vlan_id == vlan_id_map["l2_switch"] ):
+        src_MAC = MAC_addr_H[src_host]
+        dst_MAC = MAC_addr_H[dst_host_map[src_host]]
+        pkt_exp = pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    elif( vlan_id == vlan_id_map["router"] ):
+        src_MAC = MAC_addr_H[src_host]
+        dst_MAC = MAC_addr_S[src_host]
+        pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+        src_MAC = MAC_addr_S[dst_host_map[src_host]]
+        dst_MAC = MAC_addr_H[dst_host_map[src_host]]
+        pkt_exp = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=63, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    else:
+        print("\nERROR: vlan_id not mapped!\n")
+        exit(1)
+
     pkt_app = pad_pkt(pkt_app, DEF_PKT_SIZE)
-    ingress = inv_nf_id_map[src_ind]
+    ingress = inv_nf_id_map[src_host]
     applyPkt(pkt_app, ingress, time)
-
-    src_MAC = MAC_addr_S[dst_host_map[src_ind]]
-    dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
-    pkt_exp = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=63, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
     pkt_exp = pad_pkt(pkt_exp, DEF_PKT_SIZE)
+    egress = inv_nf_id_map[dst_host_map[src_host]]
     drop = False
     if (drop):
         egress = "none"
-    else:
-        egress = inv_nf_id_map[dst_host_map[src_ind]]
     expPkt(pkt_exp, egress, drop)
 
-    src_ind += 1
+    src_host += 1
     vlan_prio += 1
-    if (src_ind > 3):
-        src_ind = 0
+    if ( src_host > (DEF_HOST_NUM-1) ):
+        src_host = 0
         vlan_prio = 0
 
 write_pcap_files()

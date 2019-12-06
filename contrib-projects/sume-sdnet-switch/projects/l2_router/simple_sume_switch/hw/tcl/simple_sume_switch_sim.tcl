@@ -215,4 +215,5 @@ open_wave_config {../../../../../../scripts/tools/waveforms/wave_sim.wcfg}
 puts "\n Open waveform to top level: P4VBox/scripts/tools/waveforms/wave_sim_top.wcfg \n"
 open_wave_config {../../../../../../scripts/tools/waveforms/wave_sim_top.wcfg}
 
-run 380us
+# run 380us
+run 65us
