@@ -31,6 +31,8 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
+verbose=$1
+
 dir=${PWD}
 SDNET_OUT_DIR=nf_sdnet_ip_${P4_SWITCH}
 
@@ -42,13 +44,30 @@ echo
 echo Compiling P4: ${P4_SWITCH}
 cd ${P4_PROJECT_DIR} && make compile
 echo
-echo Generating IP: ${P4_SWITCH}
-cd ${P4_PROJECT_DIR} && make
-cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/
-./vivado_sim.bash | tee ../../log/${P4_SWITCH}.log
-echo
-echo Installing IP: ${P4_SWITCH}
-cd ${P4_PROJECT_DIR} && make install_sdnet
+
+if [ -z $verbose ]; then
+  echo Generating IP: ${P4_SWITCH}
+  cd ${P4_PROJECT_DIR}
+  make >> log/build_${P4_SWITCH}.log
+  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/
+  ./vivado_sim.bash >> ../../log/build_${P4_SWITCH}.log
+  echo
+  echo Installing IP: ${P4_SWITCH}
+  cd ${P4_PROJECT_DIR}
+  make install_sdnet >> log/install_${P4_SWITCH}.log
+else
+  echo Generating IP: ${P4_SWITCH}
+  cd ${P4_PROJECT_DIR}
+  make | tee -a log/build_${P4_SWITCH}.log
+  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/
+  ./vivado_sim.bash | tee -a ../../log/build_${P4_SWITCH}.log
+  echo
+  echo Installing IP: ${P4_SWITCH}
+  cd ${P4_PROJECT_DIR}
+  make install_sdnet | tee -a log/install_${P4_SWITCH}.log
+
+fi
+
 echo
 echo Get Config Writes: ${P4_SWITCH}
 writes_src=${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/config_writes.txt
