@@ -50,13 +50,15 @@ import sss_sdnet_tuples
 # define #
 ##########
 
-DEF_PKT_SIZE = 256  # default packet size (in bytes)
-HEADER_SIZE = 46    # headers size: Ether/IP/UDP
-DEF_PKT_NUM = 24    # default packets number to simulation
-DEF_HOST_NUM = 4    # default hosts number in network topology
-src_host = 0        # packets sender host
-vlan_id = 0         # vlan identifier to matching with IPI architecture and nf_datapath.v
-vlan_prio = 0       # vlan priority
+TABLE_NUM = 4          # total tables number
+DEF_PKT_NUM = 24       # default packets number to simulation
+DEF_PKT_SIZE = 256     # default packet size (in bytes)
+HEADER_SIZE = 46       # headers size: Ether/IP/UDP
+DEF_HOST_NUM = 4       # default hosts number in network topology
+INI_DELAY = TABLE_NUM  # initial delay to begin to send packets, needed to initialize tables in board simulation
+src_host = 0           # packets sender host
+vlan_id = 0            # vlan identifier to matching with IPI architecture and nf_datapath.v
+vlan_prio = 0          # vlan priority
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
@@ -98,7 +100,7 @@ def applyPkt(pkt, ingress, time):
     sss_sdnet_tuples.sume_tuple_in['src_port'] = nf_port_map[ingress]
     sss_sdnet_tuples.sume_tuple_expect['pkt_len'] = len(pkt)
     sss_sdnet_tuples.sume_tuple_expect['src_port'] = nf_port_map[ingress]
-    pkt.time = time
+    pkt.time = time + INI_DELAY
     nf_applied[nf_id_map[ingress]].append(pkt)
 
 def expPkt(pkt, egress, drop):
