@@ -228,13 +228,21 @@ def genConfigWrites():
     subprocess.call([os.environ["P4VBOX_SCRIPTS"] +"/p4_configWrites.sh"], shell=True)
 
 def simSume():
-    global projSume
+    global args; global projSume
     if ( args.gui ):
         print("\nStartting Simulation SUME in GUI mode\n")
-        subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default --gui"], shell=True)
+        if ( args.v ):
+            subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default --gui | tee -a "+ projDir +"/log/sim_"+ projName +".log"], shell=True)
+        else:
+            subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default --gui >> "+ projDir +"/log/sim_"+ projName +".log"], shell=True)
+            subprocess.call("tail -31 "+ projDir +"/log/sim_"+ projName +".log", shell=True)
     else:
         print("\nStartting Simulation SUME in commandline mode\n")
-        subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default"], shell=True)
+        if ( args.v ):
+            subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default | tee -a "+ projDir +"/log/sim_"+ projName +".log"], shell=True)
+        else:
+            subprocess.call([projSume +"/tools/scripts/nf_test.py sim --major switch --minor default >> "+ projDir +"/log/sim_"+ projName +".log"], shell=True)
+            subprocess.call(["tail -31 "+ projDir +"/log/sim_"+ projName +".log"], shell=True)
 
 def synthImpl(verbose):
     print("\nGenerating Synthesis and Implementation:\n")
