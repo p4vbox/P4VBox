@@ -115,7 +115,8 @@ identifier:
 	rm -f ../hw/create_ip/id_rom16x32.coe
 	cp ${SUME_FOLDER}/tools/scripts/epoch.sh . && sh epoch.sh && rm -f epoch.sh
 	echo 16028002 >> rom_data.txt
-	echo `${SUME_FOLDER}/run_tag.sh` >> rom_data.txt
+	# echo `${SUME_FOLDER}/run_tag.sh` >> rom_data.txt
+	echo 00000000 >> rom_data.txt
 	echo 00000204 >> rom_data.txt
 	echo 0000FFFF >> rom_data.txt
 	echo FFFF0000 >> rom_data.txt
