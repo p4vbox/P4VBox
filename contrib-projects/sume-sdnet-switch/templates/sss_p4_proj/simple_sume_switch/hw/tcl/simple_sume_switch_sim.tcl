@@ -182,6 +182,7 @@ read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/axi_clocking.v"
 
 
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_p4_interface.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/control_p4_interface.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_p4_interface.v"
@@ -215,4 +216,5 @@ open_wave_config {../../../../../../scripts/tools/waveforms/wave_sim.wcfg}
 puts "\n Open waveform to top level: P4VBox/scripts/tools/waveforms/wave_sim_top.wcfg \n"
 open_wave_config {../../../../../../scripts/tools/waveforms/wave_sim_top.wcfg}
 
-run 380us
+# run 380us
+run 65us

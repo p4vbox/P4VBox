@@ -13,15 +13,295 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="11874676689fs"></ZoomStartTime>
-      <ZoomEndTime time="11930616556fs"></ZoomEndTime>
-      <Cursor1Time time="11884000000fs"></Cursor1Time>
+      <ZoomStartTime time="64981703962fs"></ZoomStartTime>
+      <ZoomEndTime time="65060649419fs"></ZoomEndTime>
+      <Cursor1Time time="65000000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="212"></NameColumnWidth>
-      <ValueColumnWidth column_width="169"></ValueColumnWidth>
+      <NameColumnWidth column_width="233"></NameColumnWidth>
+      <ValueColumnWidth column_width="157"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="31" />
+   <WVObjectSize size="170" />
+   <wvobject fp_name="divider654" type="divider">
+      <obj_property name="label">CPI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_ACLK">
+      <obj_property name="ElementShortName">M_AXI_ACLK</obj_property>
+      <obj_property name="ObjectShortName">M_AXI_ACLK</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_ARESETN">
+      <obj_property name="ElementShortName">M_AXI_ARESETN</obj_property>
+      <obj_property name="ObjectShortName">M_AXI_ARESETN</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group655">
+      <obj_property name="label">M_AXI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_AWADDR">
+         <obj_property name="ElementShortName">M_AXI_AWADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_AWADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_AWVALID">
+         <obj_property name="ElementShortName">M_AXI_AWVALID</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_AWVALID</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_WDATA">
+         <obj_property name="ElementShortName">M_AXI_WDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_WDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_WSTRB">
+         <obj_property name="ElementShortName">M_AXI_WSTRB[3:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_WSTRB[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_WVALID">
+         <obj_property name="ElementShortName">M_AXI_WVALID</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_WVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_BREADY">
+         <obj_property name="ElementShortName">M_AXI_BREADY</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_BREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_ARADDR">
+         <obj_property name="ElementShortName">M_AXI_ARADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_ARADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_ARVALID">
+         <obj_property name="ElementShortName">M_AXI_ARVALID</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_ARVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_RREADY">
+         <obj_property name="ElementShortName">M_AXI_RREADY</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_RREADY</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_ARREADY">
+         <obj_property name="ElementShortName">M_AXI_ARREADY</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_ARREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_RDATA">
+         <obj_property name="ElementShortName">M_AXI_RDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_RDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_RRESP">
+         <obj_property name="ElementShortName">M_AXI_RRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_RRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_RVALID">
+         <obj_property name="ElementShortName">M_AXI_RVALID</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_RVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_WREADY">
+         <obj_property name="ElementShortName">M_AXI_WREADY</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_WREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_BRESP">
+         <obj_property name="ElementShortName">M_AXI_BRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_BRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_BVALID">
+         <obj_property name="ElementShortName">M_AXI_BVALID</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_BVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/M_AXI_AWREADY">
+         <obj_property name="ElementShortName">M_AXI_AWREADY</obj_property>
+         <obj_property name="ObjectShortName">M_AXI_AWREADY</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group656">
+      <obj_property name="label">S_AXI_0</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_AWADDR">
+         <obj_property name="ElementShortName">S_AXI_0_AWADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_AWADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_AWVALID">
+         <obj_property name="ElementShortName">S_AXI_0_AWVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_AWVALID</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_WDATA">
+         <obj_property name="ElementShortName">S_AXI_0_WDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_WDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_WSTRB">
+         <obj_property name="ElementShortName">S_AXI_0_WSTRB[3:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_WSTRB[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_WVALID">
+         <obj_property name="ElementShortName">S_AXI_0_WVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_WVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_BREADY">
+         <obj_property name="ElementShortName">S_AXI_0_BREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_BREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_ARADDR">
+         <obj_property name="ElementShortName">S_AXI_0_ARADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_ARADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_ARVALID">
+         <obj_property name="ElementShortName">S_AXI_0_ARVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_ARVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_RREADY">
+         <obj_property name="ElementShortName">S_AXI_0_RREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_RREADY</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_ARREADY">
+         <obj_property name="ElementShortName">S_AXI_0_ARREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_ARREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_RDATA">
+         <obj_property name="ElementShortName">S_AXI_0_RDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_RDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_RRESP">
+         <obj_property name="ElementShortName">S_AXI_0_RRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_RRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_RVALID">
+         <obj_property name="ElementShortName">S_AXI_0_RVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_RVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_WREADY">
+         <obj_property name="ElementShortName">S_AXI_0_WREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_WREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_BRESP">
+         <obj_property name="ElementShortName">S_AXI_0_BRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_BRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_BVALID">
+         <obj_property name="ElementShortName">S_AXI_0_BVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_BVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_0_AWREADY">
+         <obj_property name="ElementShortName">S_AXI_0_AWREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_0_AWREADY</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group657">
+      <obj_property name="label">S_AXI_1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_AWADDR">
+         <obj_property name="ElementShortName">S_AXI_1_AWADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_AWADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_AWVALID">
+         <obj_property name="ElementShortName">S_AXI_1_AWVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_AWVALID</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_WDATA">
+         <obj_property name="ElementShortName">S_AXI_1_WDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_WDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_WSTRB">
+         <obj_property name="ElementShortName">S_AXI_1_WSTRB[3:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_WSTRB[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_WVALID">
+         <obj_property name="ElementShortName">S_AXI_1_WVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_WVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_BREADY">
+         <obj_property name="ElementShortName">S_AXI_1_BREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_BREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_ARADDR">
+         <obj_property name="ElementShortName">S_AXI_1_ARADDR[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_ARADDR[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_ARVALID">
+         <obj_property name="ElementShortName">S_AXI_1_ARVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_ARVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_RREADY">
+         <obj_property name="ElementShortName">S_AXI_1_RREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_RREADY</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_ARREADY">
+         <obj_property name="ElementShortName">S_AXI_1_ARREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_ARREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_RDATA">
+         <obj_property name="ElementShortName">S_AXI_1_RDATA[31:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_RDATA[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_RRESP">
+         <obj_property name="ElementShortName">S_AXI_1_RRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_RRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_RVALID">
+         <obj_property name="ElementShortName">S_AXI_1_RVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_RVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_WREADY">
+         <obj_property name="ElementShortName">S_AXI_1_WREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_WREADY</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_BRESP">
+         <obj_property name="ElementShortName">S_AXI_1_BRESP[1:0]</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_BRESP[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_BVALID">
+         <obj_property name="ElementShortName">S_AXI_1_BVALID</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_BVALID</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/S_AXI_1_AWREADY">
+         <obj_property name="ElementShortName">S_AXI_1_AWREADY</obj_property>
+         <obj_property name="ObjectShortName">S_AXI_1_AWREADY</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_awaddr">
+      <obj_property name="ElementShortName">axi_awaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">axi_awaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_awready">
+      <obj_property name="ElementShortName">axi_awready</obj_property>
+      <obj_property name="ObjectShortName">axi_awready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_wready">
+      <obj_property name="ElementShortName">axi_wready</obj_property>
+      <obj_property name="ObjectShortName">axi_wready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_bresp">
+      <obj_property name="ElementShortName">axi_bresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">axi_bresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_bvalid">
+      <obj_property name="ElementShortName">axi_bvalid</obj_property>
+      <obj_property name="ObjectShortName">axi_bvalid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_araddr">
+      <obj_property name="ElementShortName">axi_araddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">axi_araddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_arready">
+      <obj_property name="ElementShortName">axi_arready</obj_property>
+      <obj_property name="ObjectShortName">axi_arready</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_rdata">
+      <obj_property name="ElementShortName">axi_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">axi_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_rresp">
+      <obj_property name="ElementShortName">axi_rresp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">axi_rresp[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/axi_rvalid">
+      <obj_property name="ElementShortName">axi_rvalid</obj_property>
+      <obj_property name="ObjectShortName">axi_rvalid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/C_BASE_ADDRESS">
+      <obj_property name="ElementShortName">C_BASE_ADDRESS[31:0]</obj_property>
+      <obj_property name="ObjectShortName">C_BASE_ADDRESS[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/C_S_AXI_DATA_WIDTH">
+      <obj_property name="ElementShortName">C_S_AXI_DATA_WIDTH[31:0]</obj_property>
+      <obj_property name="ObjectShortName">C_S_AXI_DATA_WIDTH[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/control_p4_interface_0/C_S_AXI_ADDR_WIDTH">
+      <obj_property name="ElementShortName">C_S_AXI_ADDR_WIDTH[31:0]</obj_property>
+      <obj_property name="ObjectShortName">C_S_AXI_ADDR_WIDTH[31:0]</obj_property>
+   </wvobject>
    <wvobject fp_name="divider2000" type="divider">
       <obj_property name="label">Input Arbiter</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -29,6 +309,7 @@
    <wvobject type="group" fp_name="group459">
       <obj_property name="label">Input Arbiter</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/input_arbiter_drr_v1_0/axis_resetn">
          <obj_property name="ElementShortName">axis_resetn</obj_property>
          <obj_property name="ObjectShortName">axis_resetn</obj_property>
@@ -269,7 +550,6 @@
    <wvobject type="group" fp_name="group1177">
       <obj_property name="label">IPI</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/axis_aclk">
          <obj_property name="ElementShortName">axis_aclk</obj_property>
          <obj_property name="ObjectShortName">axis_aclk</obj_property>
@@ -467,16 +747,281 @@
       </wvobject>
    </wvobject>
    <wvobject fp_name="divider491" type="divider">
-      <obj_property name="label">nf_sume_sdnet0</obj_property>
+      <obj_property name="label">nf_sdnet l2_switch 1</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/axis_aclk">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/axis_resetn">
+      <obj_property name="ElementShortName">axis_resetn</obj_property>
+      <obj_property name="ObjectShortName">axis_resetn</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group579">
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tdata">
+         <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tkeep">
+         <obj_property name="ElementShortName">m_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tuser">
+         <obj_property name="ElementShortName">m_axis_tuser[303:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[303:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tvalid">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tready">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/m_axis_tlast">
+         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tdata">
+         <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tkeep">
+         <obj_property name="ElementShortName">s_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tuser">
+         <obj_property name="ElementShortName">s_axis_tuser[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[127:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tvalid">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tready">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/s_axis_tlast">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_ACLK">
+      <obj_property name="ElementShortName">S_AXI_ACLK</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ACLK</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_ARESETN">
+      <obj_property name="ElementShortName">S_AXI_ARESETN</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARESETN</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_AWADDR">
+      <obj_property name="ElementShortName">S_AXI_AWADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWADDR[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_AWVALID">
+      <obj_property name="ElementShortName">S_AXI_AWVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWVALID</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_WDATA">
+      <obj_property name="ElementShortName">S_AXI_WDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_WSTRB">
+      <obj_property name="ElementShortName">S_AXI_WSTRB[3:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WSTRB[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_WVALID">
+      <obj_property name="ElementShortName">S_AXI_WVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_BREADY">
+      <obj_property name="ElementShortName">S_AXI_BREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_ARADDR">
+      <obj_property name="ElementShortName">S_AXI_ARADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARADDR[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_ARVALID">
+      <obj_property name="ElementShortName">S_AXI_ARVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_RREADY">
+      <obj_property name="ElementShortName">S_AXI_RREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RREADY</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_ARREADY">
+      <obj_property name="ElementShortName">S_AXI_ARREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_RDATA">
+      <obj_property name="ElementShortName">S_AXI_RDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_RRESP">
+      <obj_property name="ElementShortName">S_AXI_RRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_RVALID">
+      <obj_property name="ElementShortName">S_AXI_RVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_WREADY">
+      <obj_property name="ElementShortName">S_AXI_WREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_BRESP">
+      <obj_property name="ElementShortName">S_AXI_BRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_BVALID">
+      <obj_property name="ElementShortName">S_AXI_BVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_l2_switch/S_AXI_AWREADY">
+      <obj_property name="ElementShortName">S_AXI_AWREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWREADY</obj_property>
    </wvobject>
    <wvobject fp_name="divider1178" type="divider">
-      <obj_property name="label">nf_sume_sdnet1</obj_property>
+      <obj_property name="label">nf_sdnet l2_switch 2</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject type="group" fp_name="group473">
-      <obj_property name="label">router</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/axis_aclk">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/axis_resetn">
+      <obj_property name="ElementShortName">axis_resetn</obj_property>
+      <obj_property name="ObjectShortName">axis_resetn</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group578">
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tdata">
+         <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tkeep">
+         <obj_property name="ElementShortName">m_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tuser">
+         <obj_property name="ElementShortName">m_axis_tuser[303:0]</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tuser[303:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tvalid">
+         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tready">
+         <obj_property name="ElementShortName">m_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/m_axis_tlast">
+         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tdata">
+         <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tkeep">
+         <obj_property name="ElementShortName">s_axis_tkeep[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tkeep[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tuser">
+         <obj_property name="ElementShortName">s_axis_tuser[127:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tuser[127:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tvalid">
+         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tready">
+         <obj_property name="ElementShortName">s_axis_tready</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/s_axis_tlast">
+         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_ACLK">
+      <obj_property name="ElementShortName">S_AXI_ACLK</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ACLK</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_ARESETN">
+      <obj_property name="ElementShortName">S_AXI_ARESETN</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARESETN</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_AWADDR">
+      <obj_property name="ElementShortName">S_AXI_AWADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWADDR[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_AWVALID">
+      <obj_property name="ElementShortName">S_AXI_AWVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWVALID</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_WDATA">
+      <obj_property name="ElementShortName">S_AXI_WDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_WSTRB">
+      <obj_property name="ElementShortName">S_AXI_WSTRB[3:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WSTRB[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_WVALID">
+      <obj_property name="ElementShortName">S_AXI_WVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_BREADY">
+      <obj_property name="ElementShortName">S_AXI_BREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_ARADDR">
+      <obj_property name="ElementShortName">S_AXI_ARADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARADDR[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_ARVALID">
+      <obj_property name="ElementShortName">S_AXI_ARVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_RREADY">
+      <obj_property name="ElementShortName">S_AXI_RREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RREADY</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_ARREADY">
+      <obj_property name="ElementShortName">S_AXI_ARREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_RDATA">
+      <obj_property name="ElementShortName">S_AXI_RDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_RRESP">
+      <obj_property name="ElementShortName">S_AXI_RRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_RVALID">
+      <obj_property name="ElementShortName">S_AXI_RVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_WREADY">
+      <obj_property name="ElementShortName">S_AXI_WREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_BRESP">
+      <obj_property name="ElementShortName">S_AXI_BRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_BVALID">
+      <obj_property name="ElementShortName">S_AXI_BVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_router/S_AXI_AWREADY">
+      <obj_property name="ElementShortName">S_AXI_AWREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWREADY</obj_property>
    </wvobject>
    <wvobject fp_name="divider475" type="divider">
       <obj_property name="label">nf_sume_sdnet2</obj_property>
@@ -485,138 +1030,6 @@
    <wvobject type="group" fp_name="group509">
       <obj_property name="label">firewall</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/axis_aclk">
-         <obj_property name="ElementShortName">axis_aclk</obj_property>
-         <obj_property name="ObjectShortName">axis_aclk</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/axis_resetn">
-         <obj_property name="ElementShortName">axis_resetn</obj_property>
-         <obj_property name="ObjectShortName">axis_resetn</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tdata">
-         <obj_property name="ElementShortName">m_axis_tdata[255:0]</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tdata[255:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tkeep">
-         <obj_property name="ElementShortName">m_axis_tkeep[31:0]</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tkeep[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tuser">
-         <obj_property name="ElementShortName">m_axis_tuser[303:0]</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tuser[303:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tvalid">
-         <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tready">
-         <obj_property name="ElementShortName">m_axis_tready</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tready</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/m_axis_tlast">
-         <obj_property name="ElementShortName">m_axis_tlast</obj_property>
-         <obj_property name="ObjectShortName">m_axis_tlast</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tdata">
-         <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tkeep">
-         <obj_property name="ElementShortName">s_axis_tkeep[31:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tkeep[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tuser">
-         <obj_property name="ElementShortName">s_axis_tuser[127:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tuser[127:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tvalid">
-         <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tready">
-         <obj_property name="ElementShortName">s_axis_tready</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tready</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/s_axis_tlast">
-         <obj_property name="ElementShortName">s_axis_tlast</obj_property>
-         <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_ACLK">
-         <obj_property name="ElementShortName">S_AXI_ACLK</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_ACLK</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_ARESETN">
-         <obj_property name="ElementShortName">S_AXI_ARESETN</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_ARESETN</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_AWADDR">
-         <obj_property name="ElementShortName">S_AXI_AWADDR[11:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_AWADDR[11:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_AWVALID">
-         <obj_property name="ElementShortName">S_AXI_AWVALID</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_AWVALID</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_WDATA">
-         <obj_property name="ElementShortName">S_AXI_WDATA[31:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_WDATA[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_WSTRB">
-         <obj_property name="ElementShortName">S_AXI_WSTRB[3:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_WSTRB[3:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_WVALID">
-         <obj_property name="ElementShortName">S_AXI_WVALID</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_WVALID</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_BREADY">
-         <obj_property name="ElementShortName">S_AXI_BREADY</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_BREADY</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_ARADDR">
-         <obj_property name="ElementShortName">S_AXI_ARADDR[11:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_ARADDR[11:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_ARVALID">
-         <obj_property name="ElementShortName">S_AXI_ARVALID</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_ARVALID</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_RREADY">
-         <obj_property name="ElementShortName">S_AXI_RREADY</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_RREADY</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_ARREADY">
-         <obj_property name="ElementShortName">S_AXI_ARREADY</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_ARREADY</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_RDATA">
-         <obj_property name="ElementShortName">S_AXI_RDATA[31:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_RDATA[31:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_RRESP">
-         <obj_property name="ElementShortName">S_AXI_RRESP[1:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_RRESP[1:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_RVALID">
-         <obj_property name="ElementShortName">S_AXI_RVALID</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_RVALID</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_WREADY">
-         <obj_property name="ElementShortName">S_AXI_WREADY</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_WREADY</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_BRESP">
-         <obj_property name="ElementShortName">S_AXI_BRESP[1:0]</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_BRESP[1:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_BVALID">
-         <obj_property name="ElementShortName">S_AXI_BVALID</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_BVALID</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/sdnet_firewall/S_AXI_AWREADY">
-         <obj_property name="ElementShortName">S_AXI_AWREADY</obj_property>
-         <obj_property name="ObjectShortName">S_AXI_AWREADY</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject fp_name="divider1248" type="divider">
       <obj_property name="label">OPI</obj_property>
@@ -625,7 +1038,6 @@
    <wvobject type="group" fp_name="group1336">
       <obj_property name="label">OPI</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/axis_aclk">
          <obj_property name="ElementShortName">axis_aclk</obj_property>
          <obj_property name="ObjectShortName">axis_aclk</obj_property>
@@ -787,48 +1199,48 @@
          <obj_property name="ObjectShortName">pkt_fwd</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/nearly_full">
-         <obj_property name="ElementShortName">nearly_full[0:0]</obj_property>
-         <obj_property name="ObjectShortName">nearly_full[0:0]</obj_property>
+         <obj_property name="ElementShortName">nearly_full[3:0]</obj_property>
+         <obj_property name="ObjectShortName">nearly_full[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/empty">
-         <obj_property name="ElementShortName">empty[0:0]</obj_property>
-         <obj_property name="ObjectShortName">empty[0:0]</obj_property>
+         <obj_property name="ElementShortName">empty[3:0]</obj_property>
+         <obj_property name="ObjectShortName">empty[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_tdata">
-         <obj_property name="ElementShortName">in_tdata[0:0][255:0]</obj_property>
-         <obj_property name="ObjectShortName">in_tdata[0:0][255:0]</obj_property>
+         <obj_property name="ElementShortName">in_tdata[3:0][255:0]</obj_property>
+         <obj_property name="ObjectShortName">in_tdata[3:0][255:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_tkeep">
-         <obj_property name="ElementShortName">in_tkeep[0:0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">in_tkeep[0:0][31:0]</obj_property>
+         <obj_property name="ElementShortName">in_tkeep[3:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">in_tkeep[3:0][31:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_tuser">
-         <obj_property name="ElementShortName">in_tuser[0:0][303:0]</obj_property>
-         <obj_property name="ObjectShortName">in_tuser[0:0][303:0]</obj_property>
+         <obj_property name="ElementShortName">in_tuser[3:0][303:0]</obj_property>
+         <obj_property name="ObjectShortName">in_tuser[3:0][303:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_tvalid">
-         <obj_property name="ElementShortName">in_tvalid[0:0]</obj_property>
-         <obj_property name="ObjectShortName">in_tvalid[0:0]</obj_property>
+         <obj_property name="ElementShortName">in_tvalid[3:0]</obj_property>
+         <obj_property name="ObjectShortName">in_tvalid[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_tlast">
-         <obj_property name="ElementShortName">in_tlast[0:0]</obj_property>
-         <obj_property name="ObjectShortName">in_tlast[0:0]</obj_property>
+         <obj_property name="ElementShortName">in_tlast[3:0]</obj_property>
+         <obj_property name="ObjectShortName">in_tlast[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/fifo_out_tuser">
-         <obj_property name="ElementShortName">fifo_out_tuser[0:0][303:0]</obj_property>
-         <obj_property name="ObjectShortName">fifo_out_tuser[0:0][303:0]</obj_property>
+         <obj_property name="ElementShortName">fifo_out_tuser[3:0][303:0]</obj_property>
+         <obj_property name="ObjectShortName">fifo_out_tuser[3:0][303:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/fifo_out_tdata">
-         <obj_property name="ElementShortName">fifo_out_tdata[0:0][255:0]</obj_property>
-         <obj_property name="ObjectShortName">fifo_out_tdata[0:0][255:0]</obj_property>
+         <obj_property name="ElementShortName">fifo_out_tdata[3:0][255:0]</obj_property>
+         <obj_property name="ObjectShortName">fifo_out_tdata[3:0][255:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/fifo_out_tkeep">
-         <obj_property name="ElementShortName">fifo_out_tkeep[0:0][31:0]</obj_property>
-         <obj_property name="ObjectShortName">fifo_out_tkeep[0:0][31:0]</obj_property>
+         <obj_property name="ElementShortName">fifo_out_tkeep[3:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">fifo_out_tkeep[3:0][31:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/fifo_out_tlast">
-         <obj_property name="ElementShortName">fifo_out_tlast[0:0]</obj_property>
-         <obj_property name="ObjectShortName">fifo_out_tlast[0:0]</obj_property>
+         <obj_property name="ElementShortName">fifo_out_tlast[3:0]</obj_property>
+         <obj_property name="ObjectShortName">fifo_out_tlast[3:0]</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/fifo_tvalid">
          <obj_property name="ElementShortName">fifo_tvalid</obj_property>
@@ -839,24 +1251,24 @@
          <obj_property name="ObjectShortName">fifo_tlast</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/rd_en">
-         <obj_property name="ElementShortName">rd_en[0:0]</obj_property>
-         <obj_property name="ObjectShortName">rd_en[0:0]</obj_property>
+         <obj_property name="ElementShortName">rd_en[3:0]</obj_property>
+         <obj_property name="ObjectShortName">rd_en[3:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/cur_queue_plus1">
-         <obj_property name="ElementShortName">cur_queue_plus1[-1:0]</obj_property>
-         <obj_property name="ObjectShortName">cur_queue_plus1[-1:0]</obj_property>
+         <obj_property name="ElementShortName">cur_queue_plus1[1:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_queue_plus1[1:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/cur_queue">
-         <obj_property name="ElementShortName">cur_queue[-1:0]</obj_property>
-         <obj_property name="ObjectShortName">cur_queue[-1:0]</obj_property>
+         <obj_property name="ElementShortName">cur_queue[1:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_queue[1:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/cur_queue_next">
-         <obj_property name="ElementShortName">cur_queue_next[-1:0]</obj_property>
-         <obj_property name="ObjectShortName">cur_queue_next[-1:0]</obj_property>
+         <obj_property name="ElementShortName">cur_queue_next[1:0]</obj_property>
+         <obj_property name="ObjectShortName">cur_queue_next[1:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/in_arb_cur_queue">
-         <obj_property name="ElementShortName">in_arb_cur_queue[-1:0]</obj_property>
-         <obj_property name="ObjectShortName">in_arb_cur_queue[-1:0]</obj_property>
+         <obj_property name="ElementShortName">in_arb_cur_queue[1:0]</obj_property>
+         <obj_property name="ObjectShortName">in_arb_cur_queue[1:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/output_p4_interface_0/state">
          <obj_property name="ElementShortName">state[0:0]</obj_property>
@@ -946,7 +1358,6 @@
    <wvobject type="group" fp_name="group719">
       <obj_property name="label">BRAN Output Queues</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/axis_aclk">
          <obj_property name="ElementShortName">axis_aclk</obj_property>
          <obj_property name="ObjectShortName">axis_aclk</obj_property>
@@ -1534,5 +1945,311 @@
    <wvobject type="array" fp_name="/top_tb/top_sim/axis_o_3_tdata">
       <obj_property name="ElementShortName">axis_o_3_tdata[255:0]</obj_property>
       <obj_property name="ObjectShortName">axis_o_3_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider580" type="divider">
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/axis_aclk">
+      <obj_property name="ElementShortName">axis_aclk</obj_property>
+      <obj_property name="ObjectShortName">axis_aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/axis_resetn">
+      <obj_property name="ElementShortName">axis_resetn</obj_property>
+      <obj_property name="ObjectShortName">axis_resetn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tdata">
+      <obj_property name="ElementShortName">s_axis_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tkeep">
+      <obj_property name="ElementShortName">s_axis_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tuser">
+      <obj_property name="ElementShortName">s_axis_tuser[303:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tuser[303:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tvalid">
+      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tready">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/s_axis_tlast">
+      <obj_property name="ElementShortName">s_axis_tlast</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tdata">
+      <obj_property name="ElementShortName">m_axis_0_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tkeep">
+      <obj_property name="ElementShortName">m_axis_0_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tuser">
+      <obj_property name="ElementShortName">m_axis_0_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tvalid">
+      <obj_property name="ElementShortName">m_axis_0_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tready">
+      <obj_property name="ElementShortName">m_axis_0_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_0_tlast">
+      <obj_property name="ElementShortName">m_axis_0_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_0_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tdata">
+      <obj_property name="ElementShortName">m_axis_1_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tkeep">
+      <obj_property name="ElementShortName">m_axis_1_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tuser">
+      <obj_property name="ElementShortName">m_axis_1_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tvalid">
+      <obj_property name="ElementShortName">m_axis_1_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tready">
+      <obj_property name="ElementShortName">m_axis_1_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_1_tlast">
+      <obj_property name="ElementShortName">m_axis_1_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_1_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tdata">
+      <obj_property name="ElementShortName">m_axis_2_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tkeep">
+      <obj_property name="ElementShortName">m_axis_2_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tuser">
+      <obj_property name="ElementShortName">m_axis_2_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tvalid">
+      <obj_property name="ElementShortName">m_axis_2_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tready">
+      <obj_property name="ElementShortName">m_axis_2_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_2_tlast">
+      <obj_property name="ElementShortName">m_axis_2_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_2_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tdata">
+      <obj_property name="ElementShortName">m_axis_3_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tkeep">
+      <obj_property name="ElementShortName">m_axis_3_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tuser">
+      <obj_property name="ElementShortName">m_axis_3_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tvalid">
+      <obj_property name="ElementShortName">m_axis_3_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tready">
+      <obj_property name="ElementShortName">m_axis_3_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_3_tlast">
+      <obj_property name="ElementShortName">m_axis_3_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_3_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tdata">
+      <obj_property name="ElementShortName">m_axis_4_tdata[255:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tdata[255:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tkeep">
+      <obj_property name="ElementShortName">m_axis_4_tkeep[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tkeep[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tuser">
+      <obj_property name="ElementShortName">m_axis_4_tuser[127:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tuser[127:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tvalid">
+      <obj_property name="ElementShortName">m_axis_4_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tready">
+      <obj_property name="ElementShortName">m_axis_4_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/m_axis_4_tlast">
+      <obj_property name="ElementShortName">m_axis_4_tlast</obj_property>
+      <obj_property name="ObjectShortName">m_axis_4_tlast</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/nf0_q_size">
+      <obj_property name="ElementShortName">nf0_q_size[16:0]</obj_property>
+      <obj_property name="ObjectShortName">nf0_q_size[16:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/nf1_q_size">
+      <obj_property name="ElementShortName">nf1_q_size[16:0]</obj_property>
+      <obj_property name="ObjectShortName">nf1_q_size[16:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/nf2_q_size">
+      <obj_property name="ElementShortName">nf2_q_size[16:0]</obj_property>
+      <obj_property name="ObjectShortName">nf2_q_size[16:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/nf3_q_size">
+      <obj_property name="ElementShortName">nf3_q_size[16:0]</obj_property>
+      <obj_property name="ObjectShortName">nf3_q_size[16:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/dma_q_size">
+      <obj_property name="ElementShortName">dma_q_size[16:0]</obj_property>
+      <obj_property name="ObjectShortName">dma_q_size[16:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_stored">
+      <obj_property name="ElementShortName">bytes_stored[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_stored[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_stored">
+      <obj_property name="ElementShortName">pkt_stored[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pkt_stored[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_removed_0">
+      <obj_property name="ElementShortName">bytes_removed_0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_removed_0[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_removed_1">
+      <obj_property name="ElementShortName">bytes_removed_1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_removed_1[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_removed_2">
+      <obj_property name="ElementShortName">bytes_removed_2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_removed_2[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_removed_3">
+      <obj_property name="ElementShortName">bytes_removed_3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_removed_3[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_removed_4">
+      <obj_property name="ElementShortName">bytes_removed_4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_removed_4[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_removed_0">
+      <obj_property name="ElementShortName">pkt_removed_0</obj_property>
+      <obj_property name="ObjectShortName">pkt_removed_0</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_removed_1">
+      <obj_property name="ElementShortName">pkt_removed_1</obj_property>
+      <obj_property name="ObjectShortName">pkt_removed_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_removed_2">
+      <obj_property name="ElementShortName">pkt_removed_2</obj_property>
+      <obj_property name="ObjectShortName">pkt_removed_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_removed_3">
+      <obj_property name="ElementShortName">pkt_removed_3</obj_property>
+      <obj_property name="ObjectShortName">pkt_removed_3</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_removed_4">
+      <obj_property name="ElementShortName">pkt_removed_4</obj_property>
+      <obj_property name="ObjectShortName">pkt_removed_4</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_ACLK">
+      <obj_property name="ElementShortName">S_AXI_ACLK</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ACLK</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_ARESETN">
+      <obj_property name="ElementShortName">S_AXI_ARESETN</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARESETN</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_AWADDR">
+      <obj_property name="ElementShortName">S_AXI_AWADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWADDR[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_AWVALID">
+      <obj_property name="ElementShortName">S_AXI_AWVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWVALID</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_WDATA">
+      <obj_property name="ElementShortName">S_AXI_WDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_WSTRB">
+      <obj_property name="ElementShortName">S_AXI_WSTRB[3:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WSTRB[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_WVALID">
+      <obj_property name="ElementShortName">S_AXI_WVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_BREADY">
+      <obj_property name="ElementShortName">S_AXI_BREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_ARADDR">
+      <obj_property name="ElementShortName">S_AXI_ARADDR[11:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARADDR[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_ARVALID">
+      <obj_property name="ElementShortName">S_AXI_ARVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_RREADY">
+      <obj_property name="ElementShortName">S_AXI_RREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RREADY</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_ARREADY">
+      <obj_property name="ElementShortName">S_AXI_ARREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_ARREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_RDATA">
+      <obj_property name="ElementShortName">S_AXI_RDATA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RDATA[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_RRESP">
+      <obj_property name="ElementShortName">S_AXI_RRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_RVALID">
+      <obj_property name="ElementShortName">S_AXI_RVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_RVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_WREADY">
+      <obj_property name="ElementShortName">S_AXI_WREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_WREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_BRESP">
+      <obj_property name="ElementShortName">S_AXI_BRESP[1:0]</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BRESP[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_BVALID">
+      <obj_property name="ElementShortName">S_AXI_BVALID</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_BVALID</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/S_AXI_AWREADY">
+      <obj_property name="ElementShortName">S_AXI_AWREADY</obj_property>
+      <obj_property name="ObjectShortName">S_AXI_AWREADY</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/bytes_dropped">
+      <obj_property name="ElementShortName">bytes_dropped[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bytes_dropped[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_tb/top_sim/nf_datapath_0/bram_output_queues_1/pkt_dropped">
+      <obj_property name="ElementShortName">pkt_dropped[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pkt_dropped[4:0]</obj_property>
    </wvobject>
 </wave_config>

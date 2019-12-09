@@ -182,6 +182,7 @@ read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/axi_clocking.v"
 
 
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_p4_interface.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/control_p4_interface.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_p4_interface.v"

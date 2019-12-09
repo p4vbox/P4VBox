@@ -153,6 +153,7 @@ generate_target all [get_ips identifier_ip]
 
 
 read_verilog "./hdl/input_p4_interface.v"
+read_verilog "./hdl/control_p4_interface.v"
 read_verilog "./hdl/small_fifo.v"
 read_verilog "./hdl/fallthrough_small_fifo.v"
 read_verilog "./hdl/output_p4_interface.v"
