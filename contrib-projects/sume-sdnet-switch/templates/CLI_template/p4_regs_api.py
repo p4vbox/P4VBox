@@ -44,7 +44,7 @@ libsume=cdll.LoadLibrary(lib_path)
 libsume.regread.argtypes = [c_uint]
 libsume.regwrite.argtypes= [c_uint, c_uint]
 
-EXTERN_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4_PROJECT_NAME"] + "_extern_defines.json")
+EXTERN_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4VBOX_VSWITCH"] + "_extern_defines.json")
 
 ERROR_CODE = -1
 
