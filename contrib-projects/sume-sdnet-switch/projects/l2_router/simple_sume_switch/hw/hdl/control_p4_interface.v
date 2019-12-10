@@ -125,9 +125,10 @@ module control_p4_interface_ip #
 
     // output master
     assign M_AXI_AWREADY    = S_AXI_0_AWREADY;
-    assign M_AXI_WREADY     = S_AXI_0_WREADY;
-    assign M_AXI_BRESP      = S_AXI_0_BRESP;
     assign M_AXI_BVALID     = S_AXI_0_BVALID;
+    assign M_AXI_WREADY     = S_AXI_0_WREADY;
+
+    assign M_AXI_BRESP      = S_AXI_0_BRESP;
     assign M_AXI_ARREADY    = S_AXI_0_ARREADY;
     assign M_AXI_RDATA      = S_AXI_0_RDATA;
     assign M_AXI_RRESP      = S_AXI_0_RRESP;
