@@ -62,17 +62,26 @@ from nf_sim_tools import *
 """
 
 
-IFACE_H0 = "eth0" # network interface down
-IFACE_H1 = "eth1" # network interface up
-IFACE_H2 = "eth2" # network interface up
-IFACE_H3 = "eth3" # network interface up
-sender = IFACE_H0 # the network interface of the sender
+IFACE_H = {0:"eth0", 1:"eth1", 2:"eth2", 3:"eth3"}
+sender = IFACE_H[0]    # the network interface of the sender
 
-VLANS = 1
-VLAN_ID = 1
-HEADER_SIZE = 46    # size of Ether/Dot1Q/IP/UDP headers
+DEF_PKT_NUM = 24       # default packets number to simulation
+DEF_PKT_SIZE = 256     # default packet size (in bytes)
+HEADER_SIZE = 46       # headers size: Ether/IP/UDP
+DEF_HOST_NUM = 4       # default hosts number in network topology
+src_host = 0           # packets sender host
+vlan_id = 0            # vlan identifier to matching with IPI architecture and nf_datapath.v
+vlan_prio = 0          # vlan priority
 
-dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
+dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
+inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
+vlan_id_map = {"l2_switch":1, "router":2}             # map the vlans of parrallel switches
+
+port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
+port_slicing[0] = "l2_switch"
+port_slicing[1] = "l2_switch"
+port_slicing[2] = "router"
+port_slicing[3] = "router"
 
 MAC_addr_H = {} # MAC of Hosts H[0, 1, 2, 3] connected to SUME Ports nf[0, 1, 2, 3] respectively
 MAC_addr_H[0] = "08:11:11:11:11:08"
@@ -81,10 +90,16 @@ MAC_addr_H[2] = "08:33:33:33:33:08"
 MAC_addr_H[3] = "08:44:44:44:44:08"
 
 IP_addr_H = {} # IP of Hosts connected to nf0, nf1, nf2, nf3 respectively. Not used in this case!
-IP_addr_H[0] = "10.0.1.0"
-IP_addr_H[1] = "10.0.1.1"
-IP_addr_H[2] = "10.0.1.2"
-IP_addr_H[3] = "10.0.1.3"
+IP_addr_H[0] = "10.1.1.1"
+IP_addr_H[1] = "10.2.2.2"
+IP_addr_H[2] = "10.3.3.3"
+IP_addr_H[3] = "10.4.4.4"
+
+MAC_addr_S = {} # MAC of SUME Ports nf[0, 1, 2, 3] connected to Hosts H[0, 1, 2, 3] respectively
+MAC_addr_S[0] = "05:11:11:11:11:05"
+MAC_addr_S[1] = "05:22:22:22:22:05"
+MAC_addr_S[2] = "05:33:33:33:33:05"
+MAC_addr_S[3] = "05:44:44:44:44:05"
 
 
 class SimpleTester(cmd.Cmd):
@@ -98,20 +113,77 @@ class SimpleTester(cmd.Cmd):
     def _get_rand_port(self):
         return random.randint(1, 0xffff)
 
-    def _make_packet(self, flow_size, src_ind):
-        # src_IP = self._get_rand_IP()
-        # dst_IP = self._get_rand_IP()
-        src_MAC = MAC_addr_H[src_ind]
-        dst_MAC = MAC_addr_H[dst_host_map[src_ind]]
-        src_IP = IP_addr_H[src_ind]
-        dst_IP = IP_addr_H[dst_host_map[src_ind]]
+    def _make_packet(self, flow_size, src_host):
+        vlan_id = vlan_id_map[port_slicing[src_host]]
         sport = self._get_rand_port()
         dport = self._get_rand_port()
-        # make the data pkts
-        vlan_prio = 0
-        pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=VLAN_ID, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+        src_IP = IP_addr_H[src_host]
+        dst_IP = IP_addr_H[dst_host_map[src_host]]
+        if ( vlan_id == vlan_id_map["l2_switch"] ):
+            src_MAC = MAC_addr_H[src_host]
+            dst_MAC = MAC_addr_H[dst_host_map[src_host]]
+            pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+        elif( vlan_id == vlan_id_map["router"] ):
+            src_MAC = MAC_addr_H[src_host]
+            dst_MAC = MAC_addr_S[src_host]
+            pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+        else:
+            print("\nERROR: vlan_id not mapped!\n")
+            exit(1)
         pkt = pad_pkt(pkt, flow_size)
         return pkt
+
+    """
+    Generate a flow packets from all hosts in topology
+    """
+    def _make_flow(self, pkts_num, pkts_size):
+        flow = [[] for _ in range(DEF_HOST_NUM)]
+
+        # making flows
+        for pid in range(pkts_num):
+            src_host = int( pid % (DEF_HOST_NUM) )
+            pkt = self._make_packet(pkts_size, src_host)
+            flow[src_host].append(pkt)
+
+        # sending packets
+        for host in range(DEF_HOST_NUM):
+            sender = IFACE_H[host]
+            if ( len(flow[host]) != 0 ):
+                print "\n  Flow "+str(host+1)+": H" +str(host)+ " -> H" +str(dst_host_map[host])
+                sendp(flow[host], iface=sender)
+                print ""
+
+    def do_make_flow(self, line):
+        pkts_num = None
+        pkts_size = None
+        args = line.split()
+        if (len(args) != 2):
+            print >> sys.stderr, "ERROR: usage..."
+            self.help_make_flow()
+        try:
+            pkts_num = int(args[0])
+            pkts_size = int(args[1])
+        except:
+            print >> sys.stderr, "ERROR: all arguments must be valid integers"
+
+        if (pkts_num is not None and pkts_size is not None):
+            self._make_flow(pkts_num, pkts_size)
+
+    def help_make_flow(self):
+        print """
+make_flow <pkts_num> <pkts_size>\n
+DESCRIPTION: Create a flow of UDP packets to each host and then apply that to the correct
+ethernet interface, based on topology.
+    <pkts_num>  : the number of packets to send to the switch
+    <pkts_size> : the exactly size(headers + payload) of packet (in bytes)\n
+(MAC_addr_H0)            (MAC_addr_SPort0)    (MAC_addr_SPort3)            (MAC_addr_H3)
+ (IP_addr_H0)             (IP_addr_SPort0)    (IP_addr_SPort3)             (IP_addr_H3)
+          H0 ------------------ nf0                 nf3 ------------------- H3
+                                 |    SUME SWITCH    |
+          H1 ------------------ nf1                 nf2 ------------------- H2
+ (IP_addr_H1)             (IP_addr_SPort1)    (IP_addr_SPort2)             (IP_addr_H2)
+(MAC_addr_H1)            (MAC_addr_SPort1)    (MAC_addr_SPort2)            (MAC_addr_H2)
+"""
 
     """
     Generate a simple packets with size indicated by parameters and apply to the switch
@@ -120,42 +192,29 @@ class SimpleTester(cmd.Cmd):
         pkts = []
         for fid in range(pkts_num):
             pkt = self._make_packet(pkts_size, src_host)
-            # apply trace to the switch
-            if src_host == 0:
-                sender = IFACE_H0
-            elif src_host == 1:
-                sender = IFACE_H1
-            elif src_host == 2:
-                sender = IFACE_H2
-            elif src_host == 3:
-                sender = IFACE_H3
-            else:
-                print >> sys.stderr, "ERROR: usage..."
+            sender = IFACE_H[src_host]
             pkts.append(pkt)
         print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
         sendp(pkts, iface=sender)
+        print ""
 
-    def _parse_line_gen_packets(self, line):
+    def do_gen_packets(self, line):
+        pkts_num = None
+        pkts_size = None
+        src_host = None
         args = line.split()
         if (len(args) != 3):
             print >> sys.stderr, "ERROR: usage..."
             self.help_gen_packets()
-            return (None, None, None)
         try:
             pkts_num = int(args[0])
             pkts_size = int(args[1])
             src_host = int(args[2])
             if ((src_host < 0) or (src_host > 3)):
                 print >> sys.stderr, "ERROR: src_host must be in topology"
-                return (None, None, None)
         except:
             print >> sys.stderr, "ERROR: all arguments must be valid integers"
-            return (None, None, None)
 
-        return (pkts_num, pkts_size, src_host)
-
-    def do_gen_packets(self, line):
-        (pkts_num, pkts_size, src_host) = self._parse_line_gen_packets(line)
         if (pkts_num is not None and pkts_size is not None and src_host is not None):
             self._gen_packets(pkts_num, pkts_size, src_host)
 
