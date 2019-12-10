@@ -38,7 +38,7 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-export P4_PROJECT_NAME=l2_switch
+export P4_PROJECT_NAME=l2_router
 export NF_PROJECT_NAME=simple_sume_switch
 export SUME_FOLDER=${HOME}/projects/P4VBox
 export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
@@ -59,6 +59,7 @@ export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
 export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
 export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
+export P4VBOX_VSWITCH=${P4_PROJECT_NAME}
 export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
 export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
 export P4VBOX_PROGRAM=${P4VBOX_SCRIPTS}/tools/program_sume.sh

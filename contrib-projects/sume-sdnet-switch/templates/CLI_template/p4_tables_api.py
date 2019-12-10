@@ -34,7 +34,7 @@ import sys, os, re, json
 from fcntl import *
 from ctypes import *
 
-SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info_" + os.environ["P4_PROJECT_NAME"] + ".dat")
+SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info_" + os.environ["P4VBOX_VSWITCH"] + ".dat")
 
 # sets PX_TABLES
 import p4_px_tables
@@ -96,7 +96,7 @@ if (len(PX_LPM_TABLES) > 0):
     liblpm.lpm_error_decode.argtypes = [c_int]
     liblpm.lpm_error_decode.restype = c_char_p
 
-TABLE_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4_PROJECT_NAME"] + "_table_defines.json")
+TABLE_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4VBOX_VSWITCH"] + "_table_defines.json")
 
 ########################
 ### Helper Functions ###
