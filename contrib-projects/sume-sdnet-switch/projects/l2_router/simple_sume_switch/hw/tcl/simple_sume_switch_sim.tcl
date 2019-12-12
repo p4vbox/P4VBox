@@ -30,7 +30,7 @@
 #
 #   http://www.netfpga-cic.org
 #
-# Unless required by applicable law or agreed to in writing, Work distributed
+# Unless requipink by applicable law or agreed to in writing, Work distributed
 # under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 # CONDITIONS OF ANY KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations under the License.
@@ -215,12 +215,12 @@ create_wave_config P4-NetFPGA
 
 set nf_datapath top_tb/top_sim/nf_datapath_0/
 add_wave_divider {input arbiter input signals}
-add_wave $nf_datapath/s_axis_0_tdata -color blue
-add_wave $nf_datapath/s_axis_0_tkeep -color blue
-add_wave $nf_datapath/s_axis_0_tuser -color blue
-add_wave $nf_datapath/s_axis_0_tvalid -color blue
-add_wave $nf_datapath/s_axis_0_tready -color blue
-add_wave $nf_datapath/s_axis_0_tlast -color blue
+add_wave $nf_datapath/s_axis_0_tdata -color teal
+add_wave $nf_datapath/s_axis_0_tkeep -color teal
+add_wave $nf_datapath/s_axis_0_tuser -color teal
+add_wave $nf_datapath/s_axis_0_tvalid -color teal
+add_wave $nf_datapath/s_axis_0_tready -color teal
+add_wave $nf_datapath/s_axis_0_tlast -color teal
 add_wave $nf_datapath/s_axis_1_tdata -color gold
 add_wave $nf_datapath/s_axis_1_tkeep -color gold
 add_wave $nf_datapath/s_axis_1_tuser -color gold
@@ -233,26 +233,26 @@ add_wave $nf_datapath/s_axis_2_tuser -color orange
 add_wave $nf_datapath/s_axis_2_tvalid -color orange
 add_wave $nf_datapath/s_axis_2_tready -color orange
 add_wave $nf_datapath/s_axis_2_tlast -color orange
-add_wave $nf_datapath/s_axis_3_tdata -color purple
-add_wave $nf_datapath/s_axis_3_tkeep -color purple
-add_wave $nf_datapath/s_axis_3_tuser -color purple
-add_wave $nf_datapath/s_axis_3_tvalid -color purple
-add_wave $nf_datapath/s_axis_3_tready -color purple
-add_wave $nf_datapath/s_axis_3_tlast -color purple
-add_wave $nf_datapath/s_axis_4_tdata -color cyan
-add_wave $nf_datapath/s_axis_4_tkeep -color cyan
-add_wave $nf_datapath/s_axis_4_tuser -color cyan
-add_wave $nf_datapath/s_axis_4_tvalid -color cyan
-add_wave $nf_datapath/s_axis_4_tready -color cyan
-add_wave $nf_datapath/s_axis_4_tlast -color cyan
+add_wave $nf_datapath/s_axis_3_tdata -color maroon
+add_wave $nf_datapath/s_axis_3_tkeep -color maroon
+add_wave $nf_datapath/s_axis_3_tuser -color maroon
+add_wave $nf_datapath/s_axis_3_tvalid -color maroon
+add_wave $nf_datapath/s_axis_3_tready -color maroon
+add_wave $nf_datapath/s_axis_3_tlast -color maroon
+add_wave $nf_datapath/s_axis_4_tdata -color khaki
+add_wave $nf_datapath/s_axis_4_tkeep -color khaki
+add_wave $nf_datapath/s_axis_4_tuser -color khaki
+add_wave $nf_datapath/s_axis_4_tvalid -color khaki
+add_wave $nf_datapath/s_axis_4_tready -color khaki
+add_wave $nf_datapath/s_axis_4_tlast -color khaki
 
 add_wave_divider {output queues output signals}
-add_wave $nf_datapath/m_axis_0_tdata -color blue
-add_wave $nf_datapath/m_axis_0_tkeep -color blue
-add_wave $nf_datapath/m_axis_0_tuser -color blue
-add_wave $nf_datapath/m_axis_0_tvalid -color blue
-add_wave $nf_datapath/m_axis_0_tready -color blue
-add_wave $nf_datapath/m_axis_0_tlast -color blue
+add_wave $nf_datapath/m_axis_0_tdata -color teal
+add_wave $nf_datapath/m_axis_0_tkeep -color teal
+add_wave $nf_datapath/m_axis_0_tuser -color teal
+add_wave $nf_datapath/m_axis_0_tvalid -color teal
+add_wave $nf_datapath/m_axis_0_tready -color teal
+add_wave $nf_datapath/m_axis_0_tlast -color teal
 add_wave $nf_datapath/m_axis_1_tdata -color gold
 add_wave $nf_datapath/m_axis_1_tkeep -color gold
 add_wave $nf_datapath/m_axis_1_tuser -color gold
@@ -265,18 +265,18 @@ add_wave $nf_datapath/m_axis_2_tuser -color orange
 add_wave $nf_datapath/m_axis_2_tvalid -color orange
 add_wave $nf_datapath/m_axis_2_tready -color orange
 add_wave $nf_datapath/m_axis_2_tlast -color orange
-add_wave $nf_datapath/m_axis_3_tdata -color purple
-add_wave $nf_datapath/m_axis_3_tkeep -color purple
-add_wave $nf_datapath/m_axis_3_tuser -color purple
-add_wave $nf_datapath/m_axis_3_tvalid -color purple
-add_wave $nf_datapath/m_axis_3_tready -color purple
-add_wave $nf_datapath/m_axis_3_tlast -color purple
-add_wave $nf_datapath/m_axis_4_tdata -color cyan
-add_wave $nf_datapath/m_axis_4_tkeep -color cyan
-add_wave $nf_datapath/m_axis_4_tuser -color cyan
-add_wave $nf_datapath/m_axis_4_tvalid -color cyan
-add_wave $nf_datapath/m_axis_4_tready -color cyan
-add_wave $nf_datapath/m_axis_4_tlast -color cyan
+add_wave $nf_datapath/m_axis_3_tdata -color maroon
+add_wave $nf_datapath/m_axis_3_tkeep -color maroon
+add_wave $nf_datapath/m_axis_3_tuser -color maroon
+add_wave $nf_datapath/m_axis_3_tvalid -color maroon
+add_wave $nf_datapath/m_axis_3_tready -color maroon
+add_wave $nf_datapath/m_axis_3_tlast -color maroon
+add_wave $nf_datapath/m_axis_4_tdata -color khaki
+add_wave $nf_datapath/m_axis_4_tkeep -color khaki
+add_wave $nf_datapath/m_axis_4_tuser -color khaki
+add_wave $nf_datapath/m_axis_4_tvalid -color khaki
+add_wave $nf_datapath/m_axis_4_tready -color khaki
+add_wave $nf_datapath/m_axis_4_tlast -color khaki
 
 set input_arbiter_ip top_tb/top_sim/nf_datapath_0/input_arbiter_drr_v1_0/inst/
 add_wave_divider {Input Arbiter Intern Signals}
@@ -318,183 +318,187 @@ set_property needs_save false [get_wave_configs P4VBox]
 # Create variables to clock and reset sinals
 set sig_clock /top_tb/top_sim/clk_200
 set sig_resetn /top_tb/top_sim/sys_rst_n_c
-add_wave_divider {Clock and Reset Global}
+add_wave_divider {Clock and Reset Global} -color white
 add_wave $sig_clock -name clock
 add_wave $sig_resetn -name reset_n
 
 # Add top level datapath IO
-add_wave_divider {Output Packets}
-add_wave $nf_datapath/m_axis_0_tdata -color blue -into P4VBox
-add_wave $nf_datapath/m_axis_0_tvalid -color blue -into P4VBox
-add_wave $nf_datapath/m_axis_1_tdata -color gold -into P4VBox
-add_wave $nf_datapath/m_axis_1_tvalid -color gold -into P4VBox
-add_wave $nf_datapath/m_axis_2_tdata -color orange -into P4VBox
-add_wave $nf_datapath/m_axis_2_tvalid -color orange -into P4VBox
-add_wave $nf_datapath/m_axis_3_tdata -color purple -into P4VBox
-add_wave $nf_datapath/m_axis_3_tvalid -color purple -into P4VBox
-add_wave $nf_datapath/m_axis_4_tdata -color cyan -into P4VBox
-add_wave $nf_datapath/m_axis_4_tvalid -color cyan -into P4VBox
+add_wave_divider {Output Packets} -color white
+add_wave_virtual_bus Port_0_Out -color teal
+add_wave $nf_datapath/m_axis_0_tdata -into Port_0_Out -color teal
+add_wave $nf_datapath/m_axis_0_tvalid -into Port_0_Out -color teal
+add_wave_virtual_bus Port_1_Out -color gold
+add_wave $nf_datapath/m_axis_1_tdata -into Port_1_Out -color gold
+add_wave $nf_datapath/m_axis_1_tvalid -into Port_1_Out -color gold
+add_wave_virtual_bus Port_2_Out -color orange
+add_wave $nf_datapath/m_axis_2_tdata -into Port_2_Out -color orange
+add_wave $nf_datapath/m_axis_2_tvalid -into Port_2_Out -color orange
+add_wave_virtual_bus Port_3_Out -color maroon
+add_wave $nf_datapath/m_axis_3_tdata -into Port_3_Out -color maroon
+add_wave $nf_datapath/m_axis_3_tvalid -into Port_3_Out -color maroon
+add_wave_virtual_bus DMA_Out -color khaki
+add_wave $nf_datapath/m_axis_4_tdata -into DMA_Out -color khaki
+add_wave $nf_datapath/m_axis_4_tvalid -into DMA_Out -color khaki
 
-add_wave_divider {Input Packets}
-add_wave $nf_datapath/s_axis_0_tdata -color blue -into P4VBox
-add_wave $nf_datapath/s_axis_0_tvalid -color blue -into P4VBox
-add_wave $nf_datapath/s_axis_1_tdata -color gold -into P4VBox
-add_wave $nf_datapath/s_axis_1_tvalid -color gold -into P4VBox
-add_wave $nf_datapath/s_axis_2_tdata -color orange -into P4VBox
-add_wave $nf_datapath/s_axis_2_tvalid -color orange -into P4VBox
-add_wave $nf_datapath/s_axis_3_tdata -color purple -into P4VBox
-add_wave $nf_datapath/s_axis_3_tvalid -color purple -into P4VBox
-add_wave $nf_datapath/s_axis_4_tdata -color cyan -into P4VBox
-add_wave $nf_datapath/s_axis_4_tvalid -color cyan -into P4VBox
+add_wave_divider {Input Packets} -color white
+add_wave_virtual_bus Port_0_In -color teal
+add_wave $nf_datapath/s_axis_0_tdata -into Port_0_In -color teal
+add_wave $nf_datapath/s_axis_0_tvalid -into Port_0_In -color teal
+add_wave_virtual_bus Port_1_In -color gold
+add_wave $nf_datapath/s_axis_1_tdata -into Port_1_In -color gold
+add_wave $nf_datapath/s_axis_1_tvalid -into Port_1_In -color gold
+add_wave_virtual_bus Port_2_In -color orange
+add_wave $nf_datapath/s_axis_2_tdata -into Port_2_In -color orange
+add_wave $nf_datapath/s_axis_2_tvalid -into Port_2_In -color orange
+add_wave_virtual_bus Port_3_In -color maroon
+add_wave $nf_datapath/s_axis_3_tdata -into Port_3_In -color maroon
+add_wave $nf_datapath/s_axis_3_tvalid -into Port_3_In -color maroon
+add_wave_virtual_bus DMA_In -color khaki
+add_wave $nf_datapath/s_axis_4_tdata -into DMA_In -color khaki
+add_wave $nf_datapath/s_axis_4_tvalid -into DMA_In -color khaki
 
-add_wave_divider {Datapath AXI Stream}
-add_wave $sig_clock -name clock
-add_wave $sig_resetn -name reset_n
+add_wave_divider {Datapath AXI Stream} -color white
 add_wave_group Datapath_Output
-add_wave $nf_datapath/m_axis_0_tdata -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_0_tkeep -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_0_tuser -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_0_tvalid -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_0_tready -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_0_tlast -color blue -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tdata -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tkeep -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tuser -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tvalid -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tready -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_1_tlast -color gold -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tdata -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tkeep -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tuser -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tvalid -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tready -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_2_tlast -color orange -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tdata -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tkeep -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tuser -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tvalid -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tready -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_3_tlast -color purple -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tdata -color cyan -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tkeep -color cyan -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tuser -color cyan -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tvalid -color cyan -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tready -color cyan -into Datapath_Output
-add_wave $nf_datapath/m_axis_4_tlast -color cyan -into Datapath_Output
+add_wave $nf_datapath/m_axis_0_tdata -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_0_tkeep -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_0_tuser -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_0_tvalid -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_0_tready -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_0_tlast -into Datapath_Output -color teal
+add_wave $nf_datapath/m_axis_1_tdata -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_1_tkeep -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_1_tuser -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_1_tvalid -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_1_tready -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_1_tlast -into Datapath_Output -color gold
+add_wave $nf_datapath/m_axis_2_tdata -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_2_tkeep -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_2_tuser -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_2_tvalid -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_2_tready -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_2_tlast -into Datapath_Output -color orange
+add_wave $nf_datapath/m_axis_3_tdata -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_3_tkeep -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_3_tuser -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_3_tvalid -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_3_tready -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_3_tlast -into Datapath_Output -color maroon
+add_wave $nf_datapath/m_axis_4_tdata -into Datapath_Output -color khaki
+add_wave $nf_datapath/m_axis_4_tkeep -into Datapath_Output -color khaki
+add_wave $nf_datapath/m_axis_4_tuser -into Datapath_Output -color khaki
+add_wave $nf_datapath/m_axis_4_tvalid -into Datapath_Output -color khaki
+add_wave $nf_datapath/m_axis_4_tready -into Datapath_Output -color khaki
+add_wave $nf_datapath/m_axis_4_tlast -into Datapath_Output -color khaki
 add_wave_group Datapath_Input
-add_wave $nf_datapath/s_axis_0_tdata -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_0_tvalid -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_0_tkeep -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_0_tuser -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_0_tready -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_0_tlast -color blue -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tdata -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tkeep -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tuser -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tvalid -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tready -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_1_tlast -color gold -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tdata -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tkeep -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tuser -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tvalid -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tready -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_2_tlast -color orange -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tdata -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tkeep -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tuser -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tvalid -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tready -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_3_tlast -color purple -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tdata -color cyan -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tkeep -color cyan -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tuser -color cyan -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tvalid -color cyan -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tready -color cyan -into Datapath_Input
-add_wave $nf_datapath/s_axis_4_tlast -color cyan -into Datapath_Input
+add_wave $nf_datapath/s_axis_0_tdata -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_0_tvalid -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_0_tkeep -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_0_tuser -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_0_tready -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_0_tlast -into Datapath_Input -color teal
+add_wave $nf_datapath/s_axis_1_tdata -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_1_tkeep -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_1_tuser -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_1_tvalid -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_1_tready -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_1_tlast -into Datapath_Input -color gold
+add_wave $nf_datapath/s_axis_2_tdata -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_2_tkeep -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_2_tuser -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_2_tvalid -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_2_tready -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_2_tlast -into Datapath_Input -color orange
+add_wave $nf_datapath/s_axis_3_tdata -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_3_tkeep -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_3_tuser -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_3_tvalid -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_3_tready -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_3_tlast -into Datapath_Input -color maroon
+add_wave $nf_datapath/s_axis_4_tdata -into Datapath_Input -color khaki
+add_wave $nf_datapath/s_axis_4_tkeep -into Datapath_Input -color khaki
+add_wave $nf_datapath/s_axis_4_tuser -into Datapath_Input -color khaki
+add_wave $nf_datapath/s_axis_4_tvalid -into Datapath_Input -color khaki
+add_wave $nf_datapath/s_axis_4_tready -into Datapath_Input -color khaki
+add_wave $nf_datapath/s_axis_4_tlast -into Datapath_Input -color khaki
 
 # Control P4 Interface
-add_wave_divider {Control P4 Interface}
-add_wave $sig_clock -name clock
-add_wave $sig_resetn -name reset_n
+set cpi $nf_datapath/control_p4_interface_0
+add_wave_divider {Control P4 Interface} -color darkgray
+add_wave_virtual_bus clock_CPI
+add_wave $sig_clock -name clock -into clock_CPI
+add_wave $sig_resetn -name reset_n -into clock_CPI
 add_wave_group M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_AWADDR -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_AWVALID -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_AWREADY -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_WDATA -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_WSTRB -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_WVALID -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_WREADY -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_BRESP -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_BVALID -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_BREADY -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_ARADDR -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_ARVALID -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_ARREADY -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_RDATA -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_RRESP -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_RVALID -color aqua -into M_AXI
-add_wave $nf_datapath/control_p4_interface_0/M_AXI_RREADY -into M_AXI
+add_wave $cpi/M_AXI_AWADDR -into M_AXI
+add_wave $cpi/M_AXI_AWVALID -into M_AXI
+add_wave $cpi/M_AXI_AWREADY -into M_AXI -color khaki
+add_wave $cpi/M_AXI_WDATA -into M_AXI
+add_wave $cpi/M_AXI_WSTRB -into M_AXI
+add_wave $cpi/M_AXI_WVALID -into M_AXI
+add_wave $cpi/M_AXI_WREADY -into M_AXI -color khaki
+add_wave $cpi/M_AXI_BRESP -into M_AXI -color khaki
+add_wave $cpi/M_AXI_BVALID -into M_AXI -color khaki
+add_wave $cpi/M_AXI_BREADY -into M_AXI
+add_wave $cpi/M_AXI_ARADDR -into M_AXI
+add_wave $cpi/M_AXI_ARVALID -into M_AXI
+add_wave $cpi/M_AXI_ARREADY -into M_AXI -color khaki
+add_wave $cpi/M_AXI_RDATA -into M_AXI -color khaki
+add_wave $cpi/M_AXI_RRESP -into M_AXI -color khaki
+add_wave $cpi/M_AXI_RVALID -into M_AXI -color khaki
+add_wave $cpi/M_AXI_RREADY -into M_AXI
 add_wave_group S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_AWADDR -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_AWVALID -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_AWREADY -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_WDATA -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_WSTRB -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_WVALID -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_WREADY -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_BRESP -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_BVALID -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_BREADY -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_ARADDR -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_ARVALID -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_ARREADY -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_RDATA -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_RRESP -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_RVALID -color aqua -into S_AXI_0
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_0_RREADY -into S_AXI_0
+add_wave $cpi/S_AXI_0_AWADDR -into S_AXI_0
+add_wave $cpi/S_AXI_0_AWVALID -into S_AXI_0
+add_wave $cpi/S_AXI_0_AWREADY -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_WDATA -into S_AXI_0
+add_wave $cpi/S_AXI_0_WSTRB -into S_AXI_0
+add_wave $cpi/S_AXI_0_WVALID -into S_AXI_0
+add_wave $cpi/S_AXI_0_WREADY -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_BRESP -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_BVALID -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_BREADY -into S_AXI_0
+add_wave $cpi/S_AXI_0_ARADDR -into S_AXI_0
+add_wave $cpi/S_AXI_0_ARVALID -into S_AXI_0
+add_wave $cpi/S_AXI_0_ARREADY -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_RDATA -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_RRESP -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_RVALID -into S_AXI_0 -color khaki
+add_wave $cpi/S_AXI_0_RREADY -into S_AXI_0
 add_wave_group S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_AWADDR -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_AWVALID -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_AWREADY -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_WDATA -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_WSTRB -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_WVALID -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_WREADY -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_BRESP -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_BVALID -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_BREADY -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_ARADDR -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_ARVALID -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_ARREADY -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_RDATA -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_RRESP -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_RVALID -color aqua -into S_AXI_1
-add_wave $nf_datapath/control_p4_interface_0/S_AXI_1_RREADY -into S_AXI_1
+add_wave $cpi/S_AXI_1_AWADDR -into S_AXI_1
+add_wave $cpi/S_AXI_1_AWVALID -into S_AXI_1
+add_wave $cpi/S_AXI_1_AWREADY -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_WDATA -into S_AXI_1
+add_wave $cpi/S_AXI_1_WSTRB -into S_AXI_1
+add_wave $cpi/S_AXI_1_WVALID -into S_AXI_1
+add_wave $cpi/S_AXI_1_WREADY -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_BRESP -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_BVALID -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_BREADY -into S_AXI_1
+add_wave $cpi/S_AXI_1_ARADDR -into S_AXI_1
+add_wave $cpi/S_AXI_1_ARVALID -into S_AXI_1
+add_wave $cpi/S_AXI_1_ARREADY -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_RDATA -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_RRESP -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_RVALID -into S_AXI_1 -color khaki
+add_wave $cpi/S_AXI_1_RREADY -into S_AXI_1
 add_wave_group Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_awaddr -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_awready -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_wready -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_bresp -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_bvalid -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_araddr -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_arready -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_rdata -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_rresp -into Internal_CPI
-add_wave $nf_datapath/control_p4_interface_0/axi_rvalid -into Internal_CPI
+add_wave $cpi/axi_awaddr -into Internal_CPI
+add_wave $cpi/axi_awready -into Internal_CPI
+add_wave $cpi/axi_wready -into Internal_CPI
+add_wave $cpi/axi_bresp -into Internal_CPI
+add_wave $cpi/axi_bvalid -into Internal_CPI
+add_wave $cpi/axi_araddr -into Internal_CPI
+add_wave $cpi/axi_arready -into Internal_CPI
+add_wave $cpi/axi_rdata -into Internal_CPI
+add_wave $cpi/axi_rresp -into Internal_CPI
+add_wave $cpi/axi_rvalid -into Internal_CPI
 
 # Input P4 Interface
 set ipi $nf_datapath/input_p4_interface_0
-add_wave_divider {Input P4 Interface}
-add_wave $sig_clock -name clock
-add_wave $sig_resetn -name reset_n
-add_wave_group s_axis_IPI
-add_wave $ipi/s_axis_tdata -into s_axis_IPI -color blue
-add_wave $ipi/s_axis_tkeep -into s_axis_IPI -color blue
-add_wave $ipi/s_axis_tuser -into s_axis_IPI -color blue
-add_wave $ipi/s_axis_tvalid -into s_axis_IPI -color blue
-add_wave $ipi/s_axis_tready -into s_axis_IPI -color blue
-add_wave $ipi/s_axis_tlast -into s_axis_IPI -color blue
+add_wave_divider {Input P4 Interface} -color darkgray
+add_wave_virtual_bus clock_IPI
+add_wave $sig_clock -name clock -into clock_IPI
+add_wave $sig_resetn -name reset_n -into clock_IPI
 add_wave_group m_axis_0_IPI
 add_wave $ipi/m_axis_0_tdata -into m_axis_0_IPI -color gold
 add_wave $ipi/m_axis_0_tkeep -into m_axis_0_IPI -color gold
@@ -510,30 +514,262 @@ add_wave $ipi/m_axis_1_tvalid -into m_axis_1_IPI -color orange
 add_wave $ipi/m_axis_1_tready -into m_axis_1_IPI -color orange
 add_wave $ipi/m_axis_1_tlast -into m_axis_1_IPI -color orange
 add_wave_group m_axis_2_IPI
-add_wave $ipi/m_axis_2_tdata -into m_axis_2_IPI -color purple
-add_wave $ipi/m_axis_2_tkeep -into m_axis_2_IPI -color purple
-add_wave $ipi/m_axis_2_tuser -into m_axis_2_IPI -color purple
-add_wave $ipi/m_axis_2_tvalid -into m_axis_2_IPI -color purple
-add_wave $ipi/m_axis_2_tready -into m_axis_2_IPI -color purple
-add_wave $ipi/m_axis_2_tlast -into m_axis_2_IPI -color purple
+add_wave $ipi/m_axis_2_tdata -into m_axis_2_IPI -color maroon
+add_wave $ipi/m_axis_2_tkeep -into m_axis_2_IPI -color maroon
+add_wave $ipi/m_axis_2_tuser -into m_axis_2_IPI -color maroon
+add_wave $ipi/m_axis_2_tvalid -into m_axis_2_IPI -color maroon
+add_wave $ipi/m_axis_2_tready -into m_axis_2_IPI -color maroon
+add_wave $ipi/m_axis_2_tlast -into m_axis_2_IPI -color maroon
 add_wave_group m_axis_3_IPI
-add_wave $ipi/m_axis_3_tdata -into m_axis_3_IPI -color cyan
-add_wave $ipi/m_axis_3_tkeep -into m_axis_3_IPI -color cyan
-add_wave $ipi/m_axis_3_tuser -into m_axis_3_IPI -color cyan
-add_wave $ipi/m_axis_3_tvalid -into m_axis_3_IPI -color cyan
-add_wave $ipi/m_axis_3_tready -into m_axis_3_IPI -color cyan
-add_wave $ipi/m_axis_3_tlast -into m_axis_3_IPI -color cyan
+add_wave $ipi/m_axis_3_tdata -into m_axis_3_IPI -color khaki
+add_wave $ipi/m_axis_3_tkeep -into m_axis_3_IPI -color khaki
+add_wave $ipi/m_axis_3_tuser -into m_axis_3_IPI -color khaki
+add_wave $ipi/m_axis_3_tvalid -into m_axis_3_IPI -color khaki
+add_wave $ipi/m_axis_3_tready -into m_axis_3_IPI -color khaki
+add_wave $ipi/m_axis_3_tlast -into m_axis_3_IPI -color khaki
+add_wave_group s_axis_IPI
+add_wave $ipi/s_axis_tdata -into s_axis_IPI -color teal
+add_wave $ipi/s_axis_tkeep -into s_axis_IPI -color teal
+add_wave $ipi/s_axis_tuser -into s_axis_IPI -color teal
+add_wave $ipi/s_axis_tvalid -into s_axis_IPI -color teal
+add_wave $ipi/s_axis_tready -into s_axis_IPI -color teal
+add_wave $ipi/s_axis_tlast -into s_axis_IPI -color teal
 add_wave_group vlan_IPI
-add_wave $ipi/vlan_tdata -into vlan_IPI -color aqua
-add_wave $ipi/vlan_prot_id -into vlan_IPI -color aqua
-add_wave $ipi/vlan_info -into vlan_IPI -color aqua
-add_wave $ipi/vlan_info_prio -into vlan_IPI -color aqua
-add_wave $ipi/vlan_info_drop -into vlan_IPI -color aqua
-add_wave $ipi/vlan_info_id -into vlan_IPI -color aqua
+add_wave $ipi/vlan_tdata -into vlan_IPI -color pink
+add_wave $ipi/vlan_prot_id -into vlan_IPI -color pink
+add_wave $ipi/vlan_info -into vlan_IPI -color pink
+add_wave $ipi/vlan_info_prio -into vlan_IPI -color pink
+add_wave $ipi/vlan_info_drop -into vlan_IPI -color pink
+add_wave $ipi/vlan_info_id -into vlan_IPI -color pink
 add_wave_group Internal_IPI
 add_wave $ipi/ipi_state -into Internal_IPI
 add_wave $ipi/ipi_vlan_prot_id -into Internal_IPI
 add_wave $ipi/ipi_vlan_info_id -into Internal_IPI
+
+# Output P4 Interface
+set opi $nf_datapath/output_p4_interface_0
+add_wave_divider {Output P4 Interface} -color darkgray
+add_wave_virtual_bus clock_OPI
+add_wave $sig_clock -name clock -into clock_OPI
+add_wave $sig_resetn -name reset_n -into clock_OPI
+add_wave_group m_axis_OPI
+add_wave $opi/m_axis_tdata -into m_axis_OPI -color teal
+add_wave $opi/m_axis_tkeep -into m_axis_OPI -color teal
+add_wave $opi/m_axis_tuser -into m_axis_OPI -color teal
+add_wave $opi/m_axis_tvalid -into m_axis_OPI -color teal
+add_wave $opi/m_axis_tready -into m_axis_OPI -color teal
+add_wave $opi/m_axis_tlast -into m_axis_OPI -color teal
+add_wave_group s_axis_0_OPI
+add_wave $opi/s_axis_0_tdata -into s_axis_0_OPI -color gold
+add_wave $opi/s_axis_0_tkeep -into s_axis_0_OPI -color gold
+add_wave $opi/s_axis_0_tuser -into s_axis_0_OPI -color gold
+add_wave $opi/s_axis_0_tvalid -into s_axis_0_OPI -color gold
+add_wave $opi/s_axis_0_tready -into s_axis_0_OPI -color gold
+add_wave $opi/s_axis_0_tlast -into s_axis_0_OPI -color gold
+add_wave_group s_axis_1_OPI
+add_wave $opi/s_axis_1_tdata -into s_axis_1_OPI -color orange
+add_wave $opi/s_axis_1_tkeep -into s_axis_1_OPI -color orange
+add_wave $opi/s_axis_1_tuser -into s_axis_1_OPI -color orange
+add_wave $opi/s_axis_1_tvalid -into s_axis_1_OPI -color orange
+add_wave $opi/s_axis_1_tready -into s_axis_1_OPI -color orange
+add_wave $opi/s_axis_1_tlast -into s_axis_1_OPI -color orange
+add_wave_group s_axis_2_OPI
+add_wave $opi/s_axis_2_tdata -into s_axis_2_OPI -color maroon
+add_wave $opi/s_axis_2_tkeep -into s_axis_2_OPI -color maroon
+add_wave $opi/s_axis_2_tuser -into s_axis_2_OPI -color maroon
+add_wave $opi/s_axis_2_tvalid -into s_axis_2_OPI -color maroon
+add_wave $opi/s_axis_2_tready -into s_axis_2_OPI -color maroon
+add_wave $opi/s_axis_2_tlast -into s_axis_2_OPI -color maroon
+add_wave_group s_axis_3_OPI
+add_wave $opi/s_axis_3_tdata -into s_axis_3_OPI -color khaki
+add_wave $opi/s_axis_3_tkeep -into s_axis_3_OPI -color khaki
+add_wave $opi/s_axis_3_tuser -into s_axis_3_OPI -color khaki
+add_wave $opi/s_axis_3_tvalid -into s_axis_3_OPI -color khaki
+add_wave $opi/s_axis_3_tready -into s_axis_3_OPI -color khaki
+add_wave $opi/s_axis_3_tlast -into s_axis_3_OPI -color khaki
+add_wave_group s_axis_4_OPI
+add_wave $opi/s_axis_4_tdata -into s_axis_4_OPI -color pink
+add_wave $opi/s_axis_4_tkeep -into s_axis_4_OPI -color pink
+add_wave $opi/s_axis_4_tuser -into s_axis_4_OPI -color pink
+add_wave $opi/s_axis_4_tvalid -into s_axis_4_OPI -color pink
+add_wave $opi/s_axis_4_tready -into s_axis_4_OPI -color pink
+add_wave $opi/s_axis_4_tlast -into s_axis_4_OPI -color pink
+add_wave_group Internal_OPI
+add_wave $opi/pkt_fwd -into Internal_OPI
+add_wave $opi/nearly_full -into Internal_OPI
+add_wave $opi/empty -into Internal_OPI
+add_wave $opi/in_tdata -into Internal_OPI
+add_wave $opi/in_tkeep -into Internal_OPI
+add_wave $opi/in_tuser -into Internal_OPI
+add_wave $opi/in_tvalid -into Internal_OPI
+add_wave $opi/in_tlast -into Internal_OPI
+add_wave $opi/fifo_out_tuser -into Internal_OPI
+add_wave $opi/fifo_out_tdata -into Internal_OPI
+add_wave $opi/fifo_out_tkeep -into Internal_OPI
+add_wave $opi/fifo_out_tlast -into Internal_OPI
+add_wave $opi/fifo_tvalid -into Internal_OPI
+add_wave $opi/fifo_tlast -into Internal_OPI
+add_wave $opi/rd_en -into Internal_OPI
+add_wave $opi/cur_queue_plus1 -into Internal_OPI
+add_wave $opi/cur_queue -into Internal_OPI
+add_wave $opi/cur_queue_next -into Internal_OPI
+add_wave $opi/in_arb_cur_queue -into Internal_OPI
+add_wave $opi/state -into Internal_OPI
+add_wave $opi/state_next -into Internal_OPI
+add_wave $opi/in_arb_state -into Internal_OPI
+add_wave $opi/pkt_fwd_next -into Internal_OPI
+
+# Virtual Switch 0
+add_wave_divider {SDNet - Virtual Switch 0} -color chocolate
+add_wave_virtual_bus clock_VS_0
+add_wave $sig_clock -name clock -into clock_VS_0
+add_wave $sig_resetn -name reset_n -into clock_VS_0
+add_wave_virtual_bus Output_VS_0 -color blue
+add_wave $nf_datapath/s_axis_0_opi_tdata -into Output_VS_0 -color blue
+add_wave $nf_datapath/s_axis_0_opi_tkeep -into Output_VS_0 -color blue
+add_wave $nf_datapath/s_axis_0_opi_tuser -into Output_VS_0 -color blue
+add_wave $nf_datapath/s_axis_0_opi_tvalid -into Output_VS_0 -color blue
+add_wave $nf_datapath/s_axis_0_opi_tready -into Output_VS_0
+add_wave $nf_datapath/s_axis_0_opi_tlast -into Output_VS_0 -color blue
+add_wave_virtual_bus Input_VS_0 -color purple
+add_wave $nf_datapath/m_axis_0_ipi_tdata -into Input_VS_0 -color purple
+add_wave $nf_datapath/m_axis_0_ipi_tkeep -into Input_VS_0 -color purple
+add_wave $nf_datapath/m_axis_0_ipi_tuser -into Input_VS_0 -color purple
+add_wave $nf_datapath/m_axis_0_ipi_tvalid -into Input_VS_0 -color purple
+add_wave $nf_datapath/m_axis_0_ipi_tready -into Input_VS_0
+add_wave $nf_datapath/m_axis_0_ipi_tlast -into Input_VS_0 -color purple
+add_wave_virtual_bus Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_AWADDR -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_AWVALID -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_AWREADY -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_WDATA -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_WSTRB -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_WVALID -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_WREADY -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_BRESP -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_BVALID -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_BREADY -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_ARADDR -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_ARVALID -into Control_VS_0 -color yellow
+add_wave $nf_datapath/S1_AXI_0_ARREADY -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_RDATA -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_RRESP -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_RVALID -into Control_VS_0
+add_wave $nf_datapath/S1_AXI_0_RREADY -into Control_VS_0 -color yellow
+
+# Virtual Switch 1
+add_wave_divider {SDNet - Virtual Switch 1} -color chocolate
+add_wave_virtual_bus clock_VS_1
+add_wave $sig_clock -name clock -into clock_VS_1
+add_wave $sig_resetn -name reset_n -into clock_VS_1
+add_wave_virtual_bus Output_VS_1 -color blue
+add_wave $nf_datapath/s_axis_1_opi_tdata -into Output_VS_1 -color blue
+add_wave $nf_datapath/s_axis_1_opi_tkeep -into Output_VS_1 -color blue
+add_wave $nf_datapath/s_axis_1_opi_tuser -into Output_VS_1 -color blue
+add_wave $nf_datapath/s_axis_1_opi_tvalid -into Output_VS_1 -color blue
+add_wave $nf_datapath/s_axis_1_opi_tready -into Output_VS_1
+add_wave $nf_datapath/s_axis_1_opi_tlast -into Output_VS_1 -color blue
+add_wave_virtual_bus Input_VS_1 -color purple
+add_wave $nf_datapath/m_axis_1_ipi_tdata -into Input_VS_1 -color purple
+add_wave $nf_datapath/m_axis_1_ipi_tkeep -into Input_VS_1 -color purple
+add_wave $nf_datapath/m_axis_1_ipi_tuser -into Input_VS_1 -color purple
+add_wave $nf_datapath/m_axis_1_ipi_tvalid -into Input_VS_1 -color purple
+add_wave $nf_datapath/m_axis_1_ipi_tready -into Input_VS_1
+add_wave $nf_datapath/m_axis_1_ipi_tlast -into Input_VS_1 -color purple
+add_wave_virtual_bus Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_AWADDR -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_AWVALID -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_AWREADY -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_WDATA -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_WSTRB -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_WVALID -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_WREADY -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_BRESP -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_BVALID -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_BREADY -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_ARADDR -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_ARVALID -into Control_VS_1 -color yellow
+add_wave $nf_datapath/S1_AXI_1_ARREADY -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_RDATA -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_RRESP -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_RVALID -into Control_VS_1
+add_wave $nf_datapath/S1_AXI_1_RREADY -into Control_VS_1 -color yellow
+
+# Virtual Switch 2
+add_wave_divider {SDNet - Virtual Switch 2} -color chocolate
+add_wave_virtual_bus clock_VS_2
+add_wave $sig_clock -name clock -into clock_VS_2
+add_wave $sig_resetn -name reset_n -into clock_VS_2
+add_wave_virtual_bus Output_VS_2 -color blue
+add_wave $nf_datapath/s_axis_2_opi_tdata -into Output_VS_2 -color blue
+add_wave $nf_datapath/s_axis_2_opi_tkeep -into Output_VS_2 -color blue
+add_wave $nf_datapath/s_axis_2_opi_tuser -into Output_VS_2 -color blue
+add_wave $nf_datapath/s_axis_2_opi_tvalid -into Output_VS_2 -color blue
+add_wave $nf_datapath/s_axis_2_opi_tready -into Output_VS_2
+add_wave $nf_datapath/s_axis_2_opi_tlast -into Output_VS_2 -color blue
+add_wave_virtual_bus Input_VS_2 -color purple
+add_wave $nf_datapath/m_axis_2_ipi_tdata -into Input_VS_2 -color purple
+add_wave $nf_datapath/m_axis_2_ipi_tkeep -into Input_VS_2 -color purple
+add_wave $nf_datapath/m_axis_2_ipi_tuser -into Input_VS_2 -color purple
+add_wave $nf_datapath/m_axis_2_ipi_tvalid -into Input_VS_2 -color purple
+add_wave $nf_datapath/m_axis_2_ipi_tready -into Input_VS_2
+add_wave $nf_datapath/m_axis_2_ipi_tlast -into Input_VS_2 -color purple
+add_wave_virtual_bus Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_AWADDR -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_AWVALID -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_AWREADY -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_WDATA -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_WSTRB -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_WVALID -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_WREADY -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_BRESP -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_BVALID -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_BREADY -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_ARADDR -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_ARVALID -into Control_VS_2 -color yellow
+add_wave $nf_datapath/S1_AXI_2_ARREADY -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_RDATA -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_RRESP -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_RVALID -into Control_VS_2
+add_wave $nf_datapath/S1_AXI_2_RREADY -into Control_VS_2 -color yellow
+
+# Virtual Switch 3
+add_wave_divider {SDNet - Virtual Switch 3} -color chocolate
+add_wave_virtual_bus clock_VS_3
+add_wave $sig_clock -name clock -into clock_VS_3
+add_wave $sig_resetn -name reset_n -into clock_VS_3
+add_wave_virtual_bus Output_VS_3 -color blue
+add_wave $nf_datapath/s_axis_3_opi_tdata -into Output_VS_3 -color blue
+add_wave $nf_datapath/s_axis_3_opi_tkeep -into Output_VS_3 -color blue
+add_wave $nf_datapath/s_axis_3_opi_tuser -into Output_VS_3 -color blue
+add_wave $nf_datapath/s_axis_3_opi_tvalid -into Output_VS_3 -color blue
+add_wave $nf_datapath/s_axis_3_opi_tready -into Output_VS_3
+add_wave $nf_datapath/s_axis_3_opi_tlast -into Output_VS_3 -color blue
+add_wave_virtual_bus Input_VS_3 -color purple
+add_wave $nf_datapath/m_axis_3_ipi_tdata -into Input_VS_3 -color purple
+add_wave $nf_datapath/m_axis_3_ipi_tkeep -into Input_VS_3 -color purple
+add_wave $nf_datapath/m_axis_3_ipi_tuser -into Input_VS_3 -color purple
+add_wave $nf_datapath/m_axis_3_ipi_tvalid -into Input_VS_3 -color purple
+add_wave $nf_datapath/m_axis_3_ipi_tready -into Input_VS_3
+add_wave $nf_datapath/m_axis_3_ipi_tlast -into Input_VS_3 -color purple
+add_wave_virtual_bus Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_AWADDR -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_AWVALID -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_AWREADY -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_WDATA -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_WSTRB -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_WVALID -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_WREADY -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_BRESP -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_BVALID -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_BREADY -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_ARADDR -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_ARVALID -into Control_VS_3 -color yellow
+add_wave $nf_datapath/S1_AXI_3_ARREADY -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_RDATA -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_RRESP -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_RVALID -into Control_VS_3
+add_wave $nf_datapath/S1_AXI_3_RREADY -into Control_VS_3 -color yellow
 
 
 run 65us
