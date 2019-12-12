@@ -1,9 +1,0 @@
-// Original commands.txt:
-// table_add dmac forward 0x800e00010002 => 2
-// table_add dmac forward 0x800e00010001 => 1
-//
-// Port1 SUME = 0b00000100   Port2 SUME = 0b00010000
-// h1(MAC) = 00:00:00:00:01:01  h2(MAC) = 00:00:00:00:01:02
-
-table_cam_add_entry dmac forward 00:00:00:00:01:01 => 0b00000100
-table_cam_add_entry dmac forward 00:00:00:00:01:02 => 0b00010000
