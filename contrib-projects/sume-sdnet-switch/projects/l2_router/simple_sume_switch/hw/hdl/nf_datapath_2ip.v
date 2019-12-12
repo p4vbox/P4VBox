@@ -472,7 +472,7 @@ module nf_datapath #(
     );
 
 
-    // SUME SDNet Module 0
+    // Control P4 Interface
       control_p4_interface_ip
     control_p4_interface_0  (
       // AXI4LITE Control Master
