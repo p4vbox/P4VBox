@@ -95,6 +95,42 @@ module control_p4_interface_ip #
     input      [1 : 0]                        S_AXI_1_BRESP,
     input                                     S_AXI_1_BVALID,
     input                                     S_AXI_1_AWREADY,
+    // AXI Lite nf_sume_sdnet2 ports
+    output     [C_S_AXI_ADDR_WIDTH-1 : 0]     S_AXI_2_AWADDR,
+    output                                    S_AXI_2_AWVALID,
+    output     [C_S_AXI_DATA_WIDTH-1 : 0]     S_AXI_2_WDATA,
+    output     [C_S_AXI_DATA_WIDTH/8-1 : 0]   S_AXI_2_WSTRB,
+    output                                    S_AXI_2_WVALID,
+    output                                    S_AXI_2_BREADY,
+    output     [C_S_AXI_ADDR_WIDTH-1 : 0]     S_AXI_2_ARADDR,
+    output                                    S_AXI_2_ARVALID,
+    output                                    S_AXI_2_RREADY,
+    input                                     S_AXI_2_ARREADY,
+    input      [C_S_AXI_DATA_WIDTH-1 : 0]     S_AXI_2_RDATA,
+    input      [1 : 0]                        S_AXI_2_RRESP,
+    input                                     S_AXI_2_RVALID,
+    input                                     S_AXI_2_WREADY,
+    input      [1 : 0]                        S_AXI_2_BRESP,
+    input                                     S_AXI_2_BVALID,
+    input                                     S_AXI_2_AWREADY,
+    // AXI Lite nf_sume_sdnet3 ports
+    output     [C_S_AXI_ADDR_WIDTH-1 : 0]     S_AXI_3_AWADDR,
+    output                                    S_AXI_3_AWVALID,
+    output     [C_S_AXI_DATA_WIDTH-1 : 0]     S_AXI_3_WDATA,
+    output     [C_S_AXI_DATA_WIDTH/8-1 : 0]   S_AXI_3_WSTRB,
+    output                                    S_AXI_3_WVALID,
+    output                                    S_AXI_3_BREADY,
+    output     [C_S_AXI_ADDR_WIDTH-1 : 0]     S_AXI_3_ARADDR,
+    output                                    S_AXI_3_ARVALID,
+    output                                    S_AXI_3_RREADY,
+    input                                     S_AXI_3_ARREADY,
+    input      [C_S_AXI_DATA_WIDTH-1 : 0]     S_AXI_3_RDATA,
+    input      [1 : 0]                        S_AXI_3_RRESP,
+    input                                     S_AXI_3_RVALID,
+    input                                     S_AXI_3_WREADY,
+    input      [1 : 0]                        S_AXI_3_BRESP,
+    input                                     S_AXI_3_BVALID,
+    input                                     S_AXI_3_AWREADY,
     // General ports
     input                                     M_AXI_ACLK,
     input                                     M_AXI_ARESETN
@@ -154,6 +190,24 @@ module control_p4_interface_ip #
     assign S_AXI_1_ARADDR   = M_AXI_ARADDR;
     assign S_AXI_1_ARVALID  = M_AXI_ARVALID;
     assign S_AXI_1_RREADY   = M_AXI_RREADY;
+    assign S_AXI_2_AWADDR   = M_AXI_AWADDR;
+    assign S_AXI_2_AWVALID  = M_AXI_AWVALID;
+    assign S_AXI_2_WDATA    = M_AXI_WDATA;
+    assign S_AXI_2_WSTRB    = M_AXI_WSTRB;
+    assign S_AXI_2_WVALID   = M_AXI_WVALID;
+    assign S_AXI_2_BREADY   = M_AXI_BREADY;
+    assign S_AXI_2_ARADDR   = M_AXI_ARADDR;
+    assign S_AXI_2_ARVALID  = M_AXI_ARVALID;
+    assign S_AXI_2_RREADY   = M_AXI_RREADY;
+    assign S_AXI_3_AWADDR   = M_AXI_AWADDR;
+    assign S_AXI_3_AWVALID  = M_AXI_AWVALID;
+    assign S_AXI_3_WDATA    = M_AXI_WDATA;
+    assign S_AXI_3_WSTRB    = M_AXI_WSTRB;
+    assign S_AXI_3_WVALID   = M_AXI_WVALID;
+    assign S_AXI_3_BREADY   = M_AXI_BREADY;
+    assign S_AXI_3_ARADDR   = M_AXI_ARADDR;
+    assign S_AXI_3_ARVALID  = M_AXI_ARVALID;
+    assign S_AXI_3_RREADY   = M_AXI_RREADY;
 
 
     // Implement axi_awready generation

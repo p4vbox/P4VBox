@@ -316,6 +316,42 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_1_BRESP;
     (* mark_debug = "true" *) wire                                     S1_AXI_1_BVALID;
     (* mark_debug = "true" *) wire                                     S1_AXI_1_AWREADY;
+      //cpi->nf_sume_sdnet2
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_2_AWADDR;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_2_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_2_WSTRB;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_WVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_2_ARADDR;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_ARVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_RREADY;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_2_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_2_RRESP;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_RVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_2_BRESP;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_BVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_2_AWREADY;
+      //cpi->nf_sume_sdnet1
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_3_AWADDR;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_3_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_3_WSTRB;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_WVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_3_ARADDR;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_ARVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_RREADY;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_3_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_3_RRESP;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_RVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_3_BRESP;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_BVALID;
+    (* mark_debug = "true" *) wire                                     S1_AXI_3_AWREADY;
 
 
 
@@ -493,6 +529,42 @@ module nf_datapath #(
       .S_AXI_1_BRESP(S1_AXI_1_BRESP),
       .S_AXI_1_BVALID(S1_AXI_1_BVALID),
       .S_AXI_1_AWREADY(S1_AXI_1_AWREADY),
+      // AXI4LITE Control Slave 2
+      .S_AXI_2_AWADDR(S1_AXI_2_AWADDR),
+      .S_AXI_2_AWVALID(S1_AXI_2_AWVALID),
+      .S_AXI_2_WDATA(S1_AXI_2_WDATA),
+      .S_AXI_2_WSTRB(S1_AXI_2_WSTRB),
+      .S_AXI_2_WVALID(S1_AXI_2_WVALID),
+      .S_AXI_2_BREADY(S1_AXI_2_BREADY),
+      .S_AXI_2_ARADDR(S1_AXI_2_ARADDR),
+      .S_AXI_2_ARVALID(S1_AXI_2_ARVALID),
+      .S_AXI_2_RREADY(S1_AXI_2_RREADY),
+      .S_AXI_2_ARREADY(S1_AXI_2_ARREADY),
+      .S_AXI_2_RDATA(S1_AXI_2_RDATA),
+      .S_AXI_2_RRESP(S1_AXI_2_RRESP),
+      .S_AXI_2_RVALID(S1_AXI_2_RVALID),
+      .S_AXI_2_WREADY(S1_AXI_2_WREADY),
+      .S_AXI_2_BRESP(S1_AXI_2_BRESP),
+      .S_AXI_2_BVALID(S1_AXI_2_BVALID),
+      .S_AXI_2_AWREADY(S1_AXI_2_AWREADY),
+      // AXI4LITE Control Slave 3
+      .S_AXI_3_AWADDR(S1_AXI_3_AWADDR),
+      .S_AXI_3_AWVALID(S1_AXI_3_AWVALID),
+      .S_AXI_3_WDATA(S1_AXI_3_WDATA),
+      .S_AXI_3_WSTRB(S1_AXI_3_WSTRB),
+      .S_AXI_3_WVALID(S1_AXI_3_WVALID),
+      .S_AXI_3_BREADY(S1_AXI_3_BREADY),
+      .S_AXI_3_ARADDR(S1_AXI_3_ARADDR),
+      .S_AXI_3_ARVALID(S1_AXI_3_ARVALID),
+      .S_AXI_3_RREADY(S1_AXI_3_RREADY),
+      .S_AXI_3_ARREADY(S1_AXI_3_ARREADY),
+      .S_AXI_3_RDATA(S1_AXI_3_RDATA),
+      .S_AXI_3_RRESP(S1_AXI_3_RRESP),
+      .S_AXI_3_RVALID(S1_AXI_3_RVALID),
+      .S_AXI_3_WREADY(S1_AXI_3_WREADY),
+      .S_AXI_3_BRESP(S1_AXI_3_BRESP),
+      .S_AXI_3_BVALID(S1_AXI_3_BVALID),
+      .S_AXI_3_AWREADY(S1_AXI_3_AWREADY),
       // AXILITE clock
       .M_AXI_ACLK (axi_aclk),
       .M_AXI_ARESETN(axi_resetn)
