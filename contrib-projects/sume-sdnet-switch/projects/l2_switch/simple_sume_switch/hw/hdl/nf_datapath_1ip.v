@@ -565,8 +565,8 @@ module nf_datapath #(
     );
 
     // SUME SDNet Module 0
-      nf_sdnet_l2_switch_ip
-    sdnet_l2_switch  (
+      nf_sdnet_vSwitch0_ip
+    sdnet_vSwitch0  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
