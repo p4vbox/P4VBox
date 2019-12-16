@@ -34,11 +34,13 @@
 verbose=$1
 
 dir=${PWD}
-SDNET_OUT_DIR=nf_sdnet_ip_${P4_SWITCH}
+VIRTUAL_SWITCH=vSwitch${P4_SWITCH_ID}
+SDNET_OUT_DIR=nf_sdnet_ip_${VIRTUAL_SWITCH}
 
 echo
 echo Setting SDNET_OUT_DIR = ${SDNET_OUT_DIR}
-echo Source Generating P4: ${P4_SWITCH}
+echo         Generating P4 = ${P4_SWITCH}
+echo                    ID = ${P4_SWITCH_ID}
 cd ${P4_PROJECT_DIR} && make gen_src
 echo
 echo Compiling P4: ${P4_SWITCH}
@@ -49,7 +51,7 @@ if [ -z $verbose ]; then
   echo Generating IP: ${P4_SWITCH}
   cd ${P4_PROJECT_DIR}
   make >> log/build_${P4_SWITCH}.log
-  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/
+  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
   ./vivado_sim.bash >> ../../log/build_${P4_SWITCH}.log
   echo
   echo Installing IP: ${P4_SWITCH}
@@ -59,7 +61,7 @@ else
   echo Generating IP: ${P4_SWITCH}
   cd ${P4_PROJECT_DIR}
   make | tee -a log/build_${P4_SWITCH}.log
-  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/
+  cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
   ./vivado_sim.bash | tee -a ../../log/build_${P4_SWITCH}.log
   echo
   echo Installing IP: ${P4_SWITCH}
@@ -70,7 +72,7 @@ fi
 
 echo
 echo Get Config Writes: ${P4_SWITCH}
-writes_src=${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${P4_SWITCH}/config_writes.txt
+writes_src=${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/config_writes.txt
 writes_dst=${P4_PROJECT_DIR}/config_writes/confW_${P4_SWITCH}.txt
 cp -fv  ${writes_src} ${writes_dst}
 echo

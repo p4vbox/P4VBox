@@ -292,9 +292,12 @@ def main():
     initWorkspace(verbose_mode)
 
     if( args.c and not(args.t) ):
+        p4_switch_id = 0
         for p4_switch in args.switches:
             os.environ["P4_SWITCH"] = p4_switch
+            os.environ["P4_SWITCH_ID"] = str(p4_switch_id)
             genSource(p4_switch)
+            p4_switch_id += 1
         sys.exit(0)
 
     if( args.t ):
@@ -307,19 +310,25 @@ def main():
         sys.exit(0)
 
     if ( args.testdata_all ):
-        # Need environment update: P4_SWITCH
+        # Need environment update: P4_SWITCH and P4_SWITCH_ID
+        p4_switch_id = 0
         for p4_switch in args.switches:
             os.environ["P4_SWITCH"] = p4_switch
+            os.environ["P4_SWITCH_ID"] = str(p4_switch_id)
             genTestdata(verbose_mode)
             buildIp(p4_switch, verbose_mode)
+            p4_switch_id += 1
         os.environ["P4_SWITCH"] = projName
         genTestdata(verbose_mode)
     else:
         os.environ["P4_SWITCH"] = projName
         genTestdata(verbose_mode)
+        p4_switch_id = 0
         for p4_switch in args.switches:
             os.environ["P4_SWITCH"] = p4_switch
+            os.environ["P4_SWITCH_ID"] = str(p4_switch_id)
             buildIp(p4_switch, verbose_mode)
+            p4_switch_id += 1
 
     if( args.s ):
         sys.exit(0)

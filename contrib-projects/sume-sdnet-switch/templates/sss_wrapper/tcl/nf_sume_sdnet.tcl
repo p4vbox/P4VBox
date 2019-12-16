@@ -24,8 +24,9 @@
 # Vivado Launch Script
 #### Change design settings here #######
 set p4_switch $::env(P4_SWITCH)
-set wrapper wrapper_${p4_switch}
-set design_name nf_sdnet_${p4_switch}
+set p4_switch_id $::env(P4_SWITCH_ID)
+set virtual_switch vSwitch${p4_switch_id}
+set design_name nf_sdnet_$virtual_switch
 
 set design ${design_name}
 set top ${design_name}
@@ -43,7 +44,11 @@ set_property source_mgmt_mode All [current_project]
 set_property top ${top} [current_fileset]
 set_property ip_repo_paths $::env(SUME_FOLDER)/lib/hw/  [current_fileset]
 update_ip_catalog
-puts "\n Creatting design: ${design_name} \n"
+puts "\n---------- Creatting Virtual Switch  ----------"
+puts "    Virtual Switch: ${p4_switch}"
+puts "      SDNet outdir: nf_sdnet_ip_${virtual_switch}"
+puts "       Design Name: ${design_name}"
+puts "                ID: ${p4_switch_id}\n"
 
 #####################################
 # Project Structure & IP Build
@@ -54,7 +59,7 @@ read_verilog "./wrapper/${design_name}.v"
 read_verilog "./wrapper/changeEndian.v"
 
 
-add_files -scan_for_includes ./${p4_switch}/
+add_files -scan_for_includes ./${virtual_switch}/
 import_files -force
 
 
