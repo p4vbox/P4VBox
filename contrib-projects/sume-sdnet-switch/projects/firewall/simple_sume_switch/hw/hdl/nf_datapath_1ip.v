@@ -565,29 +565,29 @@ module nf_datapath #(
     );
 
     // SUME SDNet Module 0
-      nf_sdnet_firewall_ip
-    sdnet_firewall  (
+      nf_sdnet_vSwitch0_ip
+    sdnet_vSwitch0  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       //nf_sume_sdnet->output_p4_interface->sss_output_queues
-      .m_axis_tdata (s_axis_2_opi_tdata),
-      .m_axis_tkeep (s_axis_2_opi_tkeep),
-      .m_axis_tuser (s_axis_2_opi_tuser),
-      .m_axis_tvalid(s_axis_2_opi_tvalid),
-      .m_axis_tready(s_axis_2_opi_tready),
-      .m_axis_tlast (s_axis_2_opi_tlast),
+      .m_axis_tdata (s_axis_0_opi_tdata),
+      .m_axis_tkeep (s_axis_0_opi_tkeep),
+      .m_axis_tuser (s_axis_0_opi_tuser),
+      .m_axis_tvalid(s_axis_0_opi_tvalid),
+      .m_axis_tready(s_axis_0_opi_tready),
+      .m_axis_tlast (s_axis_0_opi_tlast),
       //input_arbiter->input_p4_interface->nf_sume_sdnet
-      .s_axis_tdata (m_axis_2_ipi_tdata),
-      .s_axis_tkeep (m_axis_2_ipi_tkeep),
+      .s_axis_tdata (m_axis_0_ipi_tdata),
+      .s_axis_tkeep (m_axis_0_ipi_tkeep),
       .s_axis_tuser ({dma_q_size_opi_in,
                       nf3_q_size_opi_in,
                       nf2_q_size_opi_in,
                       nf1_q_size_opi_in,
                       nf0_q_size_opi_in,
-                      m_axis_2_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
-      .s_axis_tvalid(m_axis_2_ipi_tvalid),
-      .s_axis_tready(m_axis_2_ipi_tready),
-      .s_axis_tlast (m_axis_2_ipi_tlast),
+                      m_axis_0_ipi_tuser[C_M_AXIS_TUSER_WIDTH-DIGEST_WIDTH-1:0]}),
+      .s_axis_tvalid(m_axis_0_ipi_tvalid),
+      .s_axis_tready(m_axis_0_ipi_tready),
+      .s_axis_tlast (m_axis_0_ipi_tlast),
 
       .S_AXI_AWADDR(S1_AXI_0_AWADDR),
       .S_AXI_AWVALID(S1_AXI_0_AWVALID),
