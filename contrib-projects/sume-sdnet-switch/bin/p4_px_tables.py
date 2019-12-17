@@ -323,14 +323,14 @@ def parse_table_cam_add_entry(line):
     keys = lhs[2:]
     test = keys[0].encode('UTF8')
     result_list = ast.literal_eval(json.dumps(keys))
-    print(result_list)
+    # print(result_list)
     action_data = rhs
     action_list = ast.literal_eval(json.dumps(action_data))
-    print(action_list)
+    # print(action_list)
     table_name_s = table_name.encode('ascii','replace')
     #keys_m = "['" + keys[0].encode('UTF8') + "']"
     action_name_s = action_name.encode('ascii','replace')
-    print(table_name_s, result_list, action_name_s, action_list)
+    # print(table_name_s, result_list, action_name_s, action_list)
     return (table_name_s, result_list, action_name_s, action_list)
 
 def parse_table_tcam_add_entry(line):
