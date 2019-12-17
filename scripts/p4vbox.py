@@ -46,7 +46,7 @@ def getArgs():
     global args
     parser = argparse.ArgumentParser(prog="p4vbox", usage="./%(prog)s.py name_p4_switch_0 name_p4_switch_1 ... name_p4_switch_N  [options] [--help]", description="Virtualize P4 Switches with P4VBox Architecture.")
     parser.add_argument("switches", nargs="+", metavar="<string>", help="The name of first P4 switch to virtualize, i.e: l2_switch, router ")
-    parser.add_argument("-name", type=str, metavar="<string>", default=os.environ["P4_PROJECT_NAME"], help="This will replace the environment variables to match with the given switch name (This flag removes the need to update the P4_PROJECT_NAME variable in setting.sh script).")
+    parser.add_argument("-name", type=str, metavar="<string>", default=None, help="This will replace the environment variables to match with the given switch name (This flag removes the need to update the P4_PROJECT_NAME variable in setting.sh script).")
     parser.add_argument("-t", action="store_true", help="This will only run gen_testdate_<p4_switch>.py from testdata/ folder to generate packets for test (src.pcap and dst.pcap).")
     parser.add_argument("-c", action="store_true", help="This will only compile <p4_switch>.p4 from src/ folder to verify syntax and create tables.")
     parser.add_argument("-s", action="store_true", help="This will compile, generate testdata and run p4_switch simulation (simulation generated from SDNet with src.pcap and dst.pcap).")
@@ -67,10 +67,15 @@ def getArgs():
 def setEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
 
-    if( args.name ):
+    if ( args.name is None ):
+        if ( len(args.switches) == 1 ):
+            os.environ["P4_PROJECT_NAME"] = str(args.switches[0])
+        else: # Get the defined P4_PROJECT_NAME environment variable from settings.sh, if set
+            if ("P4_PROJECT_NAME" not in os.environ):
+                print("\nThe P4_PROJECT_NAME environment variable or the -name flag must be set!!!\n\n")
+                sys.exit(1)
+    else:
         os.environ["P4_PROJECT_NAME"] = args.name
-    elif ( len(args.switches) == 1 ):
-        os.environ["P4_PROJECT_NAME"] = str(args.switches[0])
 
     # Adding all switch in one string and export this in environment
     # variables to pass this switches as parameters to tcl
