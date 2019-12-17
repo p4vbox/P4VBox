@@ -105,14 +105,18 @@ source ./tcl/control_sub.tcl -notrace
 
 
 puts "\n All P4 switches = ${p4_switches} \n"
+set vswitch_id 0
 foreach p4_switch $p4_switches {
-  set p4_switch_name nf_sdnet_${p4_switch}
-  puts "\nCreating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
+  set vswitch_name vSwitch${vswitch_id}
+  set p4_switch_name nf_sdnet_${vswitch_name}
+  puts "Creating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
   #source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
   create_ip -name ${p4_switch_name} -vendor NetFPGA -library NetFPGA -module_name ${p4_switch_name}_ip
   set_property generate_synth_checkpoint false [get_files ${p4_switch_name}_ip.xci]
   reset_target all [get_ips ${p4_switch_name}_ip]
   generate_target all [get_ips ${p4_switch_name}_ip]
+  incr vswitch_id
+  puts ""
 }
 
 
@@ -153,6 +157,7 @@ generate_target all [get_ips identifier_ip]
 
 
 read_verilog "./hdl/input_p4_interface.v"
+read_verilog "./hdl/control_p4_interface.v"
 read_verilog "./hdl/small_fifo.v"
 read_verilog "./hdl/fallthrough_small_fifo.v"
 read_verilog "./hdl/output_p4_interface.v"

@@ -38,9 +38,11 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
+top_name=vSwitch${P4_SWITCH_ID}
+
 all:
-	p4c-sdnet -o ${P4_SWITCH}.sdnet --toplevel_name ${P4_SWITCH} --sdnet_info .sdnet_switch_info_${P4_SWITCH}.dat ${P4_SWITCH}.p4
+	p4c-sdnet -o ${P4_SWITCH}.sdnet --toplevel_name ${top_name} --sdnet_info .sdnet_switch_info_${P4_SWITCH}.dat ${P4_SWITCH}.p4
 	${SUME_SDNET}/bin/p4_px_tables.py commands_${P4_SWITCH}.txt .sdnet_switch_info_${P4_SWITCH}.dat
 
 clean:
-	rm -f *.sdnet *.tbl .sdnet_switch_info.dat
+	rm -f *.sdnet *.tbl .sdnet_switch_info_${P4_SWITCH}.dat
