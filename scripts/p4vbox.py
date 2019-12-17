@@ -67,10 +67,10 @@ def getArgs():
 def setEnv():
     global args; global projName; global projDir; global projDesignDir; global projSume
 
-    if( len(args.switches) == 1 ):
-        os.environ["P4_PROJECT_NAME"] = str(args.switches[0])
-    else:
+    if( args.name ):
         os.environ["P4_PROJECT_NAME"] = args.name
+    elif ( len(args.switches) == 1 ):
+        os.environ["P4_PROJECT_NAME"] = str(args.switches[0])
 
     # Adding all switch in one string and export this in environment
     # variables to pass this switches as parameters to tcl
@@ -109,13 +109,17 @@ def cleanAll():
     global args
     print("\nCleaning Workdir\n")
     if ( args.v ):
-        subprocess.call(["make", "-C", os.environ["P4VBOX_SCRIPTS"], "clean"])
+        subprocess.call("rm -rfv .Xil", shell=True)
+        subprocess.call("rm -rfv $(find -name *.log -o -name *.jou)", shell=True)
+        subprocess.call(["make", "-C", projDir, "clean"])
     else:
-        subprocess.call(["make", "-s", "-C", os.environ["P4VBOX_SCRIPTS"], "clean"])
+        subprocess.call("rm -rf .Xil", shell=True)
+        subprocess.call("rm -rf $(find -name *.log -o -name *.jou)", shell=True)
+        subprocess.call(["make", "-s", "-C", projDir, "clean"])
 
 def initWorkspace(verbose):
     global args; global projName; global projDir; global projDesignDir
-    print("\nInitializing Workspace\n")
+    print("\nInitializing Workspace")
 
     if( args.latency ):
         file_src = projDir +"/testdata/gen_testdata_"+ projName +"_"+ str(len(args.switches)) +"ip_latency.py"
@@ -154,32 +158,23 @@ def initWorkspace(verbose):
             print("\tDestination: "+ file_dst +"\n\n")
             sys.exit(1)
     elif ( args.testdata_all ):
-        for p4_switch in args.switches:
-            file_src = projDir +"/testdata/gen_testdata_"+ p4_switch +"_1ip.py"
-            file_dst = projDir +"/testdata/gen_testdata_"+ p4_switch +".py"
-            os_error = subprocess.call("cp "+ verbose + file_src +" "+ file_dst, shell=True)
-            if ( 1 == os_error ):
-                print("\nFile not find:")
-                print("\tSource: "+ file_src)
-                print("\tDestination: "+ file_dst +"\n\n")
+        print("")
+        for idx, p4_switch in enumerate(args.switches):
+            file_testdata = projDir +"/testdata/gen_testdata_"+ p4_switch +".py"
+            if ( os.path.exists(file_testdata) ):
+                if (verbose):
+                    print("    Testdata vSwitch"+ str(idx) +" - "+ p4_switch +": gen_testdata_"+ p4_switch +".py\n    File: "+ file_testdata)
+            else:
+                print("\nTestdata to "+ p4_switch +" not find!!!\n\tFile:"+ file_testdata)
                 sys.exit(1)
-        file_src = projDir +"/testdata/gen_testdata_"+ projName +"_"+ str(len(args.switches)) +"ip.py"
-        file_dst = projDir +"/testdata/gen_testdata_"+ projName +".py"
-        os_error = subprocess.call("cp "+ verbose + file_src +" "+ file_dst, shell=True)
-        if ( 1 == os_error ):
-            print("\nFile not find:")
-            print("\tSource: "+ file_src)
-            print("\tDestination: "+ file_dst +"\n\n")
-            sys.exit(1)
+
+    file_testdata = projDir +"/testdata/gen_testdata_"+ projName +".py"
+    if ( os.path.exists(file_testdata) ):
+        if (verbose):
+            print("    Main testdata: gen_testdata_"+ projName +".py\n    File: "+ file_testdata +"\n")
     else:
-        file_src = projDir +"/testdata/gen_testdata_"+ projName +"_"+ str(len(args.switches)) +"ip.py"
-        file_dst = projDir +"/testdata/gen_testdata_"+ projName +".py"
-        os_error = subprocess.call("cp "+ verbose + file_src +" "+ file_dst, shell=True)
-        if ( 1 == os_error ):
-            print("\nFile not find:")
-            print("\tSource: "+ file_src)
-            print("\tDestination: "+ file_dst +"\n\n")
-            sys.exit(1)
+        print("\nProject testdata not find!!!\n\tFile:"+ file_testdata)
+        sys.exit(1)
 
     file_src = projDesignDir +"/hw/hdl/nf_datapath_"+ str(len(args.switches)) +"ip.v"
     file_dst = projDesignDir +"/hw/hdl/nf_datapath.v"
@@ -196,7 +191,10 @@ def initWorkspace(verbose):
 
 def genTestdata(verbose):
     global args; global projDir
-    print("\nGenerating TestData: Project "+ os.environ["P4_SWITCH"] +"\n")
+    if ( os.environ["P4_SWITCH"] == projName):
+        print("\nGenerating TestData to Project "+ os.environ["P4_SWITCH"] +"\n")
+    else:
+        print("\nGenerating TestData: Virtual Switch "+ os.environ["P4_SWITCH"] +"\n")
     subprocess.call(["make", "-C", projDir , "gen_testdata"])
 
     print("")
@@ -219,8 +217,8 @@ def genSource(switch):
     print("\nCompilling IP: "+ switch +"\n")
     subprocess.call(["make", "-C", projDir, "gen_src"])
 
-def buildIp(switch, verbose):
-    print("\nBuilding IP: "+ switch +"\n")
+def buildIp(switch, verbose, idx):
+    print("\nBuilding IP: "+ switch +" - vSwitch"+ str(idx))
     subprocess.call([os.environ["P4VBOX_SCRIPTS"] +"/p4_build.sh "+verbose], shell=True)
 
 def genConfigWrites():
@@ -311,24 +309,20 @@ def main():
 
     if ( args.testdata_all ):
         # Need environment update: P4_SWITCH and P4_SWITCH_ID
-        p4_switch_id = 0
-        for p4_switch in args.switches:
+        for idx, p4_switch in enumerate(args.switches):
             os.environ["P4_SWITCH"] = p4_switch
-            os.environ["P4_SWITCH_ID"] = str(p4_switch_id)
+            os.environ["P4_SWITCH_ID"] = str(idx)
             genTestdata(verbose_mode)
-            buildIp(p4_switch, verbose_mode)
-            p4_switch_id += 1
+            buildIp(p4_switch, verbose_mode, idx)
         os.environ["P4_SWITCH"] = projName
         genTestdata(verbose_mode)
     else:
         os.environ["P4_SWITCH"] = projName
         genTestdata(verbose_mode)
-        p4_switch_id = 0
-        for p4_switch in args.switches:
+        for idx, p4_switch in enumerate(args.switches):
             os.environ["P4_SWITCH"] = p4_switch
-            os.environ["P4_SWITCH_ID"] = str(p4_switch_id)
-            buildIp(p4_switch, verbose_mode)
-            p4_switch_id += 1
+            os.environ["P4_SWITCH_ID"] = str(idx)
+            buildIp(p4_switch, verbose_mode, idx)
 
     if( args.s ):
         sys.exit(0)
