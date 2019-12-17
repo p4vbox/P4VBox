@@ -38,30 +38,30 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-
-SDNET_OUT_DIR=nf_sdnet_ip_${P4_SWITCH}
-P4_SWITCH_WRAPPER=nf_sdnet_${P4_SWITCH}.v
+VIRTUAL_SWITCH=vSwitch${P4_SWITCH_ID}
+SDNET_OUT_DIR=nf_sdnet_ip_${VIRTUAL_SWITCH}
+P4_SWITCH_WRAPPER=nf_sdnet_${VIRTUAL_SWITCH}.v
 PX=sdnet
-PX_FLAGS=-prefix ${P4_SWITCH} -busType axi -busWidth 256 -singlecontrolport -workDir ${SDNET_OUT_DIR} -altVivadoScripts
+PX_FLAGS=-prefix ${VIRTUAL_SWITCH} -busType axi -busWidth 256 -singlecontrolport -workDir ${SDNET_OUT_DIR} -altVivadoScripts
 TARGET=${SUME_FOLDER}/lib/hw/contrib/cores
 SWITCH_INFO=src/.sdnet_switch_info_${P4_SWITCH}.dat
 
 # Compile to HDL with P4-SDNet
 # Running vivado_sim.bash or questa.bash compares the HDL simulation output to user provided expected output
 all: run_scripts
-	cp src/*.tbl ${SDNET_OUT_DIR}/${P4_SWITCH}/
-	cp testdata/*.txt ${SDNET_OUT_DIR}/${P4_SWITCH}/
-	cp testdata/*.axi ${SDNET_OUT_DIR}/${P4_SWITCH}/
+	cp src/*.tbl ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
+	cp testdata/*.txt ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
+	cp testdata/*.axi ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
 
 # Compile to HDL with P4-SDNet - Not corrently used
 # Running vivado_sim.bash or questa.bash compares the HDL simulation output to the C++ simulation output
 cpp_test: clean frontend compile_cpp_test run_scripts
-	cp src/*.tbl ${SDNET_OUT_DIR}/${P4_SWITCH}/
-	cp testdata/src.pcap ${SDNET_OUT_DIR}/${P4_SWITCH}/Packet.user
-	cp testdata/Tuple_in.txt ${SDNET_OUT_DIR}/${P4_SWITCH}/Tuple.user
-	cp src/*.tbl ${SDNET_OUT_DIR}/${P4_SWITCH}/${P4_SWITCH}.TB/
-	cp testdata/src.pcap ${SDNET_OUT_DIR}/${P4_SWITCH}/${P4_SWITCH}.TB/Packet.user
-	cp testdata/Tuple_in.txt ${SDNET_OUT_DIR}/${P4_SWITCH}/${P4_SWITCH}.TB/Tuple.user
+	cp src/*.tbl ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
+	cp testdata/src.pcap ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/Packet.user
+	cp testdata/Tuple_in.txt ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/Tuple.user
+	cp src/*.tbl ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/${VIRTUAL_SWITCH}.TB/
+	cp testdata/src.pcap ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/${VIRTUAL_SWITCH}.TB/Packet.user
+	cp testdata/Tuple_in.txt ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/${VIRTUAL_SWITCH}.TB/Tuple.user
 
 gen_src:
 	make -C src/
@@ -81,19 +81,19 @@ gen_config_writes:
 	${SUME_SDNET}/bin/gen_config_writes.py config_writes/config_writes.txt ${P4_SWITCH_BASE_ADDR} testdata
 
 run_scripts:
-	${SUME_SDNET}/bin/gen_P4_SWITCH_externs.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${P4_SWITCH}/ ${SUME_SDNET}/templates/ ./testdata/ ./sw/ --base_address ${P4_SWITCH_BASE_ADDR}
-	${SUME_SDNET}/bin/gen_P4_SWITCH_API.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${P4_SWITCH}/ sw/ ${SUME_SDNET}/templates/ --base_address ${P4_SWITCH_BASE_ADDR}
-	${SUME_SDNET}/bin/gen_P4_SWITCH_CLI.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${P4_SWITCH}/ sw/ ${SUME_SDNET}/templates/ --base_address ${P4_SWITCH_BASE_ADDR}
-	# The following command only applies if running P4_SWITCH Questa Simulation with Ubuntu
-	sed -i 's/vsim/vsim \-ldflags \"\-B\/usr\/lib\/x86\_64\-linux-gnu\"/g' ${SDNET_OUT_DIR}/${P4_SWITCH}/questa.bash
+	${SUME_SDNET}/bin/gen_P4_SWITCH_externs.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/ ${SUME_SDNET}/templates/ ./testdata/ ./sw/ --base_address ${P4_SWITCH_BASE_ADDR}
+	${SUME_SDNET}/bin/gen_P4_SWITCH_API.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/ sw/ ${SUME_SDNET}/templates/ --base_address ${P4_SWITCH_BASE_ADDR}
+	${SUME_SDNET}/bin/gen_P4_SWITCH_CLI.py ${SWITCH_INFO} ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/ sw/ ${SUME_SDNET}/templates/ --base_address ${P4_SWITCH_BASE_ADDR}
+	# The following command only applies if running VIRTUAL_SWITCH Questa Simulation with Ubuntu
+	sed -i 's/vsim/vsim \-ldflags \"\-B\/usr\/lib\/x86\_64\-linux-gnu\"/g' ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/questa.bash
 	# modify the P4_SWITCH_tb so that it writes the table configuration writes to a file
-	${SUME_SDNET}/bin/modify_P4_SWITCH_tb.py ${SDNET_OUT_DIR}/${P4_SWITCH}/Testbench/${P4_SWITCH}_tb.sv
+	${SUME_SDNET}/bin/modify_P4_SWITCH_tb.py ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/Testbench/${VIRTUAL_SWITCH}_tb.sv
 	# Fix introduced for SDNet 2017.4
-	sed -i 's/xsim\.dir\/xsc\/dpi\.so/dpi\.so/g' ${SDNET_OUT_DIR}/${P4_SWITCH}/vivado_sim.bash
-	sed -i 's/xsim\.dir\/xsc\/dpi\.so/dpi\.so/g' ${SDNET_OUT_DIR}/${P4_SWITCH}/vivado_sim_waveform.bash
+	sed -i 's/xsim\.dir\/xsc\/dpi\.so/dpi\.so/g' ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/vivado_sim.bash
+	sed -i 's/xsim\.dir\/xsc\/dpi\.so/dpi\.so/g' ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/vivado_sim_waveform.bash
 	# Fix introduced for SDNet 2018.2
-	sed -i 's/glbl_sim/glbl/g' ${SDNET_OUT_DIR}/${P4_SWITCH}/vivado_sim_waveform.bash
-	sed -i 's/SimpleSumeSwitch_tb_sim#work.glbl/SimpleSumeSwitch_tb/g' ${SDNET_OUT_DIR}/${P4_SWITCH}/vivado_sim_waveform.bash
+	sed -i 's/glbl_sim/glbl/g' ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/vivado_sim_waveform.bash
+	sed -i 's/SimpleSumeSwitch_tb_sim#work.glbl/SimpleSumeSwitch_tb/g' ${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/vivado_sim_waveform.bash
 
 # install the SDNet core as a NetFPGA-SUME-SDNet library core
 install_sdnet: uninstall_sdnet
