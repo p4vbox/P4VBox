@@ -194,7 +194,7 @@ module nf_datapath #(
     );
 
     localparam C_AXIS_TUSER_DIGEST_WIDTH = 304;
-
+    localparam Q_SIZE_WIDTH = 16;
     //internal connectivity
     //(opi = output_p4_interface)
       //nf_sume_sdnet1->opi
@@ -226,6 +226,11 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tready;
     (* mark_debug = "true" *) wire                                     s_axis_3_opi_tlast;
 
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_out;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_out;
       //opi->sss_output_queues
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_opi_tdata;
     (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_opi_tkeep;
@@ -234,6 +239,11 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_opi_tready;
     (* mark_debug = "true" *) wire                                     m_axis_opi_tlast;
 
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size_opi_in;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size_opi_in;
     //(ipi = input_p4_interface)
       //input_arbiter->ipi
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_ipi_tdata;
@@ -343,12 +353,12 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     S1_AXI_3_BVALID;
     (* mark_debug = "true" *) wire                                     S1_AXI_3_AWREADY;
 
-    localparam Q_SIZE_WIDTH = 16;
     (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf0_q_size;
     (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf1_q_size;
     (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf2_q_size;
     (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf3_q_size;
     (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    dma_q_size;
+
 
     //Input Arbiter
       input_arbiter_drr_ip
@@ -563,6 +573,7 @@ module nf_datapath #(
       .M_AXI_ACLK (axi_aclk),
       .M_AXI_ARESETN(axi_resetn)
     );
+
 
     // SUME SDNet Module 0
       nf_sdnet_vSwitch0_ip
