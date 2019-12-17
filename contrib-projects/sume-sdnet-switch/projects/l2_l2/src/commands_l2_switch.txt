@@ -53,3 +53,8 @@ table_cam_add_entry dmac forward 08:22:22:22:22:08 => 0b00000100
 table_cam_add_entry dmac forward 08:33:33:33:33:08 => 0b00010000
 table_cam_add_entry dmac forward 08:44:44:44:44:08 => 0b01000000
 table_cam_add_entry dmac forward ff:ff:ff:ff:ff:ff => 0b01010101
+
+table_cam_add_entry dmac forward 02:53:55:4d:45:00 => 0b00000010
+table_cam_add_entry dmac forward 02:53:55:4d:45:01 => 0b00001000
+table_cam_add_entry dmac forward 02:53:55:4d:45:02 => 0b00100000
+table_cam_add_entry dmac forward 02:53:55:4d:45:03 => 0b10000000

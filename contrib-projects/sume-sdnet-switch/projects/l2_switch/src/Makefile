@@ -45,4 +45,4 @@ all:
 	${SUME_SDNET}/bin/p4_px_tables.py commands_${P4_SWITCH}.txt .sdnet_switch_info_${P4_SWITCH}.dat
 
 clean:
-	rm -f *.sdnet *.tbl .sdnet_switch_info_${P4_SWITCH}.dat
+	rm -f *.sdnet *.tbl .*.dat
