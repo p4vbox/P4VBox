@@ -37,10 +37,11 @@ dir=${PWD}
 VIRTUAL_SWITCH=vSwitch${P4_SWITCH_ID}
 SDNET_OUT_DIR=nf_sdnet_ip_${VIRTUAL_SWITCH}
 
-echo
-echo Setting SDNET_OUT_DIR = ${SDNET_OUT_DIR}
-echo         Generating P4 = ${P4_SWITCH}
-echo                    ID = ${P4_SWITCH_ID}
+echo ""
+echo "Setting SDNET_OUT_DIR = ${SDNET_OUT_DIR}"
+echo "        Generating P4 = ${P4_SWITCH}"
+echo "                   ID = ${P4_SWITCH_ID}"
+echo ""
 cd ${P4_PROJECT_DIR} && make gen_src
 echo
 echo Compiling P4: ${P4_SWITCH}
