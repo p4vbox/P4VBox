@@ -37,13 +37,13 @@
 // Modified by: Mateus Saquetti
 //
 // Modified Date: 06.20.2018
-// Module Name: nf_sdnet_vSwitch0
+// Module Name: nf_sdnet_vSwitch3
 //
 // Description: Simple wrapper for SDNet generated modules to make them fit nicely
 //              into the AXI4-Stream based NetFPGA reference switch design.
 //////////////////////////////////////////////////////////////////////////////////
 
-module nf_sdnet_vSwitch0 #(
+module nf_sdnet_vSwitch3 #(
 
 //#################################
 //####       PARAMETERS
@@ -173,7 +173,7 @@ sume_to_sdnet sume_to_sdnet_i (
 //#################################
 //####     SDNet module
 //#################################
-vSwitch0 vSwitch0_inst (
+vSwitch3 vSwitch3_inst (
 
 // AXIS PACKET INPUT INTERFACE
 .packet_in_packet_in_TVALID                                        (s_axis_tvalid),
@@ -261,4 +261,4 @@ wire [7:0] out_dst_port    = m_axis_tuser[31:24];
 wire [7:0] out_drop        = m_axis_tuser[39:32];
 wire [7:0] out_send_dig    = m_axis_tuser[47:40];
 
-endmodule // nf_sdnet_vSwitch0
+endmodule // nf_sdnet_vSwitch3
