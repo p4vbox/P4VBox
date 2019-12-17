@@ -3,17 +3,14 @@
 *.sdnet
 *.tbl
 *.json
-simple_sume_switch_*.bit
+*.bit
 Tuple_*.txt
 config_writes.*
 nf_datapath.v
 sw/sume/rwaxi
 simple_sume_switch.hdf
 
-/projects/*/testdata/gen_testdata_l2_switch.py
-/projects/*/testdata/gen_testdata_router.py
-/projects/*/testdata/gen_testdata_firewall.py
-/projects/*/testdata/gen_testdata_l2_router.py
+
 projects/*/simple_sume_switch/hw/project/
 projects/*/simple_sume_switch/hw/ip_repo/
 projects/*/simple_sume_switch/test/ip_repo/
