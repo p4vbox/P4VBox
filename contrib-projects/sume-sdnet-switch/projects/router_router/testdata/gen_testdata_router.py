@@ -60,13 +60,13 @@ vlan_prio = 0       # vlan priority
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
-vlan_id_map = {"router1":1, "router2":2}             # map the vlans of parrallel switches
+vlan_id_map = {"l2_switch":2, "router":1}             # map the vlans of parrallel switches
 
 port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
-port_slicing[0] = "router1"
-port_slicing[1] = "router1"
-port_slicing[2] = "router2"
-port_slicing[3] = "router2"
+port_slicing[0] = "router"
+port_slicing[1] = "router"
+port_slicing[2] = "router"
+port_slicing[3] = "router"
 
 ########################
 # pkt generation tools #
@@ -164,14 +164,11 @@ for time in range(DEF_PKT_NUM):
     src_IP = IP_addr_H[src_host]
     dst_IP = IP_addr_H[dst_host_map[src_host]]
 
-    if ( vlan_id == vlan_id_map["router1"] ):
+    if ( vlan_id == vlan_id_map["l2_switch"] ):
         src_MAC = MAC_addr_H[src_host]
-        dst_MAC = MAC_addr_S[src_host]
-        pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
-        src_MAC = MAC_addr_S[dst_host_map[src_host]]
         dst_MAC = MAC_addr_H[dst_host_map[src_host]]
-        pkt_exp = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=63, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
-    elif( vlan_id == vlan_id_map["router2"] ):
+        pkt_exp = pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
+    elif( vlan_id == vlan_id_map["router"] ):
         src_MAC = MAC_addr_H[src_host]
         dst_MAC = MAC_addr_S[src_host]
         pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")

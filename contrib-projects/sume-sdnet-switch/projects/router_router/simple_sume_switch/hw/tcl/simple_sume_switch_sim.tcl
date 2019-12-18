@@ -83,14 +83,17 @@ update_ip_catalog
 
 
 puts "\n All P4 switches = ${p4_switches} \n"
+set vswitch_id 0
 foreach p4_switch $p4_switches {
-  set p4_switch_name nf_sdnet_${p4_switch}
+  set vswitch_name vSwitch${vswitch_id}
+  set p4_switch_name nf_sdnet_${vswitch_name}
   puts "Creating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
   #source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
   create_ip -name ${p4_switch_name} -vendor NetFPGA -library NetFPGA -module_name ${p4_switch_name}_ip
   set_property generate_synth_checkpoint false [get_files ${p4_switch_name}_ip.xci]
   reset_target all [get_ips ${p4_switch_name}_ip]
   generate_target all [get_ips ${p4_switch_name}_ip]
+  incr vswitch_id
   puts ""
 }
 
@@ -481,6 +484,42 @@ add_wave $cpi/S_AXI_1_RDATA -into S_AXI_1 -color khaki
 add_wave $cpi/S_AXI_1_RRESP -into S_AXI_1 -color khaki
 add_wave $cpi/S_AXI_1_RVALID -into S_AXI_1 -color khaki
 add_wave $cpi/S_AXI_1_RREADY -into S_AXI_1
+add_wave_group S_AXI_2
+add_wave $cpi/S_AXI_2_AWADDR -into S_AXI_2
+add_wave $cpi/S_AXI_2_AWVALID -into S_AXI_2
+add_wave $cpi/S_AXI_2_AWREADY -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_WDATA -into S_AXI_2
+add_wave $cpi/S_AXI_2_WSTRB -into S_AXI_2
+add_wave $cpi/S_AXI_2_WVALID -into S_AXI_2
+add_wave $cpi/S_AXI_2_WREADY -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_BRESP -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_BVALID -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_BREADY -into S_AXI_2
+add_wave $cpi/S_AXI_2_ARADDR -into S_AXI_2
+add_wave $cpi/S_AXI_2_ARVALID -into S_AXI_2
+add_wave $cpi/S_AXI_2_ARREADY -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_RDATA -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_RRESP -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_RVALID -into S_AXI_2 -color khaki
+add_wave $cpi/S_AXI_2_RREADY -into S_AXI_2
+add_wave_group S_AXI_3
+add_wave $cpi/S_AXI_3_AWADDR -into S_AXI_3
+add_wave $cpi/S_AXI_3_AWVALID -into S_AXI_3
+add_wave $cpi/S_AXI_3_AWREADY -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_WDATA -into S_AXI_3
+add_wave $cpi/S_AXI_3_WSTRB -into S_AXI_3
+add_wave $cpi/S_AXI_3_WVALID -into S_AXI_3
+add_wave $cpi/S_AXI_3_WREADY -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_BRESP -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_BVALID -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_BREADY -into S_AXI_3
+add_wave $cpi/S_AXI_3_ARADDR -into S_AXI_3
+add_wave $cpi/S_AXI_3_ARVALID -into S_AXI_3
+add_wave $cpi/S_AXI_3_ARREADY -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_RDATA -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_RRESP -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_RVALID -into S_AXI_3 -color khaki
+add_wave $cpi/S_AXI_3_RREADY -into S_AXI_3
 add_wave_group Internal_CPI
 add_wave $cpi/axi_awaddr -into Internal_CPI
 add_wave $cpi/axi_awready -into Internal_CPI
@@ -620,214 +659,212 @@ add_wave $opi/in_arb_state -into Internal_OPI
 add_wave $opi/pkt_fwd_next -into Internal_OPI
 
 # Virtual Switch 0
+set vSwitch0_ip /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch0/inst/vSwitch0_inst/
+set vSwitch0_wrapper /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch0/inst/
 add_wave_divider {SDNet - Virtual Switch 0} -color chocolate
 add_wave_virtual_bus clock_VS_0
-add_wave $sig_clock -name clock -into clock_VS_0
-add_wave $sig_resetn -name reset_n -into clock_VS_0
+add_wave $vSwitch0_ip/clk_lookup_rst -into clock_VS_0
+add_wave $vSwitch0_ip/clk_lookup -into clock_VS_0
 add_wave_virtual_bus Output_VS_0 -color blue
-add_wave $nf_datapath/s_axis_0_opi_tdata -into Output_VS_0 -color blue
-add_wave $nf_datapath/s_axis_0_opi_tkeep -into Output_VS_0 -color blue
-add_wave $nf_datapath/s_axis_0_opi_tuser -into Output_VS_0 -color blue
-add_wave $nf_datapath/s_axis_0_opi_tvalid -into Output_VS_0 -color blue
-add_wave $nf_datapath/s_axis_0_opi_tready -into Output_VS_0
-add_wave $nf_datapath/s_axis_0_opi_tlast -into Output_VS_0 -color blue
+add_wave $vSwitch0_wrapper/m_axis_tdata -into Output_VS_0 -color blue
+add_wave $vSwitch0_wrapper/m_axis_tkeep -into Output_VS_0 -color blue
+add_wave $vSwitch0_wrapper/m_axis_tvalid -into Output_VS_0 -color blue
+add_wave $vSwitch0_wrapper/m_axis_tready -into Output_VS_0
+add_wave $vSwitch0_wrapper/m_axis_tlast -into Output_VS_0 -color blue
 add_wave_virtual_bus Input_VS_0 -color purple
-add_wave $nf_datapath/m_axis_0_ipi_tdata -into Input_VS_0 -color purple
-add_wave $nf_datapath/m_axis_0_ipi_tkeep -into Input_VS_0 -color purple
-add_wave $nf_datapath/m_axis_0_ipi_tuser -into Input_VS_0 -color purple
-add_wave $nf_datapath/m_axis_0_ipi_tvalid -into Input_VS_0 -color purple
-add_wave $nf_datapath/m_axis_0_ipi_tready -into Input_VS_0
-add_wave $nf_datapath/m_axis_0_ipi_tlast -into Input_VS_0 -color purple
+add_wave $vSwitch0_wrapper/s_axis_tdata -into Input_VS_0 -color purple
+add_wave $vSwitch0_wrapper/s_axis_tkeep -into Input_VS_0 -color purple
+add_wave $vSwitch0_wrapper/s_axis_tvalid -into Input_VS_0 -color purple
+add_wave $vSwitch0_wrapper/s_axis_tready -into Input_VS_0
+add_wave $vSwitch0_wrapper/s_axis_tlast -into Input_VS_0 -color purple
+add_wave_virtual_bus Tuple-out_VS_0 -color aqua
+add_wave $vSwitch0_wrapper/sume_tuple_out_VALID -into Tuple-out_VS_0 -color white
+add_wave $vSwitch0_wrapper/m_axis_tuser -into Tuple-out_VS_0 -color aqua
+add_wave $vSwitch0_wrapper/out_pkt_len -into Tuple-out_VS_0 -color aqua -radix unsigned
+add_wave $vSwitch0_wrapper/out_src_port -into Tuple-out_VS_0 -color aqua -radix bin
+add_wave $vSwitch0_wrapper/out_dst_port -into Tuple-out_VS_0 -color aqua -radix bin
+add_wave_virtual_bus Tuple-In_VS_0 -color magenta
+add_wave $vSwitch0_wrapper/sume_tuple_in_VALID -into Tuple-In_VS_0 -color white
+add_wave $vSwitch0_wrapper/s_axis_tuser -into Tuple-In_VS_0 -color magenta
+add_wave $vSwitch0_wrapper/in_pkt_len -into Tuple-In_VS_0 -color magenta -radix unsigned
+add_wave $vSwitch0_wrapper/in_src_port -into Tuple-In_VS_0 -color magenta -radix bin
+add_wave $vSwitch0_wrapper/in_dst_port -into Tuple-In_VS_0 -color magenta -radix bin
 add_wave_virtual_bus Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_AWADDR -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_AWVALID -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_AWREADY -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_WDATA -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_WSTRB -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_WVALID -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_WREADY -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_BRESP -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_BVALID -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_BREADY -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_ARADDR -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_ARVALID -into Control_VS_0 -color yellow
-add_wave $nf_datapath/S1_AXI_0_ARREADY -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_RDATA -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_RRESP -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_RVALID -into Control_VS_0
-add_wave $nf_datapath/S1_AXI_0_RREADY -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/internal_rst_done -into Control_VS_0 -color white
+add_wave $vSwitch0_ip/control_S_AXI_AWADDR -into Control_VS_0  -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_AWVALID -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_AWREADY -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_WDATA -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_WSTRB -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_WVALID -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_WREADY -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_BRESP -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_BVALID -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_BREADY -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_ARADDR -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_ARVALID -into Control_VS_0 -color yellow
+add_wave $vSwitch0_ip/control_S_AXI_ARREADY -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_RDATA -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_RRESP -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_RVALID -into Control_VS_0
+add_wave $vSwitch0_ip/control_S_AXI_RREADY -into Control_VS_0 -color yellow
 
 # Virtual Switch 1
+set vSwitch1_ip /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch1/inst/vSwitch1_inst/
+set vSwitch1_wrapper /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch1/inst/
 add_wave_divider {SDNet - Virtual Switch 1} -color chocolate
 add_wave_virtual_bus clock_VS_1
-add_wave $sig_clock -name clock -into clock_VS_1
-add_wave $sig_resetn -name reset_n -into clock_VS_1
+add_wave $vSwitch1_ip/clk_lookup_rst -into clock_VS_1
+add_wave $vSwitch1_ip/clk_lookup -into clock_VS_1
 add_wave_virtual_bus Output_VS_1 -color blue
-add_wave $nf_datapath/s_axis_1_opi_tdata -into Output_VS_1 -color blue
-add_wave $nf_datapath/s_axis_1_opi_tkeep -into Output_VS_1 -color blue
-add_wave $nf_datapath/s_axis_1_opi_tuser -into Output_VS_1 -color blue
-add_wave $nf_datapath/s_axis_1_opi_tvalid -into Output_VS_1 -color blue
-add_wave $nf_datapath/s_axis_1_opi_tready -into Output_VS_1
-add_wave $nf_datapath/s_axis_1_opi_tlast -into Output_VS_1 -color blue
+add_wave $vSwitch1_wrapper/m_axis_tdata -into Output_VS_1 -color blue
+add_wave $vSwitch1_wrapper/m_axis_tkeep -into Output_VS_1 -color blue
+add_wave $vSwitch1_wrapper/m_axis_tvalid -into Output_VS_1 -color blue
+add_wave $vSwitch1_wrapper/m_axis_tready -into Output_VS_1
+add_wave $vSwitch1_wrapper/m_axis_tlast -into Output_VS_1 -color blue
 add_wave_virtual_bus Input_VS_1 -color purple
-add_wave $nf_datapath/m_axis_1_ipi_tdata -into Input_VS_1 -color purple
-add_wave $nf_datapath/m_axis_1_ipi_tkeep -into Input_VS_1 -color purple
-add_wave $nf_datapath/m_axis_1_ipi_tuser -into Input_VS_1 -color purple
-add_wave $nf_datapath/m_axis_1_ipi_tvalid -into Input_VS_1 -color purple
-add_wave $nf_datapath/m_axis_1_ipi_tready -into Input_VS_1
-add_wave $nf_datapath/m_axis_1_ipi_tlast -into Input_VS_1 -color purple
+add_wave $vSwitch1_wrapper/s_axis_tdata -into Input_VS_1 -color purple
+add_wave $vSwitch1_wrapper/s_axis_tkeep -into Input_VS_1 -color purple
+add_wave $vSwitch1_wrapper/s_axis_tvalid -into Input_VS_1 -color purple
+add_wave $vSwitch1_wrapper/s_axis_tready -into Input_VS_1
+add_wave $vSwitch1_wrapper/s_axis_tlast -into Input_VS_1 -color purple
+add_wave_virtual_bus Tuple-out_VS_1 -color aqua
+add_wave $vSwitch1_wrapper/sume_tuple_out_VALID -into Tuple-out_VS_1 -color white
+add_wave $vSwitch1_wrapper/m_axis_tuser -into Tuple-out_VS_1 -color aqua
+add_wave $vSwitch1_wrapper/out_pkt_len -into Tuple-out_VS_1 -color aqua -radix unsigned
+add_wave $vSwitch1_wrapper/out_src_port -into Tuple-out_VS_1 -color aqua -radix bin
+add_wave $vSwitch1_wrapper/out_dst_port -into Tuple-out_VS_1 -color aqua -radix bin
+add_wave_virtual_bus Tuple-In_VS_1 -color magenta
+add_wave $vSwitch1_wrapper/sume_tuple_in_VALID -into Tuple-In_VS_1 -color white
+add_wave $vSwitch1_wrapper/s_axis_tuser -into Tuple-In_VS_1 -color magenta
+add_wave $vSwitch1_wrapper/in_pkt_len -into Tuple-In_VS_1 -color magenta -radix unsigned
+add_wave $vSwitch1_wrapper/in_src_port -into Tuple-In_VS_1 -color magenta -radix bin
+add_wave $vSwitch1_wrapper/in_dst_port -into Tuple-In_VS_1 -color magenta -radix bin
 add_wave_virtual_bus Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_AWADDR -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_AWVALID -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_AWREADY -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_WDATA -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_WSTRB -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_WVALID -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_WREADY -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_BRESP -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_BVALID -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_BREADY -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_ARADDR -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_ARVALID -into Control_VS_1 -color yellow
-add_wave $nf_datapath/S1_AXI_1_ARREADY -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_RDATA -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_RRESP -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_RVALID -into Control_VS_1
-add_wave $nf_datapath/S1_AXI_1_RREADY -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/internal_rst_done -into Control_VS_1 -color white
+add_wave $vSwitch1_ip/control_S_AXI_AWADDR -into Control_VS_1  -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_AWVALID -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_AWREADY -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_WDATA -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_WSTRB -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_WVALID -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_WREADY -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_BRESP -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_BVALID -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_BREADY -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_ARADDR -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_ARVALID -into Control_VS_1 -color yellow
+add_wave $vSwitch1_ip/control_S_AXI_ARREADY -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_RDATA -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_RRESP -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_RVALID -into Control_VS_1
+add_wave $vSwitch1_ip/control_S_AXI_RREADY -into Control_VS_1 -color yellow
 
-# Virtual Switch 2
-add_wave_divider {SDNet - Virtual Switch 2} -color chocolate
-add_wave_virtual_bus clock_VS_2
-add_wave $sig_clock -name clock -into clock_VS_2
-add_wave $sig_resetn -name reset_n -into clock_VS_2
-add_wave_virtual_bus Output_VS_2 -color blue
-add_wave $nf_datapath/s_axis_2_opi_tdata -into Output_VS_2 -color blue
-add_wave $nf_datapath/s_axis_2_opi_tkeep -into Output_VS_2 -color blue
-add_wave $nf_datapath/s_axis_2_opi_tuser -into Output_VS_2 -color blue
-add_wave $nf_datapath/s_axis_2_opi_tvalid -into Output_VS_2 -color blue
-add_wave $nf_datapath/s_axis_2_opi_tready -into Output_VS_2
-add_wave $nf_datapath/s_axis_2_opi_tlast -into Output_VS_2 -color blue
-add_wave_virtual_bus Input_VS_2 -color purple
-add_wave $nf_datapath/m_axis_2_ipi_tdata -into Input_VS_2 -color purple
-add_wave $nf_datapath/m_axis_2_ipi_tkeep -into Input_VS_2 -color purple
-add_wave $nf_datapath/m_axis_2_ipi_tuser -into Input_VS_2 -color purple
-add_wave $nf_datapath/m_axis_2_ipi_tvalid -into Input_VS_2 -color purple
-add_wave $nf_datapath/m_axis_2_ipi_tready -into Input_VS_2
-add_wave $nf_datapath/m_axis_2_ipi_tlast -into Input_VS_2 -color purple
-add_wave_virtual_bus Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_AWADDR -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_AWVALID -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_AWREADY -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_WDATA -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_WSTRB -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_WVALID -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_WREADY -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_BRESP -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_BVALID -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_BREADY -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_ARADDR -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_ARVALID -into Control_VS_2 -color yellow
-add_wave $nf_datapath/S1_AXI_2_ARREADY -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_RDATA -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_RRESP -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_RVALID -into Control_VS_2
-add_wave $nf_datapath/S1_AXI_2_RREADY -into Control_VS_2 -color yellow
+# # Virtual Switch 2
+# set vSwitch2_ip /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch2/inst/vSwitch2_inst/
+# set vSwitch2_wrapper /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch2/inst/
+# add_wave_divider {SDNet - Virtual Switch 2} -color chocolate
+# add_wave_virtual_bus clock_VS_2
+# add_wave $vSwitch2_ip/clk_lookup_rst -into clock_VS_2
+# add_wave $vSwitch2_ip/clk_lookup -into clock_VS_2
+# add_wave_virtual_bus Output_VS_2 -color blue
+# add_wave $vSwitch2_wrapper/m_axis_tdata -into Output_VS_2 -color blue
+# add_wave $vSwitch2_wrapper/m_axis_tkeep -into Output_VS_2 -color blue
+# add_wave $vSwitch2_wrapper/m_axis_tvalid -into Output_VS_2 -color blue
+# add_wave $vSwitch2_wrapper/m_axis_tready -into Output_VS_2
+# add_wave $vSwitch2_wrapper/m_axis_tlast -into Output_VS_2 -color blue
+# add_wave_virtual_bus Input_VS_2 -color purple
+# add_wave $vSwitch2_wrapper/s_axis_tdata -into Input_VS_2 -color purple
+# add_wave $vSwitch2_wrapper/s_axis_tkeep -into Input_VS_2 -color purple
+# add_wave $vSwitch2_wrapper/s_axis_tvalid -into Input_VS_2 -color purple
+# add_wave $vSwitch2_wrapper/s_axis_tready -into Input_VS_2
+# add_wave $vSwitch2_wrapper/s_axis_tlast -into Input_VS_2 -color purple
+# add_wave_virtual_bus Tuple-out_VS_2 -color aqua
+# add_wave $vSwitch2_wrapper/sume_tuple_out_VALID -into Tuple-out_VS_2 -color white
+# add_wave $vSwitch2_wrapper/m_axis_tuser -into Tuple-out_VS_2 -color aqua
+# add_wave $vSwitch2_wrapper/out_pkt_len -into Tuple-out_VS_2 -color aqua -radix unsigned
+# add_wave $vSwitch2_wrapper/out_src_port -into Tuple-out_VS_2 -color aqua -radix bin
+# add_wave $vSwitch2_wrapper/out_dst_port -into Tuple-out_VS_2 -color aqua -radix bin
+# add_wave_virtual_bus Tuple-In_VS_2 -color magenta
+# add_wave $vSwitch2_wrapper/sume_tuple_in_VALID -into Tuple-In_VS_2 -color white
+# add_wave $vSwitch2_wrapper/s_axis_tuser -into Tuple-In_VS_2 -color magenta
+# add_wave $vSwitch2_wrapper/in_pkt_len -into Tuple-In_VS_2 -color magenta -radix unsigned
+# add_wave $vSwitch2_wrapper/in_src_port -into Tuple-In_VS_2 -color magenta -radix bin
+# add_wave $vSwitch2_wrapper/in_dst_port -into Tuple-In_VS_2 -color magenta -radix bin
+# add_wave_virtual_bus Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/internal_rst_done -into Control_VS_2 -color white
+# add_wave $vSwitch2_ip/control_S_AXI_AWADDR -into Control_VS_2  -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_AWVALID -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_AWREADY -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_WDATA -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_WSTRB -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_WVALID -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_WREADY -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_BRESP -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_BVALID -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_BREADY -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_ARADDR -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_ARVALID -into Control_VS_2 -color yellow
+# add_wave $vSwitch2_ip/control_S_AXI_ARREADY -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_RDATA -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_RRESP -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_RVALID -into Control_VS_2
+# add_wave $vSwitch2_ip/control_S_AXI_RREADY -into Control_VS_2 -color yellow
+#
+# # Virtual Switch 3
+# set vSwitch3_ip /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch3/inst/vSwitch3_inst/
+# set vSwitch3_wrapper /top_tb/top_sim/nf_datapath_0/sdnet_vSwitch3/inst/
+# add_wave_divider {SDNet - Virtual Switch 3} -color chocolate
+# add_wave_virtual_bus clock_VS_3
+# add_wave $vSwitch3_ip/clk_lookup_rst -into clock_VS_3
+# add_wave $vSwitch3_ip/clk_lookup -into clock_VS_3
+# add_wave_virtual_bus Output_VS_3 -color blue
+# add_wave $vSwitch3_wrapper/m_axis_tdata -into Output_VS_3 -color blue
+# add_wave $vSwitch3_wrapper/m_axis_tkeep -into Output_VS_3 -color blue
+# add_wave $vSwitch3_wrapper/m_axis_tvalid -into Output_VS_3 -color blue
+# add_wave $vSwitch3_wrapper/m_axis_tready -into Output_VS_3
+# add_wave $vSwitch3_wrapper/m_axis_tlast -into Output_VS_3 -color blue
+# add_wave_virtual_bus Input_VS_3 -color purple
+# add_wave $vSwitch3_wrapper/s_axis_tdata -into Input_VS_3 -color purple
+# add_wave $vSwitch3_wrapper/s_axis_tkeep -into Input_VS_3 -color purple
+# add_wave $vSwitch3_wrapper/s_axis_tvalid -into Input_VS_3 -color purple
+# add_wave $vSwitch3_wrapper/s_axis_tready -into Input_VS_3
+# add_wave $vSwitch3_wrapper/s_axis_tlast -into Input_VS_3 -color purple
+# add_wave_virtual_bus Tuple-out_VS_3 -color aqua
+# add_wave $vSwitch3_wrapper/sume_tuple_out_VALID -into Tuple-out_VS_3 -color white
+# add_wave $vSwitch3_wrapper/m_axis_tuser -into Tuple-out_VS_3 -color aqua
+# add_wave $vSwitch3_wrapper/out_pkt_len -into Tuple-out_VS_3 -color aqua -radix unsigned
+# add_wave $vSwitch3_wrapper/out_src_port -into Tuple-out_VS_3 -color aqua -radix bin
+# add_wave $vSwitch3_wrapper/out_dst_port -into Tuple-out_VS_3 -color aqua -radix bin
+# add_wave_virtual_bus Tuple-In_VS_3 -color magenta
+# add_wave $vSwitch3_wrapper/sume_tuple_in_VALID -into Tuple-In_VS_3 -color white
+# add_wave $vSwitch3_wrapper/s_axis_tuser -into Tuple-In_VS_3 -color magenta
+# add_wave $vSwitch3_wrapper/in_pkt_len -into Tuple-In_VS_3 -color magenta -radix unsigned
+# add_wave $vSwitch3_wrapper/in_src_port -into Tuple-In_VS_3 -color magenta -radix bin
+# add_wave $vSwitch3_wrapper/in_dst_port -into Tuple-In_VS_3 -color magenta -radix bin
+# add_wave_virtual_bus Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/internal_rst_done -into Control_VS_3 -color white
+# add_wave $vSwitch3_ip/control_S_AXI_AWADDR -into Control_VS_3  -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_AWVALID -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_AWREADY -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_WDATA -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_WSTRB -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_WVALID -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_WREADY -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_BRESP -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_BVALID -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_BREADY -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_ARADDR -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_ARVALID -into Control_VS_3 -color yellow
+# add_wave $vSwitch3_ip/control_S_AXI_ARREADY -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_RDATA -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_RRESP -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_RVALID -into Control_VS_3
+# add_wave $vSwitch3_ip/control_S_AXI_RREADY -into Control_VS_3 -color yellow
 
-# Virtual Switch 3
-add_wave_divider {SDNet - Virtual Switch 3} -color chocolate
-add_wave_virtual_bus clock_VS_3
-add_wave $sig_clock -name clock -into clock_VS_3
-add_wave $sig_resetn -name reset_n -into clock_VS_3
-add_wave_virtual_bus Output_VS_3 -color blue
-add_wave $nf_datapath/s_axis_3_opi_tdata -into Output_VS_3 -color blue
-add_wave $nf_datapath/s_axis_3_opi_tkeep -into Output_VS_3 -color blue
-add_wave $nf_datapath/s_axis_3_opi_tuser -into Output_VS_3 -color blue
-add_wave $nf_datapath/s_axis_3_opi_tvalid -into Output_VS_3 -color blue
-add_wave $nf_datapath/s_axis_3_opi_tready -into Output_VS_3
-add_wave $nf_datapath/s_axis_3_opi_tlast -into Output_VS_3 -color blue
-add_wave_virtual_bus Input_VS_3 -color purple
-add_wave $nf_datapath/m_axis_3_ipi_tdata -into Input_VS_3 -color purple
-add_wave $nf_datapath/m_axis_3_ipi_tkeep -into Input_VS_3 -color purple
-add_wave $nf_datapath/m_axis_3_ipi_tuser -into Input_VS_3 -color purple
-add_wave $nf_datapath/m_axis_3_ipi_tvalid -into Input_VS_3 -color purple
-add_wave $nf_datapath/m_axis_3_ipi_tready -into Input_VS_3
-add_wave $nf_datapath/m_axis_3_ipi_tlast -into Input_VS_3 -color purple
-add_wave_virtual_bus Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_AWADDR -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_AWVALID -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_AWREADY -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_WDATA -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_WSTRB -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_WVALID -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_WREADY -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_BRESP -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_BVALID -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_BREADY -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_ARADDR -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_ARVALID -into Control_VS_3 -color yellow
-add_wave $nf_datapath/S1_AXI_3_ARREADY -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_RDATA -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_RRESP -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_RVALID -into Control_VS_3
-add_wave $nf_datapath/S1_AXI_3_RREADY -into Control_VS_3 -color yellow
 
 
 run 65us
 
 set_property needs_save false [get_wave_configs P4-NetFPGA]
 set_property needs_save false [get_wave_configs P4VBox]
-
-# # Add SDNet Interface Signals
-# set sdnet_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/SimpleSumeSwitch_inst/
-# add_wave_divider {SDNet Control Interface}
-# add_wave top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/internal_rst_done -color yellow
-# add_wave $sdnet_ip/control_S_AXI_AWADDR
-# add_wave $sdnet_ip/control_S_AXI_AWVALID
-# add_wave $sdnet_ip/control_S_AXI_AWREADY
-# add_wave $sdnet_ip/control_S_AXI_WDATA
-# add_wave $sdnet_ip/control_S_AXI_WSTRB
-# add_wave $sdnet_ip/control_S_AXI_WVALID
-# add_wave $sdnet_ip/control_S_AXI_WREADY
-# add_wave $sdnet_ip/control_S_AXI_BRESP
-# add_wave $sdnet_ip/control_S_AXI_BVALID
-# add_wave $sdnet_ip/control_S_AXI_BREADY
-# add_wave $sdnet_ip/control_S_AXI_ARADDR
-# add_wave $sdnet_ip/control_S_AXI_ARVALID
-# add_wave $sdnet_ip/control_S_AXI_ARREADY
-# add_wave $sdnet_ip/control_S_AXI_RDATA
-# add_wave $sdnet_ip/control_S_AXI_RRESP
-# add_wave $sdnet_ip/control_S_AXI_RVALID
-# add_wave $sdnet_ip/control_S_AXI_RREADY
-#
-# set nf_sume_sdnet_ip top_tb/top_sim/nf_datapath_0/nf_sume_sdnet_wrapper_1/inst/
-# add_wave_divider {nf_sume_sdnet input interface}
-# add_wave $sdnet_ip/clk_lookup_rst
-# add_wave $sdnet_ip/clk_lookup
-# add_wave $nf_sume_sdnet_ip/s_axis_tdata -radix hex
-# add_wave $nf_sume_sdnet_ip/s_axis_tkeep -radix hex
-# add_wave $nf_sume_sdnet_ip/s_axis_tvalid
-# add_wave $nf_sume_sdnet_ip/s_axis_tready
-# add_wave $nf_sume_sdnet_ip/s_axis_tlast
-#
-# add_wave_divider {SDNet Tuple-In}
-# add_wave $nf_sume_sdnet_ip/sume_tuple_in_VALID
-# add_wave $nf_sume_sdnet_ip/s_axis_tuser -radix hex
-# add_wave $nf_sume_sdnet_ip/in_pkt_len
-# add_wave $nf_sume_sdnet_ip/in_src_port
-# add_wave $nf_sume_sdnet_ip/in_dst_port
-#
-# add_wave_divider {nf_sume_sdnet output interface}
-# add_wave $sdnet_ip/clk_lookup_rst
-# add_wave $sdnet_ip/clk_lookup
-# add_wave $nf_sume_sdnet_ip/m_axis_tdata -radix hex
-# add_wave $nf_sume_sdnet_ip/m_axis_tkeep -radix hex
-# add_wave $nf_sume_sdnet_ip/m_axis_tvalid
-# add_wave $nf_sume_sdnet_ip/m_axis_tready
-# add_wave $nf_sume_sdnet_ip/m_axis_tlast
-#
-# add_wave_divider {SDNet Tuple-Out}
-# add_wave $nf_sume_sdnet_ip/sume_tuple_out_VALID
-# add_wave $nf_sume_sdnet_ip/m_axis_tuser -radix hex
-# add_wave $nf_sume_sdnet_ip/out_pkt_len
-# add_wave $nf_sume_sdnet_ip/out_src_port
-# add_wave $nf_sume_sdnet_ip/out_dst_port
