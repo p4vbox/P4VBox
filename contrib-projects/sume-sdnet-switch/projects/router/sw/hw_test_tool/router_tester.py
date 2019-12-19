@@ -69,7 +69,7 @@ IFACE_H3 = "eth3" # network interface up
 sender = IFACE_H0 # the network interface of the sender
 
 VLANS = 1
-VLAN_ID = 2
+VLAN_ID = 1
 HEADER_SIZE = 46    # size of Ether/Dot1Q/IP/UDP headers
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2} # dictionary to map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
