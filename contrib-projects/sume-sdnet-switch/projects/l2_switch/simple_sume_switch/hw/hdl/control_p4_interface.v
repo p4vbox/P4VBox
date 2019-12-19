@@ -152,24 +152,24 @@ module control_p4_interface_ip #
     reg                                 axi_rvalid;
 
     // Master Output Connections assignments
-    assign M_AXI_AWREADY    = axi_awready;
-    assign M_AXI_WREADY     = axi_wready;
-    assign M_AXI_BRESP      = axi_bresp;
-    assign M_AXI_BVALID     = axi_bvalid;
-    assign M_AXI_ARREADY    = axi_arready;
-    assign M_AXI_RDATA      = axi_rdata;
-    assign M_AXI_RRESP      = axi_rresp;
-    assign M_AXI_RVALID     = axi_rvalid;
+    // assign M_AXI_AWREADY    = axi_awready;
+    // assign M_AXI_WREADY     = axi_wready;
+    // assign M_AXI_BRESP      = axi_bresp;
+    // assign M_AXI_BVALID     = axi_bvalid;
+    // assign M_AXI_ARREADY    = axi_arready;
+    // assign M_AXI_RDATA      = axi_rdata;
+    // assign M_AXI_RRESP      = axi_rresp;
+    // assign M_AXI_RVALID     = axi_rvalid;
 
     // Dummy Master Output Connections
-    // assign M_AXI_AWREADY    = S_AXI_0_AWREADY;
-    // assign M_AXI_BVALID     = S_AXI_0_BVALID;
-    // assign M_AXI_WREADY     = S_AXI_0_WREADY;
-    // assign M_AXI_BRESP      = S_AXI_0_BRESP;
-    // assign M_AXI_ARREADY    = S_AXI_0_ARREADY;
-    // assign M_AXI_RDATA      = S_AXI_0_RDATA;
-    // assign M_AXI_RRESP      = S_AXI_0_RRESP;
-    // assign M_AXI_RVALID     = S_AXI_0_RVALID;
+    assign M_AXI_AWREADY    = S_AXI_0_AWREADY;
+    assign M_AXI_BVALID     = S_AXI_0_BVALID;
+    assign M_AXI_WREADY     = S_AXI_0_WREADY;
+    assign M_AXI_BRESP      = S_AXI_0_BRESP;
+    assign M_AXI_ARREADY    = S_AXI_0_ARREADY;
+    assign M_AXI_RDATA      = S_AXI_0_RDATA;
+    assign M_AXI_RRESP      = S_AXI_0_RRESP;
+    assign M_AXI_RVALID     = S_AXI_0_RVALID;
 
     // Slaves Output Connections assignments
     assign S_AXI_0_AWADDR   = M_AXI_AWADDR;
