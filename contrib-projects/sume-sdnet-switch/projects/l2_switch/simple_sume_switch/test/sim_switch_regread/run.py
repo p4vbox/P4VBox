@@ -106,10 +106,34 @@ nftest_expect_phy('nf3', nf3_expected)
 
 nftest_barrier()
 
-nftest_regread_expect(0x44020050, 0x11111108)
-nftest_regread_expect(0x44020054, 0x00000811)
+# Simulating the CLI table commands
+# remove entry
+nftest_regwrite(0x44020050, 0x11111108)
+nftest_regwrite(0x44020054, 0x00000811)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regwrite(0x44020040, 0x00000002)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regread_expect(0x44020044, 0x00000001)
+# add entry
+nftest_regwrite(0x44020050, 0x11111108)
+nftest_regwrite(0x44020054, 0x00000811)
+nftest_regwrite(0x44020080, 0x00000101)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regwrite(0x44020040, 0x00000001)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regread_expect(0x44020044, 0x00000001)
+# get size
+nftest_regread_expect(0x44020024, 0x00000009)
+# read entry
+nftest_regwrite(0x44020050, 0x11111108)
+nftest_regwrite(0x44020054, 0x00000811)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regwrite(0x44020040, 0x00000003)
+nftest_regread_expect(0x44020044, 0x00000001)
+nftest_regread_expect(0x44020044, 0x00000001)
 nftest_regread_expect(0x44020080, 0x00000101)
-nftest_regread_expect(0x44020040, 0x00000001)
+nftest_regread_expect(0x44020048, 0x00000001)
+
 
 mres=[]
 nftest_finish(mres)
