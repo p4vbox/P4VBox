@@ -42,14 +42,14 @@ module control_p4_interface_ip #
 )
 (
     // AXI Lite Control ports
-    input      [C_S_AXI_ADDR_WIDTH-1 : 0]     M_AXI_AWADDR,
-    input                                     M_AXI_AWVALID,
+    input      [C_S_AXI_ADDR_WIDTH-1 : 0]     M_AXI_AWADDR,  // M_AXI_AWADDR = M_AXI_ARADDR = adress to write or read, always iqual
+    input                                     M_AXI_AWVALID, // M_AXI_AWVALID = control signal to write
     input      [C_S_AXI_DATA_WIDTH-1 : 0]     M_AXI_WDATA,
     input      [C_S_AXI_DATA_WIDTH/8-1 : 0]   M_AXI_WSTRB,
     input                                     M_AXI_WVALID,
     input                                     M_AXI_BREADY,
-    input      [C_S_AXI_ADDR_WIDTH-1 : 0]     M_AXI_ARADDR,
-    input                                     M_AXI_ARVALID,
+    input      [C_S_AXI_ADDR_WIDTH-1 : 0]     M_AXI_ARADDR,  // M_AXI_AWADDR = M_AXI_ARADDR = adress to write or read, always iqual
+    input                                     M_AXI_ARVALID, // M_AXI_ARVALID = control signal to read
     input                                     M_AXI_RREADY,
     output                                    M_AXI_ARREADY,
     output     [C_S_AXI_DATA_WIDTH-1 : 0]     M_AXI_RDATA,
@@ -156,20 +156,21 @@ module control_p4_interface_ip #
     assign M_AXI_WREADY     = axi_wready;
     assign M_AXI_BRESP      = axi_bresp;
     assign M_AXI_BVALID     = axi_bvalid;
-    // assign M_AXI_ARREADY    = axi_arready;
-    // assign M_AXI_RDATA      = axi_rdata;
-    // assign M_AXI_RRESP      = axi_rresp;
-    // assign M_AXI_RVALID     = axi_rvalid;
+
+    assign M_AXI_ARREADY    = axi_arready;
+    assign M_AXI_RDATA      = axi_rdata;
+    assign M_AXI_RRESP      = axi_rresp;
+    assign M_AXI_RVALID     = axi_rvalid;
 
     // Dummy Master Output Connections
-    // assign M_AXI_AWREADY    = S_AXI_0_AWREADY;
-    // assign M_AXI_WREADY     = S_AXI_0_WREADY;
+    // assign M_AXI_AWREADY    = S_AXI_0_AWREADY; // write signal
+    // assign M_AXI_WREADY     = S_AXI_0_WREADY; // write signal
     // assign M_AXI_BRESP      = S_AXI_0_BRESP;
-    // assign M_AXI_BVALID     = S_AXI_0_BVALID;
-    assign M_AXI_ARREADY    = S_AXI_0_ARREADY;
-    assign M_AXI_RDATA      = S_AXI_0_RDATA;
-    assign M_AXI_RRESP      = S_AXI_0_RRESP;
-    assign M_AXI_RVALID     = S_AXI_0_RVALID;
+    // assign M_AXI_BVALID     = S_AXI_0_BVALID; // write signal
+    // assign M_AXI_ARREADY    = S_AXI_0_ARREADY; // read signal
+    // assign M_AXI_RDATA      = S_AXI_0_RDATA;   // read signal
+    // assign M_AXI_RRESP      = S_AXI_0_RRESP;
+    // assign M_AXI_RVALID     = S_AXI_0_RVALID;  // read signal
 
     // Slaves Output Connections assignments
     assign S_AXI_0_AWADDR   = M_AXI_AWADDR;
@@ -313,7 +314,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_arready && M_AXI_ARVALID)
+          if (~axi_arready && M_AXI_ARVALID && (S_AXI_0_ARREADY || S_AXI_1_ARREADY || S_AXI_2_ARREADY || S_AXI_3_ARREADY) )
             begin
               // indicates that the slave has acceped the valid read address
               // Read address latching
@@ -348,6 +349,7 @@ module control_p4_interface_ip #
             begin
               // Read data is accepted by the master
               axi_rvalid <= 1'b0;
+              axi_rdata <= 32'h0;
             end
         end
     end
@@ -371,6 +373,14 @@ module control_p4_interface_ip #
           else if (S_AXI_1_RDATA != 32'h0)
             begin
               axi_rdata <= S_AXI_1_RDATA;     // register read data /* some new changes here */
+            end
+          else if (S_AXI_2_RDATA != 32'h0)
+            begin
+              axi_rdata <= S_AXI_2_RDATA;     // register read data /* some new changes here */
+            end
+          else if (S_AXI_3_RDATA != 32'h0)
+            begin
+              axi_rdata <= S_AXI_3_RDATA;     // register read data /* some new changes here */
             end
         end
     end
