@@ -220,7 +220,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_awready && M_AXI_AWVALID && M_AXI_WVALID)
+          if (~axi_awready && M_AXI_AWVALID && M_AXI_WVALID && S_AXI_0_AWREADY)
             begin
               // slave is ready to accept write address when
               // there is a valid write address and write data
@@ -261,7 +261,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_wready && M_AXI_WVALID && M_AXI_AWVALID)
+          if (~axi_wready && M_AXI_WVALID && M_AXI_AWVALID && S_AXI_0_WREADY)
             begin
               // slave is ready to accept write data when
               // there is a valid write address and write data
@@ -314,7 +314,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_arready && M_AXI_ARVALID && (S_AXI_0_ARREADY || S_AXI_1_ARREADY || S_AXI_2_ARREADY || S_AXI_3_ARREADY) )
+          if (~axi_arready && M_AXI_ARVALID && S_AXI_0_ARREADY)
             begin
               // indicates that the slave has acceped the valid read address
               // Read address latching
@@ -369,18 +369,6 @@ module control_p4_interface_ip #
           if (S_AXI_0_RDATA != 32'h0)
             begin
               axi_rdata <= S_AXI_0_RDATA;     // register read data /* some new changes here */
-            end
-          else if (S_AXI_1_RDATA != 32'h0)
-            begin
-              axi_rdata <= S_AXI_1_RDATA;     // register read data /* some new changes here */
-            end
-          else if (S_AXI_2_RDATA != 32'h0)
-            begin
-              axi_rdata <= S_AXI_2_RDATA;     // register read data /* some new changes here */
-            end
-          else if (S_AXI_3_RDATA != 32'h0)
-            begin
-              axi_rdata <= S_AXI_3_RDATA;     // register read data /* some new changes here */
             end
         end
     end
