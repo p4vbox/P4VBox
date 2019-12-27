@@ -531,6 +531,11 @@ add_wave $cpi/axi_arready -into Internal_CPI
 add_wave $cpi/axi_rdata -into Internal_CPI
 add_wave $cpi/axi_rresp -into Internal_CPI
 add_wave $cpi/axi_rvalid -into Internal_CPI
+add_wave $cpi/axi_rvalid -into Internal_CPI
+add_wave $cpi/axi_rdata_0 -into Internal_CPI
+add_wave $cpi/axi_rdata_1 -into Internal_CPI
+add_wave $cpi/axi_rdata_2 -into Internal_CPI
+add_wave $cpi/axi_rdata_3 -into Internal_CPI
 
 # Input P4 Interface
 set ipi $nf_datapath/input_p4_interface_0
