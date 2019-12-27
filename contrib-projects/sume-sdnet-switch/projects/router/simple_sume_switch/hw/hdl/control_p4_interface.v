@@ -150,6 +150,10 @@ module control_p4_interface_ip #
     reg [C_S_AXI_DATA_WIDTH-1 : 0]      axi_rdata;
     reg [1 : 0]                         axi_rresp;
     reg                                 axi_rvalid;
+    reg [C_S_AXI_DATA_WIDTH-1 : 0]      axi_rdata_0;
+    reg [C_S_AXI_DATA_WIDTH-1 : 0]      axi_rdata_1;
+    reg [C_S_AXI_DATA_WIDTH-1 : 0]      axi_rdata_2;
+    reg [C_S_AXI_DATA_WIDTH-1 : 0]      axi_rdata_3;
 
     // Master Output Connections assignments
     assign M_AXI_AWREADY    = axi_awready;
@@ -220,7 +224,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_awready && M_AXI_AWVALID && M_AXI_WVALID)
+          if (~axi_awready && M_AXI_AWVALID && M_AXI_WVALID && (S_AXI_0_AWREADY || S_AXI_1_AWREADY || S_AXI_2_AWREADY ||S_AXI_3_AWREADY))
             begin
               // slave is ready to accept write address when
               // there is a valid write address and write data
@@ -261,7 +265,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_wready && M_AXI_WVALID && M_AXI_AWVALID)
+          if (~axi_wready && M_AXI_WVALID && M_AXI_AWVALID && (S_AXI_0_WREADY || S_AXI_1_WREADY || S_AXI_2_WREADY || S_AXI_3_WREADY))
             begin
               // slave is ready to accept write data when
               // there is a valid write address and write data
@@ -314,7 +318,7 @@ module control_p4_interface_ip #
         end
       else
         begin
-          if (~axi_arready && M_AXI_ARVALID && (S_AXI_0_ARREADY || S_AXI_1_ARREADY || S_AXI_2_ARREADY || S_AXI_3_ARREADY) )
+          if (~axi_arready && M_AXI_ARVALID && S_AXI_0_ARREADY)
             begin
               // indicates that the slave has acceped the valid read address
               // Read address latching
@@ -349,7 +353,40 @@ module control_p4_interface_ip #
             begin
               // Read data is accepted by the master
               axi_rvalid <= 1'b0;
-              axi_rdata <= 32'h0;
+            end
+        end
+    end
+
+    // Output register or memory read data
+    always @( posedge M_AXI_ACLK )
+    begin
+      if ( M_AXI_ARESETN == 1'b0 )
+        begin
+          axi_rdata_0  <= 0;
+          axi_rdata_1  <= 0;
+          axi_rdata_2  <= 0;
+          axi_rdata_3  <= 0;
+        end
+      else
+        begin
+          // When there is a valid read address (M_AXI_ARVALID) with
+          // acceptance of read address by the slave (axi_arready),
+          // output the read dada
+          if (S_AXI_0_RDATA != 32'h0)
+            begin
+              axi_rdata_0 <= S_AXI_0_RDATA;     // register read data /* some new changes here */
+            end
+          if (S_AXI_1_RDATA != 32'h0)
+            begin
+              axi_rdata_1 <= S_AXI_1_RDATA;     // register read data /* some new changes here */
+            end
+          if (S_AXI_2_RDATA != 32'h0)
+            begin
+              axi_rdata_2 <= S_AXI_2_RDATA;     // register read data /* some new changes here */
+            end
+          if (S_AXI_3_RDATA != 32'h0)
+            begin
+              axi_rdata_3 <= S_AXI_3_RDATA;     // register read data /* some new changes here */
             end
         end
     end
@@ -366,21 +403,25 @@ module control_p4_interface_ip #
           // When there is a valid read address (M_AXI_ARVALID) with
           // acceptance of read address by the slave (axi_arready),
           // output the read dada
-          if (S_AXI_0_RDATA != 32'h0)
+          if (S_AXI_3_RDATA != 32'h0)
             begin
-              axi_rdata <= S_AXI_0_RDATA;     // register read data /* some new changes here */
+              axi_rdata <= S_AXI_3_RDATA;     // register read data /* some new changes here */
             end
-          else if (S_AXI_1_RDATA != 32'h0)
-            begin
-              axi_rdata <= S_AXI_1_RDATA;     // register read data /* some new changes here */
-            end
-          else if (S_AXI_2_RDATA != 32'h0)
+           else if (S_AXI_2_RDATA != 32'h0)
             begin
               axi_rdata <= S_AXI_2_RDATA;     // register read data /* some new changes here */
             end
-          else if (S_AXI_3_RDATA != 32'h0)
+           else if (S_AXI_1_RDATA != 32'h0)
             begin
-              axi_rdata <= S_AXI_3_RDATA;     // register read data /* some new changes here */
+              axi_rdata <= S_AXI_1_RDATA;     // register read data /* some new changes here */
+            end
+           else if (S_AXI_0_RDATA != 32'h0)
+            begin
+              axi_rdata <= S_AXI_0_RDATA;     // register read data /* some new changes here */
+            end
+           else
+            begin
+              axi_rdata <= 32'h0;
             end
         end
     end
