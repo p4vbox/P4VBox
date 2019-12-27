@@ -123,7 +123,7 @@ nftest_regwrite(0x44020040, 0x00000001)
 nftest_regread_expect(0x44020044, 0x00000001)
 nftest_regread_expect(0x44020044, 0x00000001)
 # get size
-nftest_regread_expect(0x44020024, 0x0000000D)
+nftest_regread_expect(0x44020024, 0x00000009)
 # read entry
 nftest_regwrite(0x44020050, 0x11111108)
 nftest_regwrite(0x44020054, 0x00000811)
