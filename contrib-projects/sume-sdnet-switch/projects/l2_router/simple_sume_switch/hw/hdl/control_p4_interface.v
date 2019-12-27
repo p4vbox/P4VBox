@@ -349,7 +349,6 @@ module control_p4_interface_ip #
             begin
               // Read data is accepted by the master
               axi_rvalid <= 1'b0;
-              axi_rdata <= 32'h0;
             end
         end
     end
@@ -369,6 +368,10 @@ module control_p4_interface_ip #
           if (S_AXI_0_RDATA != 32'h0)
             begin
               axi_rdata <= S_AXI_0_RDATA;     // register read data /* some new changes here */
+            end
+           else
+            begin
+              axi_rdata <= 32'h0;
             end
         end
     end
