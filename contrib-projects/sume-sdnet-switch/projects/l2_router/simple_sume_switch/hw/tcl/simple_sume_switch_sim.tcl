@@ -864,7 +864,7 @@ add_wave $vSwitch1_ip/control_S_AXI_RREADY -into Control_VS_1 -color yellow
 
 
 
-run 65us
+run 100us
 
 set_property needs_save false [get_wave_configs P4-NetFPGA]
 set_property needs_save false [get_wave_configs P4VBox]
