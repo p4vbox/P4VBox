@@ -40,6 +40,7 @@ projName = ""
 projDir = ""
 projDesignDir = ""
 projSume = ""
+v_switch = ""
 testName = None
 
 
@@ -60,6 +61,7 @@ def getArgs():
     parser.add_argument("--imp", action="store_true", help="This will run the synthesis and implementation generating the bitstream file (.bit).")
     parser.add_argument("--testdata_all", action="store_true", help="This will create testdata files for all switches passed by argument. Need $P4_PROJECT_DIR/testdata/gen_testdata_<P4_SWITCH>.py for all switches passed by argument.")
     parser.add_argument("--open_project", action="store_true", help="Open project for switch design instantiated in $P4_PROJECT_NAME. To use this, pass project name as argument switches")
+    parser.add_argument("--open_cli", action="store_true", help="Open CLI (Comand Line Interface) to p4_switch(virtual switch) passed by argument in project folder $P4_PROJECT_DIR or passed by -name flag. To use this, pass project name and the virtual switche name as argument. Support ONLY ONE virtual switch(p4_switch) argument!!!")
     parser.add_argument("--latency", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_latency to calc latency times")
     parser.add_argument("--bandwidth_64", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_bandwidth to calc bandwidth times to packets with 64 bytes of lenght")
     parser.add_argument("--bandwidth_256", action="store_true", help="Replace simulation packets by /testdata/gen_testdata_<p4_switch>_<#_switches>_bandwidth to calc bandwidth times to packets with 256 bytes of lenght")
@@ -68,7 +70,7 @@ def getArgs():
     args = parser.parse_args()
 
 def setEnv():
-    global args; global projName; global projDir; global projDesignDir; global projSume; global testName
+    global args; global projName; global projDir; global projDesignDir; global projSume; global testName; global v_switch
 
     if ( args.name is None ):
         if ( len(args.switches) == 1 ):
@@ -88,15 +90,17 @@ def setEnv():
     os.environ["PYTHONPATH"] = os.environ["SUME_SDNET"] + "/bin:" + os.environ["SUME_FOLDER"] + "/tools/scripts/:" + os.environ["NF_DESIGN_DIR"] + "/lib/Python:" + os.environ["SUME_FOLDER"] + "/tools/scripts/NFTest"
     os.environ["P4_SWITCH_BASE_ADDR"] = args.BASE_ADDRESS
     os.environ["P4_SWITCH"] = os.environ["P4_PROJECT_NAME"]
+    os.environ["P4VBOX_VSWITCH"] = args.switches[0]
 
     projName = os.environ["P4_PROJECT_NAME"]
     projDir = os.environ["P4_PROJECT_DIR"]
     projDesignDir = os.environ["NF_DESIGN_DIR"]
     projSume = os.environ["SUME_FOLDER"]
     testName = args.test_name.split("_")
+    v_switch = os.environ["P4VBOX_VSWITCH"]
 
 def printEnv():
-    global args; global projName; global projDir; global projDesignDir; global projSume; global testName
+    global args; global projName; global projDir; global projDesignDir; global projSume; global testName; global v_switch
     print("\n---------------------------------------------")
     print("            P4VBox - Enviroment")
     print("---------------------------------------------\n")
@@ -111,6 +115,8 @@ def printEnv():
     print("    Project Dir: "+ projDir)
     print("    Design Dir: "+ projDesignDir)
     print("    Test Dir: "+ projDesignDir + "/test/sim_"+ testName[0] +"_"+ testName[1])
+    if (args.open_cli):
+        print("    CLI Dir: "+ projDesignDir + "/sw/CLI_"+ v_switch)
     print("    Device: xc7vx690t-3-ffg1761")
     print("    P4 Switch Target: "+ os.environ['NF_PROJECT_NAME'])
     print("\n")
@@ -284,7 +290,7 @@ def openProject():
 
 
 def main():
-    global args; global projName; global projDir; global projDesignDir; global projSume; global testName
+    global args; global projName; global projDir; global projDesignDir; global projSume; global testName; global v_switch
 
     getArgs()
 
@@ -322,6 +328,20 @@ def main():
             genTestdata(verbose_mode)
         genConfigWrites(testName[0], testName[1])
         simSume(testName[0], testName[1])
+        sys.exit(0)
+
+    # include the CLI folder to path to can import P4_SWITCH_CLI
+    CLI_FOLDER = projDir + "/sw/CLI_"+ v_switch
+    sys.path.insert(1, CLI_FOLDER)
+    if (args.open_cli):
+        print("Running CLI to Virtual Switch: "+ v_switch +"\n")
+        try:
+            import P4_SWITCH_CLI
+        except:
+            print("\n\n ERROR: CLI file not found! Are you sure that exist? \n\t CLI file: "+ CLI_FOLDER +"/P4_SWITCH_CLI.py\n")
+            sys.exit(1)
+        P4_SWITCH_CLI.SimpleSumeSwitch().cmdloop()
+        print("\nExit of Virtual Switch "+ v_switch +" CLI")
         sys.exit(0)
 
     cleanAll()
