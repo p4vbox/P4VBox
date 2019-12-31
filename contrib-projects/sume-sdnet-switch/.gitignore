@@ -35,7 +35,6 @@ config_writes/
 SDK_Workspace/
 log/
 API/
-CLI/
-CLI_*/
-!CLI_template
+CLI*/
+!CLI_template/
 seed
