@@ -60,8 +60,9 @@ export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
 
 export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
 export P4VBOX_VSWITCH=${P4_PROJECT_NAME}
+export P4VBOX_CLI_VSWITCH=${P4_PROJECT_NAME}/sw/CLI_${P4VBOX_VSWITCH}/P4_SWITCH_CLI.py
 export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
 export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-export P4VBOX_PROGRAM=${P4VBOX_SCRIPTS}/tools/program_sume.sh
-export P4VBOX_LIBRARY=${P4VBOX_SCRIPTS}/tools/make_library.sh
+export P4VBOX_PROGRAM_SUME=${P4VBOX_SCRIPTS}/tools/program_sume.sh
+export P4VBOX_MAKE_LIBRARY=${P4VBOX_SCRIPTS}/tools/make_library.sh
 export P4VBOX_CONFIG_SWITCH=${P4VBOX_SCRIPTS}/tools/config_switch.sh
