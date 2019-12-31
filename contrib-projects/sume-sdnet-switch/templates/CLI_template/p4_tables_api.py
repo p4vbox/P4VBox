@@ -34,7 +34,9 @@ import sys, os, re, json
 from fcntl import *
 from ctypes import *
 
-SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info_" + os.environ["P4VBOX_VSWITCH"] + ".dat")
+VSWITCH = os.environ["P4VBOX_VSWITCH"]
+
+SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info_" + VSWITCH + ".dat")
 
 # sets PX_TABLES
 import p4_px_tables
@@ -57,7 +59,7 @@ split_px_tables()
 
 if (len(PX_CAM_TABLES) > 0):
     print "loading libcam.."
-    libcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/libcam.so'))
+    libcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/libcam.so'))
 
     # argtypes for the functions called from  C
     libcam.cam_read_entry.argtypes = [c_uint, c_char_p, c_char_p, c_char_p]
@@ -70,7 +72,7 @@ if (len(PX_CAM_TABLES) > 0):
 
 if (len(PX_TCAM_TABLES) > 0):
     print "loading libtcam.."
-    libtcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/libtcam.so'))
+    libtcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/libtcam.so'))
 
     # argtypes for the functions called from  C
     libtcam.tcam_clean.argtypes = [c_uint]
@@ -85,7 +87,7 @@ if (len(PX_TCAM_TABLES) > 0):
 
 if (len(PX_LPM_TABLES) > 0):
     print "loading liblpm.."
-    liblpm=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/liblpm.so'))
+    liblpm=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/liblpm.so'))
 
     # argtypes for the functions called from  C
     liblpm.lpm_get_addr_size.argtypes = []
@@ -96,7 +98,7 @@ if (len(PX_LPM_TABLES) > 0):
     liblpm.lpm_error_decode.argtypes = [c_int]
     liblpm.lpm_error_decode.restype = c_char_p
 
-TABLE_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4VBOX_VSWITCH"] + "_table_defines.json")
+TABLE_DEFINES_FILE = os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/' + VSWITCH + '_table_defines.json')
 
 ########################
 ### Helper Functions ###

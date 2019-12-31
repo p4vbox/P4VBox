@@ -35,6 +35,8 @@ from fcntl import *
 from ctypes import *
 from collections import OrderedDict
 
+VSWITCH = os.environ["P4VBOX_VSWITCH"]
+
 # Loading the SUME shared library
 print "loading libsume.."
 lib_path=os.path.join(os.environ['SUME_FOLDER'],'lib','sw','std','hwtestlib','libsume.so')
@@ -44,7 +46,7 @@ libsume=cdll.LoadLibrary(lib_path)
 libsume.regread.argtypes = [c_uint]
 libsume.regwrite.argtypes= [c_uint, c_uint]
 
-EXTERN_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/" + os.environ["P4VBOX_VSWITCH"] + "_extern_defines.json")
+EXTERN_DEFINES_FILE = os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/' + VSWITCH + '_extern_defines.json')
 
 ERROR_CODE = -1
 
