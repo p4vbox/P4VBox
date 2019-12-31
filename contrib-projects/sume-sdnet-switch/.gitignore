@@ -36,4 +36,5 @@ SDK_Workspace/
 log/
 API/
 CLI/
+CLI_*/
 seed
