@@ -121,10 +121,14 @@ def cleanAll():
     if ( args.v ):
         subprocess.call("rm -rfv .Xil", shell=True)
         subprocess.call("rm -rfv $(find -name *.log -o -name *.jou)", shell=True)
+        subprocess.call("rm -rfv "+ projDir +"/sw/API", shell=True)
+        subprocess.call("rm -rfv "+ projDir +"/sw/CLI*", shell=True)
         subprocess.call(["make", "-C", projDir, "clean"])
     else:
         subprocess.call("rm -rf .Xil", shell=True)
         subprocess.call("rm -rf $(find -name *.log -o -name *.jou)", shell=True)
+        subprocess.call("rm -rf "+ projDir +"/sw/API", shell=True)
+        subprocess.call("rm -rf "+ projDir +"/sw/CLI*", shell=True)
         subprocess.call(["make", "-s", "-C", projDir, "clean"])
 
 def initWorkspace(verbose):
@@ -230,6 +234,7 @@ def genSource(switch):
 def buildIp(switch, verbose, idx):
     print("\nBuilding IP: "+ switch +" - vSwitch"+ str(idx))
     subprocess.call([os.environ["P4VBOX_SCRIPTS"] +"/p4_build.sh "+verbose], shell=True)
+    subprocess.call(["mv "+ verbose + projDir +"/sw/CLI " + projDir +"/sw/CLI_"+ switch], shell=True)
 
 def genConfigWrites(major, minor):
     print("\nGenerating Config Writes:\n")
