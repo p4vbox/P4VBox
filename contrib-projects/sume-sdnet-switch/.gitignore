@@ -37,4 +37,5 @@ log/
 API/
 CLI/
 CLI_*/
+!CLI_template
 seed
