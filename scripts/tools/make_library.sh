@@ -31,7 +31,7 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-set folder=$PWD
+# set folder=$PWD
 
 cd $SUME_FOLDER/lib/hw/xilinx/cores/tcam_v1_1_0/ && make update && make
 cd $SUME_FOLDER/lib/hw/xilinx/cores/cam_v1_1_0/ && make update && make
@@ -45,6 +45,9 @@ cd $SUME_FOLDER && make
 # modprobe sume_riffa
 # lsmod | grep sume_riffa
 
-cd $folder
+# cd $folder
+export SUME_FOLDER=${HOME}/projects/P4VBox
+export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
+cd $P4VBOX_SCRIPTS
 
 exit 0
