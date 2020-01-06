@@ -93,7 +93,7 @@ fi
 echo " " && echo " "
 read -p "Would you like install required packets? (Y/N): " confirm
 if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-  sudo apt-get install -y gcc g++ minicom  libusb-dev  libc6-i386  python-serial python-wxgtk3.0  python-scapy lib32z1 lib32ncurses5 libbz2-1.0 lib64z1 lib64ncurses5 libncurses5-dev libbz2-1.0 lib32stdc++6 lib64stdc++6 libgtk2.0-0:i386 libstdc++6:i386 libstdc++5:i386 libstdc++5:amd64 linux-headers-$(uname -r) build-essential git patch vim screen install openssh-client openssh-client lsb gcc-multilib g++-multilib
+  sudo apt-get install -y gcc g++ minicom  libusb-dev  libc6-i386  python-serial python-wxgtk3.0  python-scapy lib32z1 lib32ncurses5 libbz2-1.0 lib64z1 lib64ncurses5 libncurses5-dev libbz2-1.0 lib32stdc++6 lib64stdc++6 libgtk2.0-0:i386 libstdc++6:i386 libstdc++5:i386 libstdc++5:amd64 linux-headers-$(uname -r) build-essential git patch vim screen openssh-client openssh-client lsb gcc-multilib g++-multilib
   sudo apt-get install -y python-matplotlib python-pip libc6-dev-i386
   sudo pip install ascii_graph
 fi
