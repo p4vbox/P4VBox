@@ -175,63 +175,64 @@ fi
 
 echo " " && echo " "
 read -p "Would you like to run the System Setup [ONLY IF SUME BOARD WERE INSTALLED IN THIS HOST]? (Y/N): " confirm
-if [[ "$confirm" =~ ^([nN][oO][nN]|[aA][oO])+$ ]]; then
-  echo " "
-  echo " "
-  echo "##########################"
-  echo "  Installation completed"
-  echo "##########################"
-  cd $folder
-  exit 0
+if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+  cd $DRIVER_FOLDER
+  if [ -f "sume_riffa.c" ]; then
+    sudo make all
+    sudo make install
+    sudo modprobe sume_riffa
+    ifconfig -a
+    lspci -vxx | grep -i Xilinx
+  else
+    echo "Driver Folder not Found"
+    cd $folder
+    exit 0
+  fi
+
+  echo " " && echo " "
+  read -p "Enter with the full path to Digilent Adept Tools folder: " digilentpath
+  cd $digilentpath
+  if [ -f "digilent.adept.*" ]; then
+    sudo dpkg -i digilent.adept.*
+  else
+    echo "Digilent Adept Tools not found."
+    cd $folder
+    exit 1
+  fi
+
+  sudo chmod 666 /dev/ttyUSB1
+
+  sudo echo " " >> /etc/sysctl.d/99-sysctl.conf
+  sudo echo "# Disable ipv6" >> /etc/sysctl.d/99-sysctl.conf
+  sudo echo "net.ipv6.conf.all.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
+  sudo echo "net.ipv6.conf.default.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
+  sudo echo "net.ipv6.conf.lo.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
+
+  sudo vim /etc/init/avahi-daemon.conf
+
+  sudo vim /etc/default/avahi-daemon
+
+  sudo systemctl mask avahi-daemon
+  sudo systemctl mask avahi-daemon.socket
+  sudo systemctl stop avahi-daemon
+  sudo systemctl stop avahi-daemon.socket
+
+  sudo vim /etc/init.d/avahi-daemon
+
+  sudo vim /etc/NetworkManager/NetworkManager.conf
+
+  sudo vim /etc/network/interfaces
+
+  sudo vim /etc/default/grub
+
+  sudo update-grub && reboot
+
 fi
 
-cd $DRIVER_FOLDER
-if [ -f "sume_riffa.c" ]; then
-  sudo make all
-  sudo make install
-  sudo modprobe sume_riffa
-  ifconfig -a
-  lspci -vxx | grep -i Xilinx
-else
-  echo "Driver Folder not Found"
-  cd $folder
-  exit 0
-fi
-
-echo " " && echo " "
-read -p "Enter with the full path to Digilent Adept Tools folder: " digilentpath
-cd $digilentpath
-if [ -f "digilent.adept.*" ]; then
-  sudo dpkg -i digilent.adept.*
-else
-  echo "Digilent Adept Tools not found."
-  cd $folder
-  exit 1
-fi
-
-sudo chmod 666 /dev/ttyUSB1
-
-sudo echo " " >> /etc/sysctl.d/99-sysctl.conf
-sudo echo "# Disable ipv6" >> /etc/sysctl.d/99-sysctl.conf
-sudo echo "net.ipv6.conf.all.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
-sudo echo "net.ipv6.conf.default.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
-sudo echo "net.ipv6.conf.lo.disable_ipv6=1" >> /etc/sysctl.d/99-sysctl.conf
-
-sudo vim /etc/init/avahi-daemon.conf
-
-sudo vim /etc/default/avahi-daemon
-
-sudo systemctl mask avahi-daemon
-sudo systemctl mask avahi-daemon.socket
-sudo systemctl stop avahi-daemon
-sudo systemctl stop avahi-daemon.socket
-
-sudo vim /etc/init.d/avahi-daemon
-
-sudo vim /etc/NetworkManager/NetworkManager.conf
-
-sudo vim /etc/network/interfaces
-
-sudo vim /etc/default/grub
-
-sudo update-grub && reboot
+echo " "
+echo " "
+echo "##########################"
+echo "  Installation completed"
+echo "##########################"
+cd $folder
+exit 0
