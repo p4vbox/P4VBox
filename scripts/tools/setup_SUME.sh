@@ -175,7 +175,7 @@ fi
 
 echo " " && echo " "
 read -p "Would you like to run the System Setup [ONLY IF SUME BOARD WERE INSTALLED IN THIS HOST]? (Y/N): " confirm
-if [[ "$confirm" !=~ ^([yY][eE][sS]|[yY])+$ ]]; then
+if [[ "$confirm" =~ ^([nN][oO][nN]|[aA][oO])+$ ]]; then
   echo " "
   echo " "
   echo "##########################"
