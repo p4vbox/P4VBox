@@ -75,13 +75,13 @@ vlan_prio = 0          # vlan priority
 
 dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
-vlan_id_map = {"l2_switch":1, "router":2}             # map the vlans of parrallel switches
+vlan_id_map = {"l2_switch":1, "router":2, "firewall":3, "firewall1":1, "firewall2":2, "l2_switch1":1, "l2_switch2":2}             # map the vlans of parrallel switches
 
 port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
-port_slicing[0] = "l2_switch"
-port_slicing[1] = "l2_switch"
-port_slicing[2] = "router"
-port_slicing[3] = "router"
+port_slicing[0] = "firewall1"
+port_slicing[1] = "firewall1"
+port_slicing[2] = "firewall2"
+port_slicing[3] = "firewall2"
 
 MAC_addr_H = {} # MAC of Hosts H[0, 1, 2, 3] connected to SUME Ports nf[0, 1, 2, 3] respectively
 MAC_addr_H[0] = "08:11:11:11:11:08"
@@ -100,6 +100,9 @@ MAC_addr_S[0] = "05:11:11:11:11:05"
 MAC_addr_S[1] = "05:22:22:22:22:05"
 MAC_addr_S[2] = "05:33:33:33:33:05"
 MAC_addr_S[3] = "05:44:44:44:44:05"
+
+BLOCK_SPORT = 1234
+BLOCK_DPORT = 8888
 
 
 class SimpleTester(cmd.Cmd):
@@ -130,29 +133,36 @@ class SimpleTester(cmd.Cmd):
 
     def _make_packet(self, flow_size, src_host):
         vlan_id = vlan_id_map[port_slicing[src_host]]
-        sport = self._get_rand_port()
-        dport = self._get_rand_port()
+        vswitch = port_slicing[src_host]
+
         src_IP = IP_addr_H[src_host]
         dst_IP = IP_addr_H[dst_host_map[src_host]]
-        if ( vlan_id == vlan_id_map["l2_switch"] ):
+        if ( vswitch == "l2_switch" or vswitch == "l2_switch1" or vswitch == "l2_switch2" ):
+            print("l2_switch")
+            sport = self._get_rand_port()
+            dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
-        elif( vlan_id == vlan_id_map["router"] ):
+        elif( vswitch == "router" or vswitch == "router1" or vswitch == "router2" ):
+            print("Router")
+            sport = self._get_rand_port()
+            dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_S[src_host]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
-        elif ( vlan_id == vlan_id_map["firewall"] ):
+        elif ( vswitch == "firewall" or vswitch == "firewall1" or vswitch == "firewall2" ):
+            print("Firewall")
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
-            (sport, dport, drop) = get_rand_block()
+            (sport, dport, block) = self._get_rand_block()
             if ( block ):
                 if ( sport == BLOCK_SPORT ):
-                    print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Source Port: "+str(sport)
+                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Source Port: "+str(sport)
                 elif ( dport == BLOCK_DPORT ):
-                    print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Destination Port: "+str(dport)
+                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Destination Port: "+str(dport)
                 else:
-                    print "\nBlocked!  H" +str(src_ind)+" to H"+str(dst_host_map[src_ind])+" | Unknown motive"
+                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Unknown motive"
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
         else:
             print("\nERROR: vlan_id not mapped!\n")
