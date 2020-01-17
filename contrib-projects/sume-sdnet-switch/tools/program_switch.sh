@@ -63,11 +63,16 @@ echo
 
 rmmod sume_riffa
 
-djtgcfg enum
-djtgcfg init -d NetSUME
+# djtgcfg enum
+# djtgcfg init -d NetSUME
+# echo
+# djtgcfg prog -d NetSUME -i 0 -f $bitimage
+# echo
+
 echo
-djtgcfg prog -d NetSUME -i 0 -f $bitimage
+xsct ${SUME_SDNET}/tools/run_xsct.tcl -tclargs $bitimage
 echo
+
 lspci -vxx | grep -i xilinx
 
 bash ${SUME_SDNET}/tools/pci_rescan_run.sh
