@@ -57,7 +57,7 @@ class ViewTest(cmd.Cmd):
         args = line.split()
         if (len(args) != 1):
             print >> sys.stderr, "ERROR: usage..."
-            self.help_run_flows()
+            self.help_listen()
             return (None)
         try:
             iface = args[0]
@@ -69,16 +69,39 @@ class ViewTest(cmd.Cmd):
     def do_listen(self, line):
         iface = self._parse_line(line)
         if (iface is not None):
+            if (iface == "eth3"):
+                subprocess.call("killall avahi-daemon && killall avahi-autoipd", shell=True)
+                subprocess.call("killall dhclient", shell=True)
+                subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
             try:
-                subprocess.call(["tcpdump", "-n", "-e", "-#", "-XX", "-t", "-v", "-i", iface ])
+                subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
             except KeyboardInterrupt:
                 return
-
 
     def help_listen(self):
         print """
 \nlisten <eth_name>\n
-DESCRIPTION: Listen the ethrnet interface especificated by <eth_name>.\n
+DESCRIPTION: Listen the ethrnet interface especificated by <eth_name> - only show the headers.\n
+    <eth_names> : the name of the ethernet interface to listen
+"""
+
+    def do_listen_show_packet(self, line):
+        iface = self._parse_line(line)
+        if (iface is not None):
+            if (iface == "eth3"):
+                subprocess.call("killall avahi-daemon && killall avahi-autoipd", shell=True)
+                subprocess.call("killall dhclient", shell=True)
+                subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
+            try:
+                subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
+            except KeyboardInterrupt:
+                return
+
+
+    def help_listen_show_packet(self):
+        print """
+\nlisten_show_packet <eth_name>\n
+DESCRIPTION: Listen the ethrnet interface especificated by <eth_name> - show the full packet (headers + payload).\n
     <eth_names> : the name of the ethernet interface to listen
 """
 
