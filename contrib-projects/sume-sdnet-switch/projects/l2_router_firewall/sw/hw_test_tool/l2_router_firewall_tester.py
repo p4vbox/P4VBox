@@ -78,8 +78,8 @@ inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictiona
 vlan_id_map = {"l2_switch":1, "router":2, "firewall":3, "firewall1":1, "firewall2":2, "l2_switch1":1, "l2_switch2":2}             # map the vlans of parrallel switches
 
 port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
-port_slicing[0] = "firewall"
-port_slicing[1] = "firewall"
+port_slicing[0] = "l2_switch"
+port_slicing[1] = "router"
 port_slicing[2] = "firewall"
 port_slicing[3] = "firewall"
 
@@ -137,33 +137,35 @@ class SimpleTester(cmd.Cmd):
 
         src_IP = IP_addr_H[src_host]
         dst_IP = IP_addr_H[dst_host_map[src_host]]
+        sport = self._get_rand_port()
+        dport = self._get_rand_port()
         if ( vswitch == "l2_switch" or vswitch == "l2_switch1" or vswitch == "l2_switch2" ):
             print("Packet to l2_switch")
-            sport = self._get_rand_port()
-            dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+            print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
         elif( vswitch == "router" or vswitch == "router1" or vswitch == "router2" ):
             print("Packet to router")
-            sport = self._get_rand_port()
-            dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_S[src_host]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+            print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
         elif ( vswitch == "firewall" or vswitch == "firewall1" or vswitch == "firewall2" ):
             print("Packet to firewall")
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
-            (sport, dport, block) = self._get_rand_block()
+            (f_sport, f_dport, block) = self._get_rand_block()
             if ( block ):
-                if ( sport == BLOCK_SPORT ):
-                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Source Port: "+str(sport)
-                elif ( dport == BLOCK_DPORT ):
-                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Destination Port: "+str(dport)
+                if ( f_sport == BLOCK_SPORT ):
+                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Source Port: "+str(f_sport)
+                elif ( f_dport == BLOCK_DPORT ):
+                    print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Destination Port: "+str(f_dport)
                 else:
                     print "\nBlocked!  H" +str(src_host)+" to H"+str(dst_host_map[src_host])+" | Unknown motive"
-            pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
+            else:
+                print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
+            pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=20) / UDP(sport=f_sport, dport=f_dport) / ((flow_size - HEADER_SIZE)*"A")
         else:
             print("\nERROR: vlan_id not mapped!\n")
             exit(1)
@@ -231,7 +233,6 @@ ethernet interface, based on topology.
             pkt = self._make_packet(pkts_size, src_host)
             sender = IFACE_H[src_host]
             pkts.append(pkt)
-        print "\n  H" +str(src_host)+ " -> H" +str(dst_host_map[src_host])
         sendp(pkts, iface=sender)
         print ""
 
