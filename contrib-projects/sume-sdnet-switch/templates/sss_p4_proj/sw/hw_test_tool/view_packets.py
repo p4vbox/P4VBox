@@ -68,15 +68,15 @@ class ViewTest(cmd.Cmd):
 
     def do_listen(self, line):
         iface = self._parse_line(line)
-        if (iface == "eth3"):
-            subprocess.call("killall avahi-daemon && killall avahi-autoipd", shell=True)
-            subprocess.call("killall dhclient", shell=True)
-            subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
-        try:
-            subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
-        except KeyboardInterrupt:
-            subprocess.call("dhclient &", shell=True)
-            return
+        if (iface is not None):
+            if (iface == "eth3"):
+                subprocess.call("killall avahi-daemon && killall avahi-autoipd", shell=True)
+                subprocess.call("killall dhclient", shell=True)
+                subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
+            try:
+                subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
+            except KeyboardInterrupt:
+                return
 
     def help_listen(self):
         print """
@@ -95,7 +95,6 @@ DESCRIPTION: Listen the ethrnet interface especificated by <eth_name> - only sho
             try:
                 subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
             except KeyboardInterrupt:
-                subprocess.call("dhclient &", shell=True)
                 return
 
 

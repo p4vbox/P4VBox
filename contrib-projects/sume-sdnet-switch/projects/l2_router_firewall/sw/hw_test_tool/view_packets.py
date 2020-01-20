@@ -76,7 +76,6 @@ class ViewTest(cmd.Cmd):
             try:
                 subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
             except KeyboardInterrupt:
-                subprocess.call("dhclient &", shell=True)
                 return
 
     def help_listen(self):
@@ -96,7 +95,6 @@ DESCRIPTION: Listen the ethrnet interface especificated by <eth_name> - only sho
             try:
                 subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
             except KeyboardInterrupt:
-                subprocess.call("dhclient &", shell=True)
                 return
 
 

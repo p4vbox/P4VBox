@@ -78,10 +78,10 @@ inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictiona
 vlan_id_map = {"l2_switch":1, "router":2, "firewall":3, "firewall1":1, "firewall2":2, "l2_switch1":1, "l2_switch2":2}             # map the vlans of parrallel switches
 
 port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
-port_slicing[0] = "firewall1"
-port_slicing[1] = "firewall1"
-port_slicing[2] = "firewall2"
-port_slicing[3] = "firewall2"
+port_slicing[0] = "firewall"
+port_slicing[1] = "firewall"
+port_slicing[2] = "firewall"
+port_slicing[3] = "firewall"
 
 MAC_addr_H = {} # MAC of Hosts H[0, 1, 2, 3] connected to SUME Ports nf[0, 1, 2, 3] respectively
 MAC_addr_H[0] = "08:11:11:11:11:08"
@@ -138,21 +138,21 @@ class SimpleTester(cmd.Cmd):
         src_IP = IP_addr_H[src_host]
         dst_IP = IP_addr_H[dst_host_map[src_host]]
         if ( vswitch == "l2_switch" or vswitch == "l2_switch1" or vswitch == "l2_switch2" ):
-            print("l2_switch")
+            print("Packet to l2_switch")
             sport = self._get_rand_port()
             dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
         elif( vswitch == "router" or vswitch == "router1" or vswitch == "router2" ):
-            print("Router")
+            print("Packet to router")
             sport = self._get_rand_port()
             dport = self._get_rand_port()
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_S[src_host]
             pkt = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((flow_size - HEADER_SIZE)*"A")
         elif ( vswitch == "firewall" or vswitch == "firewall1" or vswitch == "firewall2" ):
-            print("Firewall")
+            print("Packet to firewall")
             src_MAC = MAC_addr_H[src_host]
             dst_MAC = MAC_addr_H[dst_host_map[src_host]]
             (sport, dport, block) = self._get_rand_block()
