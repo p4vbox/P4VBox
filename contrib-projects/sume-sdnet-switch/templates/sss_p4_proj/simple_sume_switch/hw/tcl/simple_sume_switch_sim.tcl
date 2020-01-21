@@ -321,9 +321,14 @@ set_property needs_save false [get_wave_configs P4VBox]
 # Create variables to clock and reset sinals
 set sig_clock /top_tb/top_sim/clk_200
 set sig_resetn /top_tb/top_sim/sys_rst_n_c
+set sig_clock_wiz /top_tb/top_sim/axi_clocking_i
 add_wave_divider {Clock and Reset Global} -color white
-add_wave $sig_clock -name clock
-add_wave $sig_resetn -name reset_n
+add_wave $sig_clock -name clock_200
+add_wave $sig_resetn -name reset_n -color white
+add_wave_virtual_bus clock_wizard -color silver
+add_wave $sig_clock_wiz/clk_200 -into clock_wizard -color lime
+add_wave $sig_clock_wiz/clk_in_p -into clock_wizard -color silver
+add_wave $sig_clock_wiz/clk_in_n -into clock_wizard -color silver
 
 # Add top level datapath IO
 add_wave_divider {Output Packets} -color white
