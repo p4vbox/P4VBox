@@ -326,9 +326,9 @@ add_wave_divider {Clock and Reset Global} -color white
 add_wave $sig_clock -name clock_200
 add_wave $sig_resetn -name reset_n -color white
 add_wave_virtual_bus clock_wizard -color silver
-add_wave $sig_clock_wiz/clk_200 -into sig_clock_wiz -color lime
-add_wave $sig_clock_wiz/clk_in_p -into sig_clock_wiz -color silver
-add_wave $sig_clock_wiz/clk_in_n -into sig_clock_wiz -color silver
+add_wave $sig_clock_wiz/clk_200 -into clock_wizard -color lime
+add_wave $sig_clock_wiz/clk_in_p -into clock_wizard -color silver
+add_wave $sig_clock_wiz/clk_in_n -into clock_wizard -color silver
 
 # Add top level datapath IO
 add_wave_divider {Output Packets} -color white
