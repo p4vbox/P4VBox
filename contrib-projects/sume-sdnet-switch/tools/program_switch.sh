@@ -58,7 +58,9 @@ fi
 
 
 echo
-echo 'Programming SUME with: ' $bitimage
+echo '			Project name = ' ${P4_PROJECT_NAME}
+echo '		Bitstream file = ' $bitimage
+echo 'Config writes file = ' $configWrites
 echo
 
 rmmod sume_riffa
