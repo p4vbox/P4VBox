@@ -1,4 +1,4 @@
-alculating the average and standard deviation
+# Calculating the average and standard deviation
 
 The *calc_delay* script is a simple script to calculate the avenger time and the standard deviation. This script receives by entry a list of times in nanoseconds.
 
