@@ -74,7 +74,7 @@ class ViewTest(cmd.Cmd):
                 subprocess.call("killall dhclient", shell=True)
                 subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
             try:
-                subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
+                subprocess.call(["tcpdump", "-n", "-e", "-#", "-v", "-ttttt", "-i", iface ])
             except KeyboardInterrupt:
                 return
 
@@ -93,7 +93,7 @@ DESCRIPTION: Listen the ethrnet interface especificated by <eth_name> - only sho
                 subprocess.call("killall dhclient", shell=True)
                 subprocess.call("ifconfig eth3 0.0.0.0", shell=True)
             try:
-                subprocess.call(["tcpdump", "-n", "-e", "-#", "-t", "-v", "-i", iface ])
+                subprocess.call(["tcpdump", "-n", "-e", "-#", "-ttttt", "-v", "-i", iface ])
             except KeyboardInterrupt:
                 return
 
