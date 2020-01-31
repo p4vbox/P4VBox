@@ -38,7 +38,7 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-export P4_PROJECT_NAME=router_l2_fw
+export P4_PROJECT_NAME=l2_router_firewall
 export NF_PROJECT_NAME=simple_sume_switch
 export SUME_FOLDER=${HOME}/projects/P4VBox
 export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
@@ -66,7 +66,7 @@ export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
 export P4VBOX_MAKE_LIBRARY=${P4VBOX_SCRIPTS}/tools/make_library.sh
 export P4VBOX_CONFIG_SWITCH=${P4VBOX_SCRIPTS}/tools/config_switch.sh
 export P4VBOX_PROGSUME=${P4VBOX_SCRIPTS}/tools/program_sume.sh
-# export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}
+export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}
 # export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}_l2_switch
 # export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}_router
-export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}_firewall
+# export P4VBOX_PROGSUME_BITNAME=${P4_PROJECT_NAME}_firewall
