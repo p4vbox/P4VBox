@@ -9,8 +9,11 @@ Run *calc_delay* in a terminal an pass the list ok times with the lats item equa
 
 This command will return these lines above:
 
-> Input time:
+```
+Input time:
 Average = 53213.7070707 ns
 Average = 53.2137070707 us
 Average = 0.0532137070707 ms
+```
 
+Have a good work!
