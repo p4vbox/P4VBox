@@ -184,7 +184,7 @@ source $::env(NF_DESIGN_DIR)/hw/tcl/control_sub_sim.tcl -notrace
 
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/axi_clocking.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_vs_interface.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/control_p4_interface.v"
+read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/control_vs_interface.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
 read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_vs_interface.v"
@@ -424,113 +424,185 @@ add_wave $nf_datapath/s_axis_4_tvalid -into Datapath_Input -color khaki
 add_wave $nf_datapath/s_axis_4_tready -into Datapath_Input -color khaki
 add_wave $nf_datapath/s_axis_4_tlast -into Datapath_Input -color khaki
 
-# Control P4 Interface
-set cpi $nf_datapath/CvSI
+# Control vS Interface
+set CvSI $nf_datapath/CvSI
 add_wave_divider {Control P4 Interface} -color darkgray
-add_wave_virtual_bus clock_CPI
-add_wave $sig_clock -name clock -into clock_CPI
-add_wave $sig_resetn -name reset_n -into clock_CPI
+add_wave_virtual_bus clock_CvSI
+add_wave $sig_clock -name clock -into clock_CvSI
+add_wave $sig_resetn -name reset_n -into clock_CvSI
 add_wave_group M_AXI
-add_wave $cpi/M_AXI_AWADDR -into M_AXI
-add_wave $cpi/M_AXI_AWVALID -into M_AXI
-add_wave $cpi/M_AXI_AWREADY -into M_AXI -color khaki
-add_wave $cpi/M_AXI_WDATA -into M_AXI
-add_wave $cpi/M_AXI_WSTRB -into M_AXI
-add_wave $cpi/M_AXI_WVALID -into M_AXI
-add_wave $cpi/M_AXI_WREADY -into M_AXI -color khaki
-add_wave $cpi/M_AXI_BRESP -into M_AXI -color khaki
-add_wave $cpi/M_AXI_BVALID -into M_AXI -color khaki
-add_wave $cpi/M_AXI_BREADY -into M_AXI
-add_wave $cpi/M_AXI_ARADDR -into M_AXI
-add_wave $cpi/M_AXI_ARVALID -into M_AXI
-add_wave $cpi/M_AXI_ARREADY -into M_AXI -color khaki
-add_wave $cpi/M_AXI_RDATA -into M_AXI -color khaki
-add_wave $cpi/M_AXI_RRESP -into M_AXI -color khaki
-add_wave $cpi/M_AXI_RVALID -into M_AXI -color khaki
-add_wave $cpi/M_AXI_RREADY -into M_AXI
-add_wave_group S_AXI_0
-add_wave $cpi/S_AXI_0_AWADDR -into S_AXI_0
-add_wave $cpi/S_AXI_0_AWVALID -into S_AXI_0
-add_wave $cpi/S_AXI_0_AWREADY -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_WDATA -into S_AXI_0
-add_wave $cpi/S_AXI_0_WSTRB -into S_AXI_0
-add_wave $cpi/S_AXI_0_WVALID -into S_AXI_0
-add_wave $cpi/S_AXI_0_WREADY -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_BRESP -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_BVALID -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_BREADY -into S_AXI_0
-add_wave $cpi/S_AXI_0_ARADDR -into S_AXI_0
-add_wave $cpi/S_AXI_0_ARVALID -into S_AXI_0
-add_wave $cpi/S_AXI_0_ARREADY -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_RDATA -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_RRESP -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_RVALID -into S_AXI_0 -color khaki
-add_wave $cpi/S_AXI_0_RREADY -into S_AXI_0
-add_wave_group S_AXI_1
-add_wave $cpi/S_AXI_1_AWADDR -into S_AXI_1
-add_wave $cpi/S_AXI_1_AWVALID -into S_AXI_1
-add_wave $cpi/S_AXI_1_AWREADY -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_WDATA -into S_AXI_1
-add_wave $cpi/S_AXI_1_WSTRB -into S_AXI_1
-add_wave $cpi/S_AXI_1_WVALID -into S_AXI_1
-add_wave $cpi/S_AXI_1_WREADY -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_BRESP -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_BVALID -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_BREADY -into S_AXI_1
-add_wave $cpi/S_AXI_1_ARADDR -into S_AXI_1
-add_wave $cpi/S_AXI_1_ARVALID -into S_AXI_1
-add_wave $cpi/S_AXI_1_ARREADY -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_RDATA -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_RRESP -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_RVALID -into S_AXI_1 -color khaki
-add_wave $cpi/S_AXI_1_RREADY -into S_AXI_1
-add_wave_group S_AXI_2
-add_wave $cpi/S_AXI_2_AWADDR -into S_AXI_2
-add_wave $cpi/S_AXI_2_AWVALID -into S_AXI_2
-add_wave $cpi/S_AXI_2_AWREADY -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_WDATA -into S_AXI_2
-add_wave $cpi/S_AXI_2_WSTRB -into S_AXI_2
-add_wave $cpi/S_AXI_2_WVALID -into S_AXI_2
-add_wave $cpi/S_AXI_2_WREADY -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_BRESP -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_BVALID -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_BREADY -into S_AXI_2
-add_wave $cpi/S_AXI_2_ARADDR -into S_AXI_2
-add_wave $cpi/S_AXI_2_ARVALID -into S_AXI_2
-add_wave $cpi/S_AXI_2_ARREADY -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_RDATA -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_RRESP -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_RVALID -into S_AXI_2 -color khaki
-add_wave $cpi/S_AXI_2_RREADY -into S_AXI_2
-add_wave_group S_AXI_3
-add_wave $cpi/S_AXI_3_AWADDR -into S_AXI_3
-add_wave $cpi/S_AXI_3_AWVALID -into S_AXI_3
-add_wave $cpi/S_AXI_3_AWREADY -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_WDATA -into S_AXI_3
-add_wave $cpi/S_AXI_3_WSTRB -into S_AXI_3
-add_wave $cpi/S_AXI_3_WVALID -into S_AXI_3
-add_wave $cpi/S_AXI_3_WREADY -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_BRESP -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_BVALID -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_BREADY -into S_AXI_3
-add_wave $cpi/S_AXI_3_ARADDR -into S_AXI_3
-add_wave $cpi/S_AXI_3_ARVALID -into S_AXI_3
-add_wave $cpi/S_AXI_3_ARREADY -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_RDATA -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_RRESP -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_RVALID -into S_AXI_3 -color khaki
-add_wave $cpi/S_AXI_3_RREADY -into S_AXI_3
-add_wave_group Internal_CPI
-add_wave $cpi/axi_awaddr -into Internal_CPI
-add_wave $cpi/axi_awready -into Internal_CPI
-add_wave $cpi/axi_wready -into Internal_CPI
-add_wave $cpi/axi_bresp -into Internal_CPI
-add_wave $cpi/axi_bvalid -into Internal_CPI
-add_wave $cpi/axi_araddr -into Internal_CPI
-add_wave $cpi/axi_arready -into Internal_CPI
-add_wave $cpi/axi_rdata -into Internal_CPI
-add_wave $cpi/axi_rresp -into Internal_CPI
-add_wave $cpi/axi_rvalid -into Internal_CPI
+add_wave $CvSI/M_AXI_AWADDR -into M_AXI
+add_wave $CvSI/M_AXI_AWVALID -into M_AXI
+add_wave $CvSI/M_AXI_AWREADY -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_WDATA -into M_AXI
+add_wave $CvSI/M_AXI_WSTRB -into M_AXI
+add_wave $CvSI/M_AXI_WVALID -into M_AXI
+add_wave $CvSI/M_AXI_WREADY -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_BRESP -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_BVALID -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_BREADY -into M_AXI
+add_wave $CvSI/M_AXI_ARADDR -into M_AXI
+add_wave $CvSI/M_AXI_ARVALID -into M_AXI
+add_wave $CvSI/M_AXI_ARREADY -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_RDATA -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_RRESP -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_RVALID -into M_AXI -color khaki
+add_wave $CvSI/M_AXI_RREADY -into M_AXI
+add_wave_group S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_AWADDR -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_AWVALID -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_AWREADY -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_WDATA -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_WSTRB -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_WVALID -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_WREADY -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_BRESP -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_BVALID -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_BREADY -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_ARADDR -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_ARVALID -into S_AXI_vS0
+add_wave $CvSI/S_AXI_vS0_ARREADY -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_RDATA -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_RRESP -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_RVALID -into S_AXI_vS0 -color khaki
+add_wave $CvSI/S_AXI_vS0_RREADY -into S_AXI_vS0
+add_wave_group S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_AWADDR -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_AWVALID -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_AWREADY -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_WDATA -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_WSTRB -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_WVALID -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_WREADY -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_BRESP -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_BVALID -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_BREADY -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_ARADDR -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_ARVALID -into S_AXI_vS1
+add_wave $CvSI/S_AXI_vS1_ARREADY -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_RDATA -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_RRESP -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_RVALID -into S_AXI_vS1 -color khaki
+add_wave $CvSI/S_AXI_vS1_RREADY -into S_AXI_vS1
+add_wave_group S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_AWADDR -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_AWVALID -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_AWREADY -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_WDATA -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_WSTRB -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_WVALID -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_WREADY -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_BRESP -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_BVALID -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_BREADY -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_ARADDR -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_ARVALID -into S_AXI_vS2
+add_wave $CvSI/S_AXI_vS2_ARREADY -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_RDATA -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_RRESP -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_RVALID -into S_AXI_vS2 -color khaki
+add_wave $CvSI/S_AXI_vS2_RREADY -into S_AXI_vS2
+add_wave_group S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_AWADDR -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_AWVALID -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_AWREADY -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_WDATA -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_WSTRB -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_WVALID -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_WREADY -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_BRESP -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_BVALID -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_BREADY -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_ARADDR -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_ARVALID -into S_AXI_vS3
+add_wave $CvSI/S_AXI_vS3_ARREADY -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_RDATA -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_RRESP -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_RVALID -into S_AXI_vS3 -color khaki
+add_wave $CvSI/S_AXI_vS3_RREADY -into S_AXI_vS3
+add_wave_group S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_AWADDR -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_AWVALID -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_AWREADY -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_WDATA -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_WSTRB -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_WVALID -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_WREADY -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_BRESP -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_BVALID -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_BREADY -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_ARADDR -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_ARVALID -into S_AXI_vS4
+add_wave $CvSI/S_AXI_vS4_ARREADY -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_RDATA -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_RRESP -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_RVALID -into S_AXI_vS4 -color khaki
+add_wave $CvSI/S_AXI_vS4_RREADY -into S_AXI_vS4
+add_wave_group S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_AWADDR -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_AWVALID -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_AWREADY -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_WDATA -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_WSTRB -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_WVALID -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_WREADY -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_BRESP -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_BVALID -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_BREADY -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_ARADDR -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_ARVALID -into S_AXI_vS5
+add_wave $CvSI/S_AXI_vS5_ARREADY -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_RDATA -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_RRESP -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_RVALID -into S_AXI_vS5 -color khaki
+add_wave $CvSI/S_AXI_vS5_RREADY -into S_AXI_vS5
+add_wave_group S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_AWADDR -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_AWVALID -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_AWREADY -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_WDATA -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_WSTRB -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_WVALID -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_WREADY -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_BRESP -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_BVALID -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_BREADY -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_ARADDR -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_ARVALID -into S_AXI_vS6
+add_wave $CvSI/S_AXI_vS6_ARREADY -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_RDATA -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_RRESP -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_RVALID -into S_AXI_vS6 -color khaki
+add_wave $CvSI/S_AXI_vS6_RREADY -into S_AXI_vS6
+add_wave_group S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_AWADDR -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_AWVALID -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_AWREADY -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_WDATA -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_WSTRB -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_WVALID -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_WREADY -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_BRESP -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_BVALID -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_BREADY -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_ARADDR -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_ARVALID -into S_AXI_vS7
+add_wave $CvSI/S_AXI_vS7_ARREADY -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_RDATA -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_RRESP -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_RVALID -into S_AXI_vS7 -color khaki
+add_wave $CvSI/S_AXI_vS7_RREADY -into S_AXI_vS7
+add_wave_group Internal_CvSI
+add_wave $CvSI/axi_awaddr -into Internal_CvSI
+add_wave $CvSI/axi_awready -into Internal_CvSI
+add_wave $CvSI/axi_wready -into Internal_CvSI
+add_wave $CvSI/axi_bresp -into Internal_CvSI
+add_wave $CvSI/axi_bvalid -into Internal_CvSI
+add_wave $CvSI/axi_araddr -into Internal_CvSI
+add_wave $CvSI/axi_arready -into Internal_CvSI
+add_wave $CvSI/axi_rdata -into Internal_CvSI
+add_wave $CvSI/axi_rresp -into Internal_CvSI
+add_wave $CvSI/axi_rvalid -into Internal_CvSI
 
 # Input vS Interface
 set IvSI $nf_datapath/IvSI

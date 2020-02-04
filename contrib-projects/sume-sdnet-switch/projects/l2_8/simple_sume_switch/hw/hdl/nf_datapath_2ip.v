@@ -311,86 +311,158 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_vS7_tready;
     (* mark_debug = "true" *) wire                                     m_axis_vS7_tlast;
     // Buses from Control to CvSI
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_0_AWADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_AWVALID;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_0_WDATA;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_0_WSTRB;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_WVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_BREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_0_ARADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_ARVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_RREADY;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_ARREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_0_RDATA;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_0_RRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_RVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_WREADY;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_0_BRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_BVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_0_AWREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS0_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS0_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS0_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS0_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS0_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS0_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS0_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS0_AWREADY;
 
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_1_AWADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_AWVALID;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_1_WDATA;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_1_WSTRB;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_WVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_BREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_1_ARADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_ARVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_RREADY;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_ARREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_1_RDATA;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_1_RRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_RVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_WREADY;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_1_BRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_BVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_1_AWREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS1_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS1_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS1_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS1_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS1_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS1_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS1_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS1_AWREADY;
 
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_2_AWADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_AWVALID;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_2_WDATA;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_2_WSTRB;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_WVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_BREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_2_ARADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_ARVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_RREADY;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_ARREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_2_RDATA;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_2_RRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_RVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_WREADY;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_2_BRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_BVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_2_AWREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS2_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS2_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS2_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS2_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS2_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS2_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS2_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS2_AWREADY;
 
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_3_AWADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_AWVALID;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_3_WDATA;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S1_AXI_3_WSTRB;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_WVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_BREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_3_ARADDR;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_ARVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_RREADY;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_ARREADY;
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S1_AXI_3_RDATA;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_3_RRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_RVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_WREADY;
-    (* mark_debug = "true" *) wire [1 : 0]                             S1_AXI_3_BRESP;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_BVALID;
-    (* mark_debug = "true" *) wire                                     S1_AXI_3_AWREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS3_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS3_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS3_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS3_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS3_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS3_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS3_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS3_AWREADY;
+
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS4_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS4_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS4_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS4_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS4_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS4_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS4_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS4_AWREADY;
+
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS5_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS5_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS5_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS5_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS5_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS5_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS5_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS5_AWREADY;
+
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS6_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS6_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS6_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS6_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS6_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS6_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS6_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS6_AWREADY;
+
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS7_AWADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_AWVALID;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS7_WDATA;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH/8-1 : 0]        S_AXI_vS7_WSTRB;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_WVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_BREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S_AXI_vS7_ARADDR;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_ARVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_RREADY;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_ARREADY;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1 : 0]          S_AXI_vS7_RDATA;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS7_RRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_RVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_WREADY;
+    (* mark_debug = "true" *) wire [1 : 0]                             S_AXI_vS7_BRESP;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_BVALID;
+    (* mark_debug = "true" *) wire                                     S_AXI_vS7_AWREADY;
     // Signals from OvSI to vS Array
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf0_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf1_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf2_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    nf3_q_size;
-    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]    dma_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf0_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf1_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf2_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  nf3_q_size;
+    (* mark_debug = "true" *) wire [Q_SIZE_WIDTH-1:0]                  dma_q_size;
 
-    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1:0] bytes_dropped;
-    (* mark_debug = "true" *) wire [5-1:0] pkt_dropped;
+    (* mark_debug = "true" *) wire [C_S_AXI_DATA_WIDTH-1:0]            bytes_dropped;
+    (* mark_debug = "true" *) wire [5-1:0]                             pkt_dropped;
 
 //    assign nf0_q_size = 'd12;
 //    assign nf1_q_size = 'd13;
@@ -521,7 +593,7 @@ module nf_datapath #(
     );
 
     // Control P4 Interface
-      control_p4_interface_ip
+      control_vs_interface_ip
     CvSI  (
       // AXI4LITE Control Master
       .M_AXI_AWADDR(S1_AXI_AWADDR),
@@ -542,77 +614,149 @@ module nf_datapath #(
       .M_AXI_BVALID(S1_AXI_BVALID),
       .M_AXI_AWREADY(S1_AXI_AWREADY),
       // AXI4LITE Control Slave 0
-      .S_AXI_0_AWADDR(S1_AXI_0_AWADDR),
-      .S_AXI_0_AWVALID(S1_AXI_0_AWVALID),
-      .S_AXI_0_WDATA(S1_AXI_0_WDATA),
-      .S_AXI_0_WSTRB(S1_AXI_0_WSTRB),
-      .S_AXI_0_WVALID(S1_AXI_0_WVALID),
-      .S_AXI_0_BREADY(S1_AXI_0_BREADY),
-      .S_AXI_0_ARADDR(S1_AXI_0_ARADDR),
-      .S_AXI_0_ARVALID(S1_AXI_0_ARVALID),
-      .S_AXI_0_RREADY(S1_AXI_0_RREADY),
-      .S_AXI_0_ARREADY(S1_AXI_0_ARREADY),
-      .S_AXI_0_RDATA(S1_AXI_0_RDATA),
-      .S_AXI_0_RRESP(S1_AXI_0_RRESP),
-      .S_AXI_0_RVALID(S1_AXI_0_RVALID),
-      .S_AXI_0_WREADY(S1_AXI_0_WREADY),
-      .S_AXI_0_BRESP(S1_AXI_0_BRESP),
-      .S_AXI_0_BVALID(S1_AXI_0_BVALID),
-      .S_AXI_0_AWREADY(S1_AXI_0_AWREADY),
+      .S_AXI_vS0_AWADDR(S_AXI_vS0_AWADDR),
+      .S_AXI_vS0_AWVALID(S_AXI_vS0_AWVALID),
+      .S_AXI_vS0_WDATA(S_AXI_vS0_WDATA),
+      .S_AXI_vS0_WSTRB(S_AXI_vS0_WSTRB),
+      .S_AXI_vS0_WVALID(S_AXI_vS0_WVALID),
+      .S_AXI_vS0_BREADY(S_AXI_vS0_BREADY),
+      .S_AXI_vS0_ARADDR(S_AXI_vS0_ARADDR),
+      .S_AXI_vS0_ARVALID(S_AXI_vS0_ARVALID),
+      .S_AXI_vS0_RREADY(S_AXI_vS0_RREADY),
+      .S_AXI_vS0_ARREADY(S_AXI_vS0_ARREADY),
+      .S_AXI_vS0_RDATA(S_AXI_vS0_RDATA),
+      .S_AXI_vS0_RRESP(S_AXI_vS0_RRESP),
+      .S_AXI_vS0_RVALID(S_AXI_vS0_RVALID),
+      .S_AXI_vS0_WREADY(S_AXI_vS0_WREADY),
+      .S_AXI_vS0_BRESP(S_AXI_vS0_BRESP),
+      .S_AXI_vS0_BVALID(S_AXI_vS0_BVALID),
+      .S_AXI_vS0_AWREADY(S_AXI_vS0_AWREADY),
       // AXI4LITE Control Slave 1
-      .S_AXI_1_AWADDR(S1_AXI_1_AWADDR),
-      .S_AXI_1_AWVALID(S1_AXI_1_AWVALID),
-      .S_AXI_1_WDATA(S1_AXI_1_WDATA),
-      .S_AXI_1_WSTRB(S1_AXI_1_WSTRB),
-      .S_AXI_1_WVALID(S1_AXI_1_WVALID),
-      .S_AXI_1_BREADY(S1_AXI_1_BREADY),
-      .S_AXI_1_ARADDR(S1_AXI_1_ARADDR),
-      .S_AXI_1_ARVALID(S1_AXI_1_ARVALID),
-      .S_AXI_1_RREADY(S1_AXI_1_RREADY),
-      .S_AXI_1_ARREADY(S1_AXI_1_ARREADY),
-      .S_AXI_1_RDATA(S1_AXI_1_RDATA),
-      .S_AXI_1_RRESP(S1_AXI_1_RRESP),
-      .S_AXI_1_RVALID(S1_AXI_1_RVALID),
-      .S_AXI_1_WREADY(S1_AXI_1_WREADY),
-      .S_AXI_1_BRESP(S1_AXI_1_BRESP),
-      .S_AXI_1_BVALID(S1_AXI_1_BVALID),
-      .S_AXI_1_AWREADY(S1_AXI_1_AWREADY),
+      .S_AXI_vS1_AWADDR(S_AXI_vS1_AWADDR),
+      .S_AXI_vS1_AWVALID(S_AXI_vS1_AWVALID),
+      .S_AXI_vS1_WDATA(S_AXI_vS1_WDATA),
+      .S_AXI_vS1_WSTRB(S_AXI_vS1_WSTRB),
+      .S_AXI_vS1_WVALID(S_AXI_vS1_WVALID),
+      .S_AXI_vS1_BREADY(S_AXI_vS1_BREADY),
+      .S_AXI_vS1_ARADDR(S_AXI_vS1_ARADDR),
+      .S_AXI_vS1_ARVALID(S_AXI_vS1_ARVALID),
+      .S_AXI_vS1_RREADY(S_AXI_vS1_RREADY),
+      .S_AXI_vS1_ARREADY(S_AXI_vS1_ARREADY),
+      .S_AXI_vS1_RDATA(S_AXI_vS1_RDATA),
+      .S_AXI_vS1_RRESP(S_AXI_vS1_RRESP),
+      .S_AXI_vS1_RVALID(S_AXI_vS1_RVALID),
+      .S_AXI_vS1_WREADY(S_AXI_vS1_WREADY),
+      .S_AXI_vS1_BRESP(S_AXI_vS1_BRESP),
+      .S_AXI_vS1_BVALID(S_AXI_vS1_BVALID),
+      .S_AXI_vS1_AWREADY(S_AXI_vS1_AWREADY),
       // AXI4LITE Control Slave 2
-      .S_AXI_2_AWADDR(S1_AXI_2_AWADDR),
-      .S_AXI_2_AWVALID(S1_AXI_2_AWVALID),
-      .S_AXI_2_WDATA(S1_AXI_2_WDATA),
-      .S_AXI_2_WSTRB(S1_AXI_2_WSTRB),
-      .S_AXI_2_WVALID(S1_AXI_2_WVALID),
-      .S_AXI_2_BREADY(S1_AXI_2_BREADY),
-      .S_AXI_2_ARADDR(S1_AXI_2_ARADDR),
-      .S_AXI_2_ARVALID(S1_AXI_2_ARVALID),
-      .S_AXI_2_RREADY(S1_AXI_2_RREADY),
-      .S_AXI_2_ARREADY(S1_AXI_2_ARREADY),
-      .S_AXI_2_RDATA(S1_AXI_2_RDATA),
-      .S_AXI_2_RRESP(S1_AXI_2_RRESP),
-      .S_AXI_2_RVALID(S1_AXI_2_RVALID),
-      .S_AXI_2_WREADY(S1_AXI_2_WREADY),
-      .S_AXI_2_BRESP(S1_AXI_2_BRESP),
-      .S_AXI_2_BVALID(S1_AXI_2_BVALID),
-      .S_AXI_2_AWREADY(S1_AXI_2_AWREADY),
+      .S_AXI_vS2_AWADDR(S_AXI_vS2_AWADDR),
+      .S_AXI_vS2_AWVALID(S_AXI_vS2_AWVALID),
+      .S_AXI_vS2_WDATA(S_AXI_vS2_WDATA),
+      .S_AXI_vS2_WSTRB(S_AXI_vS2_WSTRB),
+      .S_AXI_vS2_WVALID(S_AXI_vS2_WVALID),
+      .S_AXI_vS2_BREADY(S_AXI_vS2_BREADY),
+      .S_AXI_vS2_ARADDR(S_AXI_vS2_ARADDR),
+      .S_AXI_vS2_ARVALID(S_AXI_vS2_ARVALID),
+      .S_AXI_vS2_RREADY(S_AXI_vS2_RREADY),
+      .S_AXI_vS2_ARREADY(S_AXI_vS2_ARREADY),
+      .S_AXI_vS2_RDATA(S_AXI_vS2_RDATA),
+      .S_AXI_vS2_RRESP(S_AXI_vS2_RRESP),
+      .S_AXI_vS2_RVALID(S_AXI_vS2_RVALID),
+      .S_AXI_vS2_WREADY(S_AXI_vS2_WREADY),
+      .S_AXI_vS2_BRESP(S_AXI_vS2_BRESP),
+      .S_AXI_vS2_BVALID(S_AXI_vS2_BVALID),
+      .S_AXI_vS2_AWREADY(S_AXI_vS2_AWREADY),
       // AXI4LITE Control Slave 3
-      .S_AXI_3_AWADDR(S1_AXI_3_AWADDR),
-      .S_AXI_3_AWVALID(S1_AXI_3_AWVALID),
-      .S_AXI_3_WDATA(S1_AXI_3_WDATA),
-      .S_AXI_3_WSTRB(S1_AXI_3_WSTRB),
-      .S_AXI_3_WVALID(S1_AXI_3_WVALID),
-      .S_AXI_3_BREADY(S1_AXI_3_BREADY),
-      .S_AXI_3_ARADDR(S1_AXI_3_ARADDR),
-      .S_AXI_3_ARVALID(S1_AXI_3_ARVALID),
-      .S_AXI_3_RREADY(S1_AXI_3_RREADY),
-      .S_AXI_3_ARREADY(S1_AXI_3_ARREADY),
-      .S_AXI_3_RDATA(S1_AXI_3_RDATA),
-      .S_AXI_3_RRESP(S1_AXI_3_RRESP),
-      .S_AXI_3_RVALID(S1_AXI_3_RVALID),
-      .S_AXI_3_WREADY(S1_AXI_3_WREADY),
-      .S_AXI_3_BRESP(S1_AXI_3_BRESP),
-      .S_AXI_3_BVALID(S1_AXI_3_BVALID),
-      .S_AXI_3_AWREADY(S1_AXI_3_AWREADY),
+      .S_AXI_vS3_AWADDR(S_AXI_vS3_AWADDR),
+      .S_AXI_vS3_AWVALID(S_AXI_vS3_AWVALID),
+      .S_AXI_vS3_WDATA(S_AXI_vS3_WDATA),
+      .S_AXI_vS3_WSTRB(S_AXI_vS3_WSTRB),
+      .S_AXI_vS3_WVALID(S_AXI_vS3_WVALID),
+      .S_AXI_vS3_BREADY(S_AXI_vS3_BREADY),
+      .S_AXI_vS3_ARADDR(S_AXI_vS3_ARADDR),
+      .S_AXI_vS3_ARVALID(S_AXI_vS3_ARVALID),
+      .S_AXI_vS3_RREADY(S_AXI_vS3_RREADY),
+      .S_AXI_vS3_ARREADY(S_AXI_vS3_ARREADY),
+      .S_AXI_vS3_RDATA(S_AXI_vS3_RDATA),
+      .S_AXI_vS3_RRESP(S_AXI_vS3_RRESP),
+      .S_AXI_vS3_RVALID(S_AXI_vS3_RVALID),
+      .S_AXI_vS3_WREADY(S_AXI_vS3_WREADY),
+      .S_AXI_vS3_BRESP(S_AXI_vS3_BRESP),
+      .S_AXI_vS3_BVALID(S_AXI_vS3_BVALID),
+      .S_AXI_vS3_AWREADY(S_AXI_vS3_AWREADY),
+      // AXI4LITE Control Slave 4
+      .S_AXI_vS4_AWADDR(S_AXI_vS4_AWADDR),
+      .S_AXI_vS4_AWVALID(S_AXI_vS4_AWVALID),
+      .S_AXI_vS4_WDATA(S_AXI_vS4_WDATA),
+      .S_AXI_vS4_WSTRB(S_AXI_vS4_WSTRB),
+      .S_AXI_vS4_WVALID(S_AXI_vS4_WVALID),
+      .S_AXI_vS4_BREADY(S_AXI_vS4_BREADY),
+      .S_AXI_vS4_ARADDR(S_AXI_vS4_ARADDR),
+      .S_AXI_vS4_ARVALID(S_AXI_vS4_ARVALID),
+      .S_AXI_vS4_RREADY(S_AXI_vS4_RREADY),
+      .S_AXI_vS4_ARREADY(S_AXI_vS4_ARREADY),
+      .S_AXI_vS4_RDATA(S_AXI_vS4_RDATA),
+      .S_AXI_vS4_RRESP(S_AXI_vS4_RRESP),
+      .S_AXI_vS4_RVALID(S_AXI_vS4_RVALID),
+      .S_AXI_vS4_WREADY(S_AXI_vS4_WREADY),
+      .S_AXI_vS4_BRESP(S_AXI_vS4_BRESP),
+      .S_AXI_vS4_BVALID(S_AXI_vS4_BVALID),
+      .S_AXI_vS4_AWREADY(S_AXI_vS4_AWREADY),
+      // AXI4LITE Control Slave 5
+      .S_AXI_vS5_AWADDR(S_AXI_vS5_AWADDR),
+      .S_AXI_vS5_AWVALID(S_AXI_vS5_AWVALID),
+      .S_AXI_vS5_WDATA(S_AXI_vS5_WDATA),
+      .S_AXI_vS5_WSTRB(S_AXI_vS5_WSTRB),
+      .S_AXI_vS5_WVALID(S_AXI_vS5_WVALID),
+      .S_AXI_vS5_BREADY(S_AXI_vS5_BREADY),
+      .S_AXI_vS5_ARADDR(S_AXI_vS5_ARADDR),
+      .S_AXI_vS5_ARVALID(S_AXI_vS5_ARVALID),
+      .S_AXI_vS5_RREADY(S_AXI_vS5_RREADY),
+      .S_AXI_vS5_ARREADY(S_AXI_vS5_ARREADY),
+      .S_AXI_vS5_RDATA(S_AXI_vS5_RDATA),
+      .S_AXI_vS5_RRESP(S_AXI_vS5_RRESP),
+      .S_AXI_vS5_RVALID(S_AXI_vS5_RVALID),
+      .S_AXI_vS5_WREADY(S_AXI_vS5_WREADY),
+      .S_AXI_vS5_BRESP(S_AXI_vS5_BRESP),
+      .S_AXI_vS5_BVALID(S_AXI_vS5_BVALID),
+      .S_AXI_vS5_AWREADY(S_AXI_vS5_AWREADY),
+      // AXI4LITE Control Slave 6
+      .S_AXI_vS6_AWADDR(S_AXI_vS6_AWADDR),
+      .S_AXI_vS6_AWVALID(S_AXI_vS6_AWVALID),
+      .S_AXI_vS6_WDATA(S_AXI_vS6_WDATA),
+      .S_AXI_vS6_WSTRB(S_AXI_vS6_WSTRB),
+      .S_AXI_vS6_WVALID(S_AXI_vS6_WVALID),
+      .S_AXI_vS6_BREADY(S_AXI_vS6_BREADY),
+      .S_AXI_vS6_ARADDR(S_AXI_vS6_ARADDR),
+      .S_AXI_vS6_ARVALID(S_AXI_vS6_ARVALID),
+      .S_AXI_vS6_RREADY(S_AXI_vS6_RREADY),
+      .S_AXI_vS6_ARREADY(S_AXI_vS6_ARREADY),
+      .S_AXI_vS6_RDATA(S_AXI_vS6_RDATA),
+      .S_AXI_vS6_RRESP(S_AXI_vS6_RRESP),
+      .S_AXI_vS6_RVALID(S_AXI_vS6_RVALID),
+      .S_AXI_vS6_WREADY(S_AXI_vS6_WREADY),
+      .S_AXI_vS6_BRESP(S_AXI_vS6_BRESP),
+      .S_AXI_vS6_BVALID(S_AXI_vS6_BVALID),
+      .S_AXI_vS6_AWREADY(S_AXI_vS6_AWREADY),
+      // AXI4LITE Control Slave 7
+      .S_AXI_vS7_AWADDR(S_AXI_vS7_AWADDR),
+      .S_AXI_vS7_AWVALID(S_AXI_vS7_AWVALID),
+      .S_AXI_vS7_WDATA(S_AXI_vS7_WDATA),
+      .S_AXI_vS7_WSTRB(S_AXI_vS7_WSTRB),
+      .S_AXI_vS7_WVALID(S_AXI_vS7_WVALID),
+      .S_AXI_vS7_BREADY(S_AXI_vS7_BREADY),
+      .S_AXI_vS7_ARADDR(S_AXI_vS7_ARADDR),
+      .S_AXI_vS7_ARVALID(S_AXI_vS7_ARVALID),
+      .S_AXI_vS7_RREADY(S_AXI_vS7_RREADY),
+      .S_AXI_vS7_ARREADY(S_AXI_vS7_ARREADY),
+      .S_AXI_vS7_RDATA(S_AXI_vS7_RDATA),
+      .S_AXI_vS7_RRESP(S_AXI_vS7_RRESP),
+      .S_AXI_vS7_RVALID(S_AXI_vS7_RVALID),
+      .S_AXI_vS7_WREADY(S_AXI_vS7_WREADY),
+      .S_AXI_vS7_BRESP(S_AXI_vS7_BRESP),
+      .S_AXI_vS7_BVALID(S_AXI_vS7_BVALID),
+      .S_AXI_vS7_AWREADY(S_AXI_vS7_AWREADY),
       // AXILITE clock
       .M_AXI_ACLK (axi_aclk),
       .M_AXI_ARESETN(axi_resetn)
@@ -644,23 +788,23 @@ module nf_datapath #(
       .s_axis_tready(s_axis_vS0_tready),
       .s_axis_tlast (s_axis_vS0_tlast),
       // Slave from CvSI to vS
-      .S_AXI_AWADDR(S1_AXI_0_AWADDR),
-      .S_AXI_AWVALID(S1_AXI_0_AWVALID),
-      .S_AXI_WDATA(S1_AXI_0_WDATA),
-      .S_AXI_WSTRB(S1_AXI_0_WSTRB),
-      .S_AXI_WVALID(S1_AXI_0_WVALID),
-      .S_AXI_BREADY(S1_AXI_0_BREADY),
-      .S_AXI_ARADDR(S1_AXI_0_ARADDR),
-      .S_AXI_ARVALID(S1_AXI_0_ARVALID),
-      .S_AXI_RREADY(S1_AXI_0_RREADY),
-      .S_AXI_ARREADY(S1_AXI_0_ARREADY),
-      .S_AXI_RDATA(S1_AXI_0_RDATA),
-      .S_AXI_RRESP(S1_AXI_0_RRESP),
-      .S_AXI_RVALID(S1_AXI_0_RVALID),
-      .S_AXI_WREADY(S1_AXI_0_WREADY),
-      .S_AXI_BRESP(S1_AXI_0_BRESP),
-      .S_AXI_BVALID(S1_AXI_0_BVALID),
-      .S_AXI_AWREADY(S1_AXI_0_AWREADY),
+      .S_AXI_AWADDR(S_AXI_vS0_AWADDR),
+      .S_AXI_AWVALID(S_AXI_vS0_AWVALID),
+      .S_AXI_WDATA(S_AXI_vS0_WDATA),
+      .S_AXI_WSTRB(S_AXI_vS0_WSTRB),
+      .S_AXI_WVALID(S_AXI_vS0_WVALID),
+      .S_AXI_BREADY(S_AXI_vS0_BREADY),
+      .S_AXI_ARADDR(S_AXI_vS0_ARADDR),
+      .S_AXI_ARVALID(S_AXI_vS0_ARVALID),
+      .S_AXI_RREADY(S_AXI_vS0_RREADY),
+      .S_AXI_ARREADY(S_AXI_vS0_ARREADY),
+      .S_AXI_RDATA(S_AXI_vS0_RDATA),
+      .S_AXI_RRESP(S_AXI_vS0_RRESP),
+      .S_AXI_RVALID(S_AXI_vS0_RVALID),
+      .S_AXI_WREADY(S_AXI_vS0_WREADY),
+      .S_AXI_BRESP(S_AXI_vS0_BRESP),
+      .S_AXI_BVALID(S_AXI_vS0_BVALID),
+      .S_AXI_AWREADY(S_AXI_vS0_AWREADY),
       .S_AXI_ACLK (axi_aclk),
       .S_AXI_ARESETN(axi_resetn)
     );
@@ -691,23 +835,23 @@ module nf_datapath #(
       .s_axis_tready(s_axis_vS1_tready),
       .s_axis_tlast (s_axis_vS1_tlast),
       // Slave from CvSI to vS
-      .S_AXI_AWADDR(S1_AXI_1_AWADDR),
-      .S_AXI_AWVALID(S1_AXI_1_AWVALID),
-      .S_AXI_WDATA(S1_AXI_1_WDATA),
-      .S_AXI_WSTRB(S1_AXI_1_WSTRB),
-      .S_AXI_WVALID(S1_AXI_1_WVALID),
-      .S_AXI_BREADY(S1_AXI_1_BREADY),
-      .S_AXI_ARADDR(S1_AXI_1_ARADDR),
-      .S_AXI_ARVALID(S1_AXI_1_ARVALID),
-      .S_AXI_RREADY(S1_AXI_1_RREADY),
-      .S_AXI_ARREADY(S1_AXI_1_ARREADY),
-      .S_AXI_RDATA(S1_AXI_1_RDATA),
-      .S_AXI_RRESP(S1_AXI_1_RRESP),
-      .S_AXI_RVALID(S1_AXI_1_RVALID),
-      .S_AXI_WREADY(S1_AXI_1_WREADY),
-      .S_AXI_BRESP(S1_AXI_1_BRESP),
-      .S_AXI_BVALID(S1_AXI_1_BVALID),
-      .S_AXI_AWREADY(S1_AXI_1_AWREADY),
+      .S_AXI_AWADDR(S_AXI_vS1_AWADDR),
+      .S_AXI_AWVALID(S_AXI_vS1_AWVALID),
+      .S_AXI_WDATA(S_AXI_vS1_WDATA),
+      .S_AXI_WSTRB(S_AXI_vS1_WSTRB),
+      .S_AXI_WVALID(S_AXI_vS1_WVALID),
+      .S_AXI_BREADY(S_AXI_vS1_BREADY),
+      .S_AXI_ARADDR(S_AXI_vS1_ARADDR),
+      .S_AXI_ARVALID(S_AXI_vS1_ARVALID),
+      .S_AXI_RREADY(S_AXI_vS1_RREADY),
+      .S_AXI_ARREADY(S_AXI_vS1_ARREADY),
+      .S_AXI_RDATA(S_AXI_vS1_RDATA),
+      .S_AXI_RRESP(S_AXI_vS1_RRESP),
+      .S_AXI_RVALID(S_AXI_vS1_RVALID),
+      .S_AXI_WREADY(S_AXI_vS1_WREADY),
+      .S_AXI_BRESP(S_AXI_vS1_BRESP),
+      .S_AXI_BVALID(S_AXI_vS1_BVALID),
+      .S_AXI_AWREADY(S_AXI_vS1_AWREADY),
       .S_AXI_ACLK (axi_aclk),
       .S_AXI_ARESETN(axi_resetn)
     );
