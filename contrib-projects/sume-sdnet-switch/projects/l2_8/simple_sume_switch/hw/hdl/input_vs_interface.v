@@ -76,6 +76,34 @@ module input_vs_interface
   output reg                                                      m_axis_3_tvalid,
   output reg                                                      m_axis_3_tlast,
   input                                                           m_axis_3_tready,
+
+  output reg [C_M_AXIS_DATA_WIDTH - 1:0]                          m_axis_4_tdata,
+  output reg [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]                  m_axis_4_tkeep,
+  output reg [C_M_AXIS_TUSER_WIDTH-1:0]                           m_axis_4_tuser,
+  output reg                                                      m_axis_4_tvalid,
+  output reg                                                      m_axis_4_tlast,
+  input                                                           m_axis_4_tready,
+
+  output reg [C_M_AXIS_DATA_WIDTH - 1:0]                          m_axis_5_tdata,
+  output reg [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]                  m_axis_5_tkeep,
+  output reg [C_M_AXIS_TUSER_WIDTH-1:0]                           m_axis_5_tuser,
+  output reg                                                      m_axis_5_tvalid,
+  output reg                                                      m_axis_5_tlast,
+  input                                                           m_axis_5_tready,
+
+  output reg [C_M_AXIS_DATA_WIDTH - 1:0]                          m_axis_6_tdata,
+  output reg [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]                  m_axis_6_tkeep,
+  output reg [C_M_AXIS_TUSER_WIDTH-1:0]                           m_axis_6_tuser,
+  output reg                                                      m_axis_6_tvalid,
+  output reg                                                      m_axis_6_tlast,
+  input                                                           m_axis_6_tready,
+
+  output reg [C_M_AXIS_DATA_WIDTH - 1:0]                          m_axis_7_tdata,
+  output reg [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]                  m_axis_7_tkeep,
+  output reg [C_M_AXIS_TUSER_WIDTH-1:0]                           m_axis_7_tuser,
+  output reg                                                      m_axis_7_tvalid,
+  output reg                                                      m_axis_7_tlast,
+  input                                                           m_axis_7_tready,
   // Slave Stream Ports (interface to RX queues)
   input [C_S_AXIS_DATA_WIDTH - 1:0]                               s_axis_0_tdata,
   input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                       s_axis_0_tkeep,
@@ -133,7 +161,7 @@ module input_vs_interface
   output                                                          S_AXI_AWREADY,
 
   // stats
-   output reg                                                     pkt_fwd
+   output                                                         pkt_fwd
 );
 
   // ------------ Internal Params --------
@@ -161,11 +189,12 @@ module input_vs_interface
    *    {[3:0], [15: 8]}  vlan_info_id;   // VLAN Identifier<12 bits>
    */
 
-  wire [C_M_AXIS_DATA_WIDTH - 1:0]          m_axis_tdata;
-  wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]  m_axis_tkeep;
-  wire [C_M_AXIS_TUSER_WIDTH-1:0]           m_axis_tuser;
-  wire                                      m_axis_tvalid;
-  wire                                      m_axis_tlast;
+  wire [C_M_AXIS_DATA_WIDTH - 1:0]          axis_tdata;
+  wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]  axis_tkeep;
+  wire [C_M_AXIS_TUSER_WIDTH-1:0]           axis_tuser;
+  wire                                      axis_tvalid;
+  reg                                       axis_tready;
+  wire                                      axis_tlast;
 
   wire [VLAN_WIDTH - 1:0]                   vlan_tdata;
   wire [(( VLAN_WIDTH/2 )) - 1:0]           vlan_prot_id;
@@ -174,7 +203,6 @@ module input_vs_interface
   wire                                      vlan_info_drop;
   wire [VLAN_WIDTH_ID -1 :0]                vlan_info_id;
 
-  reg                                       m_axis_tready;
   reg [NUM_STATES-1:0]                      ipi_state;
   reg                                       ipi_end_pkt;
   reg [(( VLAN_WIDTH/2 )) - 1:0]            ipi_vlan_prot_id;
@@ -193,7 +221,7 @@ module input_vs_interface
 
   // ------------- Logic ------------
 
-  assign vlan_tdata = m_axis_tdata [VLAN_THRESHOLD_BGN - 1:VLAN_THRESHOLD_END];
+  assign vlan_tdata = axis_tdata [VLAN_THRESHOLD_BGN - 1:VLAN_THRESHOLD_END];
   assign vlan_prot_id = vlan_tdata [((VLAN_WIDTH/2)) - 1:0];
   assign vlan_info = vlan_tdata [VLAN_WIDTH - 1:(( VLAN_WIDTH/2 ))];
   assign vlan_info_prio = vlan_info [7:5];
@@ -206,17 +234,17 @@ module input_vs_interface
       case( ipi_state )
 
         WAIT_PKT: begin
-          m_axis_tready <= 1;
+          axis_tready <= 1;
 
           ipi_end_pkt <= 0;
           ipi_vlan_prot_id <= vlan_prot_id;
           ipi_vlan_info_id <= vlan_info_id;
 
-          ipi_tdata  <= m_axis_tdata;
-          ipi_tuser  <= m_axis_tuser;
-          ipi_tkeep  <= m_axis_tkeep;
-          ipi_tvalid <= m_axis_tvalid;
-          ipi_tlast  <= m_axis_tlast;
+          ipi_tdata  <= axis_tdata;
+          ipi_tuser  <= axis_tuser;
+          ipi_tkeep  <= axis_tkeep;
+          ipi_tvalid <= axis_tvalid;
+          ipi_tlast  <= axis_tlast;
           ipi_tdata_next <= 0;
           ipi_tkeep_next <= 0;
           ipi_tuser_next <= 0;
@@ -228,27 +256,51 @@ module input_vs_interface
           m_axis_0_tuser  <= 0;
           m_axis_0_tvalid <= 0;
           m_axis_0_tlast  <= 0;
-          //m_axis_0_tready
+
           m_axis_1_tdata  <= 0;
           m_axis_1_tkeep  <= 0;
           m_axis_1_tuser  <= 0;
           m_axis_1_tvalid <= 0;
           m_axis_1_tlast  <= 0;
-          //m_axis_1_tready
+
           m_axis_2_tdata  <= 0;
           m_axis_2_tkeep  <= 0;
           m_axis_2_tuser  <= 0;
           m_axis_2_tvalid <= 0;
           m_axis_2_tlast  <= 0;
-          //m_axis_2_tready
+
           m_axis_3_tdata  <= 0;
           m_axis_3_tkeep  <= 0;
           m_axis_3_tuser  <= 0;
           m_axis_3_tvalid <= 0;
           m_axis_3_tlast  <= 0;
-          //m_axis_3_tready
 
-          if ( m_axis_tvalid ) begin
+          m_axis_4_tdata  <= 0;
+          m_axis_4_tkeep  <= 0;
+          m_axis_4_tuser  <= 0;
+          m_axis_4_tvalid <= 0;
+          m_axis_4_tlast  <= 0;
+
+          m_axis_5_tdata  <= 0;
+          m_axis_5_tkeep  <= 0;
+          m_axis_5_tuser  <= 0;
+          m_axis_5_tvalid <= 0;
+          m_axis_5_tlast  <= 0;
+
+          m_axis_6_tdata  <= 0;
+          m_axis_6_tkeep  <= 0;
+          m_axis_6_tuser  <= 0;
+          m_axis_6_tvalid <= 0;
+          m_axis_6_tlast  <= 0;
+
+          m_axis_7_tdata  <= 0;
+          m_axis_7_tkeep  <= 0;
+          m_axis_7_tuser  <= 0;
+          m_axis_7_tvalid <= 0;
+          m_axis_7_tlast  <= 0;
+
+
+          if ( axis_tvalid ) begin
             ipi_state = WRITE_PKT_BEG;
           end
           else begin
@@ -257,13 +309,13 @@ module input_vs_interface
         end
 
         WRITE_PKT_BEG: begin
-          m_axis_tready <= 1;
+          axis_tready <= 1;
 
-          ipi_tdata_next  <= m_axis_tdata;
-          ipi_tuser_next  <= m_axis_tuser;
-          ipi_tkeep_next  <= m_axis_tkeep;
-          ipi_tvalid_next <= m_axis_tvalid;
-          ipi_tlast_next  <= m_axis_tlast;
+          ipi_tdata_next  <= axis_tdata;
+          ipi_tuser_next  <= axis_tuser;
+          ipi_tkeep_next  <= axis_tkeep;
+          ipi_tvalid_next <= axis_tvalid;
+          ipi_tlast_next  <= axis_tlast;
 
           if ( ipi_vlan_prot_id == 16'h0081 ) begin // 0000 0000 1000 0001
             ipi_state = WRITE_PKT_END;
@@ -303,6 +355,42 @@ module input_vs_interface
                 m_axis_3_tlast  <= ipi_tlast;
               end
             end
+            else if ( ipi_vlan_info_id == 12'h005 ) begin // 0000 0000 0004
+              if ( m_axis_4_tready == 1 ) begin
+                m_axis_4_tdata  <= ipi_tdata;
+                m_axis_4_tuser  <= ipi_tuser;
+                m_axis_4_tkeep  <= ipi_tkeep;
+                m_axis_4_tvalid <= ipi_tvalid;
+                m_axis_4_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h006 ) begin // 0000 0000 0004
+              if ( m_axis_5_tready == 1 ) begin
+                m_axis_5_tdata  <= ipi_tdata;
+                m_axis_5_tuser  <= ipi_tuser;
+                m_axis_5_tkeep  <= ipi_tkeep;
+                m_axis_5_tvalid <= ipi_tvalid;
+                m_axis_5_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h007 ) begin // 0000 0000 0004
+              if ( m_axis_6_tready == 1 ) begin
+                m_axis_6_tdata  <= ipi_tdata;
+                m_axis_6_tuser  <= ipi_tuser;
+                m_axis_6_tkeep  <= ipi_tkeep;
+                m_axis_6_tvalid <= ipi_tvalid;
+                m_axis_6_tlast  <= ipi_tlast;
+              end
+            end
+            else if ( ipi_vlan_info_id == 12'h008 ) begin // 0000 0000 0004
+              if ( m_axis_7_tready == 1 ) begin
+                m_axis_7_tdata  <= ipi_tdata;
+                m_axis_7_tuser  <= ipi_tuser;
+                m_axis_7_tkeep  <= ipi_tkeep;
+                m_axis_7_tvalid <= ipi_tvalid;
+                m_axis_7_tlast  <= ipi_tlast;
+              end
+            end
             else begin
               ipi_state = WAIT_PKT;
             end
@@ -310,28 +398,28 @@ module input_vs_interface
           else begin
             ipi_state = WAIT_PKT;
           end
-          if ( m_axis_tlast ) begin
+          if ( axis_tlast ) begin
             ipi_state = WRITE_PKT_END;
-            m_axis_tready <= 0;
+            axis_tready <= 0;
             ipi_end_pkt <= 1;
           end
           else begin
             if( ipi_end_pkt ) begin
               ipi_state = WAIT_PKT;
-              m_axis_tready <= 1;
+              axis_tready <= 1;
             end
           end
 
         end // case: WRITE_PKT_BEG
 
         WRITE_PKT_END: begin
-          m_axis_tready <= 1;
+          axis_tready <= 1;
 
-          ipi_tdata <= m_axis_tdata;
-          ipi_tuser <= m_axis_tuser;
-          ipi_tkeep <= m_axis_tkeep;
-          ipi_tvalid <= m_axis_tvalid;
-          ipi_tlast <= m_axis_tlast;
+          ipi_tdata <= axis_tdata;
+          ipi_tuser <= axis_tuser;
+          ipi_tkeep <= axis_tkeep;
+          ipi_tvalid <= axis_tvalid;
+          ipi_tlast <= axis_tlast;
 
 
           ipi_state = WRITE_PKT_BEG;
@@ -371,18 +459,54 @@ module input_vs_interface
               m_axis_3_tlast  <= ipi_tlast_next;
             end
           end
+          else if ( ipi_vlan_info_id == 12'h005 ) begin // 0000 0000 0002
+            if ( m_axis_4_tready == 1 ) begin
+              m_axis_4_tdata  <= ipi_tdata_next;
+              m_axis_4_tuser  <= ipi_tuser_next;
+              m_axis_4_tkeep  <= ipi_tkeep_next;
+              m_axis_4_tvalid <= ipi_tvalid_next;
+              m_axis_4_tlast  <= ipi_tlast_next;
+            end
+          end
+          else if ( ipi_vlan_info_id == 12'h006 ) begin // 0000 0000 0002
+            if ( m_axis_5_tready == 1 ) begin
+              m_axis_5_tdata  <= ipi_tdata_next;
+              m_axis_5_tuser  <= ipi_tuser_next;
+              m_axis_5_tkeep  <= ipi_tkeep_next;
+              m_axis_5_tvalid <= ipi_tvalid_next;
+              m_axis_5_tlast  <= ipi_tlast_next;
+            end
+          end
+          else if ( ipi_vlan_info_id == 12'h007 ) begin // 0000 0000 0002
+            if ( m_axis_6_tready == 1 ) begin
+              m_axis_6_tdata  <= ipi_tdata_next;
+              m_axis_6_tuser  <= ipi_tuser_next;
+              m_axis_6_tkeep  <= ipi_tkeep_next;
+              m_axis_6_tvalid <= ipi_tvalid_next;
+              m_axis_6_tlast  <= ipi_tlast_next;
+            end
+          end
+          else if ( ipi_vlan_info_id == 12'h008 ) begin // 0000 0000 0002
+            if ( m_axis_7_tready == 1 ) begin
+              m_axis_7_tdata  <= ipi_tdata_next;
+              m_axis_7_tuser  <= ipi_tuser_next;
+              m_axis_7_tkeep  <= ipi_tkeep_next;
+              m_axis_7_tvalid <= ipi_tvalid_next;
+              m_axis_7_tlast  <= ipi_tlast_next;
+            end
+          end
           else begin
             ipi_state = WAIT_PKT;
           end
-          if ( m_axis_tlast ) begin
+          if ( axis_tlast ) begin
             ipi_state = WRITE_PKT_BEG;
-            m_axis_tready <= 0;
+            axis_tready <= 0;
             ipi_end_pkt <= 1;
           end
           else begin
             if( ipi_end_pkt ) begin
               ipi_state = WAIT_PKT;
-              m_axis_tready <= 1;
+              axis_tready <= 1;
             end
           end
         end // case: WRITE_PKT_END
@@ -390,7 +514,7 @@ module input_vs_interface
       endcase // case(ipi_state)
     end
     else begin // if ( axis_resetn )
-      m_axis_tready <= 0;
+      axis_tready <= 0;
 
       ipi_vlan_prot_id <= 0;
       ipi_vlan_info_id <= 0;
@@ -425,6 +549,26 @@ module input_vs_interface
       m_axis_3_tuser  <= 0;
       m_axis_3_tvalid <= 0;
       m_axis_3_tlast  <= 0;
+      m_axis_4_tdata  <= 0;
+      m_axis_4_tkeep  <= 0;
+      m_axis_4_tuser  <= 0;
+      m_axis_4_tvalid <= 0;
+      m_axis_4_tlast  <= 0;
+      m_axis_5_tdata  <= 0;
+      m_axis_5_tkeep  <= 0;
+      m_axis_5_tuser  <= 0;
+      m_axis_5_tvalid <= 0;
+      m_axis_5_tlast  <= 0;
+      m_axis_6_tdata  <= 0;
+      m_axis_6_tkeep  <= 0;
+      m_axis_6_tuser  <= 0;
+      m_axis_6_tvalid <= 0;
+      m_axis_6_tlast  <= 0;
+      m_axis_7_tdata  <= 0;
+      m_axis_7_tkeep  <= 0;
+      m_axis_7_tuser  <= 0;
+      m_axis_7_tvalid <= 0;
+      m_axis_7_tlast  <= 0;
 
       ipi_end_pkt <= 0;
       ipi_state = WAIT_PKT;
@@ -438,12 +582,12 @@ module input_vs_interface
     .axis_aclk(axis_aclk),
     .axis_resetn(axis_resetn),
     // input_arbiter->input_p4_interface
-    .m_axis_tdata (m_axis_tdata),
-    .m_axis_tkeep (m_axis_tkeep),
-    .m_axis_tuser (m_axis_tuser),
-    .m_axis_tvalid(m_axis_tvalid),
-    .m_axis_tready(m_axis_tready),
-    .m_axis_tlast (m_axis_tlast),
+    .m_axis_tdata (axis_tdata),
+    .m_axis_tkeep (axis_tkeep),
+    .m_axis_tuser (axis_tuser),
+    .m_axis_tvalid(axis_tvalid),
+    .m_axis_tready(axis_tready),
+    .m_axis_tlast (axis_tlast),
     // RX queues->input_arbiter
     .s_axis_0_tdata (s_axis_0_tdata),
     .s_axis_0_tkeep (s_axis_0_tkeep),
@@ -499,7 +643,7 @@ module input_vs_interface
     .S_AXI_AWREADY(S_AXI_AWREADY),
     .S_AXI_ACLK (S_AXI_ACLK),
     .S_AXI_ARESETN(S_AXI_ARESETN),
-    .pkt_fwd()
+    .pkt_fwd(pkt_fwd)
   );
 
 endmodule

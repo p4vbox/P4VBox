@@ -43,7 +43,7 @@ module output_vs_interface
   parameter C_S_AXI_ADDR_WIDTH    = 12,
   parameter C_BASEADDR            = 32'h00000000,
   // Number of virtual switches
-  parameter NUM_QUEUES=4,
+  parameter NUM_QUEUES=8,
   parameter DIGEST_WIDTH =80,
   parameter Q_SIZE_WIDTH = 16,
   // SI
@@ -88,7 +88,7 @@ module output_vs_interface
   output                                                        m_axis_4_tvalid,
   input                                                         m_axis_4_tready,
   output                                                        m_axis_4_tlast,
-  // Slave Stream Ports (interface to vS0 ... vSN)
+  // Slave Stream Ports (interface to vS Array)
   input [C_S_AXIS_DATA_WIDTH - 1:0]                             s_axis_0_tdata,
   input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                     s_axis_0_tkeep,
   input [C_S_AXIS_TUSER_WIDTH-1:0]                              s_axis_0_tuser,
@@ -123,6 +123,27 @@ module output_vs_interface
   input                                                         s_axis_4_tvalid,
   output                                                        s_axis_4_tready,
   input                                                         s_axis_4_tlast,
+
+  input [C_S_AXIS_DATA_WIDTH - 1:0]                             s_axis_5_tdata,
+  input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                     s_axis_5_tkeep,
+  input [C_S_AXIS_TUSER_WIDTH-1:0]                              s_axis_5_tuser,
+  input                                                         s_axis_5_tvalid,
+  output                                                        s_axis_5_tready,
+  input                                                         s_axis_5_tlast,
+
+  input [C_S_AXIS_DATA_WIDTH - 1:0]                             s_axis_6_tdata,
+  input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                     s_axis_6_tkeep,
+  input [C_S_AXIS_TUSER_WIDTH-1:0]                              s_axis_6_tuser,
+  input                                                         s_axis_6_tvalid,
+  output                                                        s_axis_6_tready,
+  input                                                         s_axis_6_tlast,
+
+  input [C_S_AXIS_DATA_WIDTH - 1:0]                             s_axis_7_tdata,
+  input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                     s_axis_7_tkeep,
+  input [C_S_AXIS_TUSER_WIDTH-1:0]                              s_axis_7_tuser,
+  input                                                         s_axis_7_tvalid,
+  output                                                        s_axis_7_tready,
+  input                                                         s_axis_7_tlast,
   // stats
   output [QUEUE_DEPTH_BITS:0]                                   nf0_q_size,
   output [QUEUE_DEPTH_BITS:0]                                   nf1_q_size,
@@ -207,6 +228,7 @@ module output_vs_interface
   wire                                                  axis_tvalid;
   wire                                                  axis_tready;
   wire                                                  axis_tlast;
+
   wire [NUM_QUEUES-1:0]                                 nearly_full;
   wire [NUM_QUEUES-1:0]                                 empty;
   wire [C_M_AXIS_DATA_WIDTH-1:0]                        in_tdata      [NUM_QUEUES-1:0];
@@ -300,6 +322,27 @@ module output_vs_interface
   assign in_tvalid[4]       = s_axis_4_tvalid;
   assign in_tlast[4]        = s_axis_4_tlast;
   assign s_axis_4_tready    = !nearly_full[4];
+
+  assign in_tdata[5]        = s_axis_5_tdata;
+  assign in_tkeep[5]        = s_axis_5_tkeep;
+  assign in_tuser[5]        = s_axis_5_tuser;
+  assign in_tvalid[5]       = s_axis_5_tvalid;
+  assign in_tlast[5]        = s_axis_5_tlast;
+  assign s_axis_5_tready    = !nearly_full[5];
+
+  assign in_tdata[6]        = s_axis_6_tdata;
+  assign in_tkeep[6]        = s_axis_6_tkeep;
+  assign in_tuser[6]        = s_axis_6_tuser;
+  assign in_tvalid[6]       = s_axis_6_tvalid;
+  assign in_tlast[6]        = s_axis_6_tlast;
+  assign s_axis_6_tready    = !nearly_full[6];
+
+  assign in_tdata[7]        = s_axis_7_tdata;
+  assign in_tkeep[7]        = s_axis_7_tkeep;
+  assign in_tuser[7]        = s_axis_7_tuser;
+  assign in_tvalid[7]       = s_axis_7_tvalid;
+  assign in_tlast[7]        = s_axis_7_tlast;
+  assign s_axis_7_tready    = !nearly_full[7];
 
   assign cur_queue_plus1    = (cur_queue == NUM_QUEUES-1) ? 0 : cur_queue + 1;
 
@@ -408,18 +451,18 @@ module output_vs_interface
     .nf3_q_size(nf3_q_size),
     .dma_q_size(dma_q_size),
 
-    .bytes_stored(),
-    .pkt_stored(),
-    .bytes_removed_0(),
-    .bytes_removed_1(),
-    .bytes_removed_2(),
-    .bytes_removed_3(),
-    .bytes_removed_4(),
-    .pkt_removed_0(),
-    .pkt_removed_1(),
-    .pkt_removed_2(),
-    .pkt_removed_3(),
-    .pkt_removed_4(),
+    .bytes_stored(bytes_stored),
+    .pkt_stored(pkt_stored),
+    .bytes_removed_0(bytes_removed_0),
+    .bytes_removed_1(bytes_removed_1),
+    .bytes_removed_2(bytes_removed_2),
+    .bytes_removed_3(bytes_removed_3),
+    .bytes_removed_4(bytes_removed_4),
+    .pkt_removed_0(pkt_removed_0),
+    .pkt_removed_1(pkt_removed_1),
+    .pkt_removed_2(pkt_removed_2),
+    .pkt_removed_3(pkt_removed_3),
+    .pkt_removed_4(pkt_removed_4),
     .bytes_dropped(bytes_dropped),
     .pkt_dropped(pkt_dropped),
 

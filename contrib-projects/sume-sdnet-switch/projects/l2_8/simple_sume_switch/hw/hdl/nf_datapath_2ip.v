@@ -226,6 +226,34 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     s_axis_vS3_tvalid;
     (* mark_debug = "true" *) wire                                     s_axis_vS3_tready;
     (* mark_debug = "true" *) wire                                     s_axis_vS3_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_vS4_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] s_axis_vS4_tkeep;
+    (* mark_debug = "true" *) wire [C_M_AXIS_TUSER_WIDTH-1:0]          s_axis_vS4_tuser;
+    (* mark_debug = "true" *) wire                                     s_axis_vS4_tvalid;
+    (* mark_debug = "true" *) wire                                     s_axis_vS4_tready;
+    (* mark_debug = "true" *) wire                                     s_axis_vS4_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_vS5_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] s_axis_vS5_tkeep;
+    (* mark_debug = "true" *) wire [C_M_AXIS_TUSER_WIDTH-1:0]          s_axis_vS5_tuser;
+    (* mark_debug = "true" *) wire                                     s_axis_vS5_tvalid;
+    (* mark_debug = "true" *) wire                                     s_axis_vS5_tready;
+    (* mark_debug = "true" *) wire                                     s_axis_vS5_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_vS6_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] s_axis_vS6_tkeep;
+    (* mark_debug = "true" *) wire [C_M_AXIS_TUSER_WIDTH-1:0]          s_axis_vS6_tuser;
+    (* mark_debug = "true" *) wire                                     s_axis_vS6_tvalid;
+    (* mark_debug = "true" *) wire                                     s_axis_vS6_tready;
+    (* mark_debug = "true" *) wire                                     s_axis_vS6_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         s_axis_vS7_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] s_axis_vS7_tkeep;
+    (* mark_debug = "true" *) wire [C_M_AXIS_TUSER_WIDTH-1:0]          s_axis_vS7_tuser;
+    (* mark_debug = "true" *) wire                                     s_axis_vS7_tvalid;
+    (* mark_debug = "true" *) wire                                     s_axis_vS7_tready;
+    (* mark_debug = "true" *) wire                                     s_axis_vS7_tlast;
     // Buses from vS instances to OvSI
     (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_vS0_tdata;
     (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_vS0_tkeep;
@@ -254,6 +282,34 @@ module nf_datapath #(
     (* mark_debug = "true" *) wire                                     m_axis_vS3_tvalid;
     (* mark_debug = "true" *) wire                                     m_axis_vS3_tready;
     (* mark_debug = "true" *) wire                                     m_axis_vS3_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_vS4_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_vS4_tkeep;
+    (* mark_debug = "true" *) wire [C_AXIS_TUSER_DIGEST_WIDTH-1:0]     m_axis_vS4_tuser;
+    (* mark_debug = "true" *) wire                                     m_axis_vS4_tvalid;
+    (* mark_debug = "true" *) wire                                     m_axis_vS4_tready;
+    (* mark_debug = "true" *) wire                                     m_axis_vS4_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_vS5_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_vS5_tkeep;
+    (* mark_debug = "true" *) wire [C_AXIS_TUSER_DIGEST_WIDTH-1:0]     m_axis_vS5_tuser;
+    (* mark_debug = "true" *) wire                                     m_axis_vS5_tvalid;
+    (* mark_debug = "true" *) wire                                     m_axis_vS5_tready;
+    (* mark_debug = "true" *) wire                                     m_axis_vS5_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_vS6_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_vS6_tkeep;
+    (* mark_debug = "true" *) wire [C_AXIS_TUSER_DIGEST_WIDTH-1:0]     m_axis_vS6_tuser;
+    (* mark_debug = "true" *) wire                                     m_axis_vS6_tvalid;
+    (* mark_debug = "true" *) wire                                     m_axis_vS6_tready;
+    (* mark_debug = "true" *) wire                                     m_axis_vS6_tlast;
+
+    (* mark_debug = "true" *) wire [C_M_AXIS_DATA_WIDTH - 1:0]         m_axis_vS7_tdata;
+    (* mark_debug = "true" *) wire [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_vS7_tkeep;
+    (* mark_debug = "true" *) wire [C_AXIS_TUSER_DIGEST_WIDTH-1:0]     m_axis_vS7_tuser;
+    (* mark_debug = "true" *) wire                                     m_axis_vS7_tvalid;
+    (* mark_debug = "true" *) wire                                     m_axis_vS7_tready;
+    (* mark_debug = "true" *) wire                                     m_axis_vS7_tlast;
     // Buses from Control to CvSI
     (* mark_debug = "true" *) wire [C_S_AXI_ADDR_WIDTH-1 : 0]          S1_AXI_0_AWADDR;
     (* mark_debug = "true" *) wire                                     S1_AXI_0_AWVALID;
@@ -345,11 +401,11 @@ module nf_datapath #(
 
     //Input vS Interface
      input_vs_interface
-    ivSi (
+    IvSI (
       // Global Ports
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
-      // Master Stream Ports (interface to nf_sume_sdnet_ips)
+      // Master Stream Ports (interface to vS Array)
       .m_axis_0_tdata (s_axis_vS0_tdata),
       .m_axis_0_tkeep (s_axis_vS0_tkeep),
       .m_axis_0_tuser (s_axis_vS0_tuser),
@@ -377,7 +433,35 @@ module nf_datapath #(
       .m_axis_3_tvalid(s_axis_vS3_tvalid),
       .m_axis_3_tlast (s_axis_vS3_tlast),
       .m_axis_3_tready(s_axis_vS3_tready),
-      // Slave Stream Ports (interface from Rx queues)
+
+      .m_axis_4_tdata (s_axis_vS4_tdata),
+      .m_axis_4_tkeep (s_axis_vS4_tkeep),
+      .m_axis_4_tuser (s_axis_vS4_tuser),
+      .m_axis_4_tvalid(s_axis_vS4_tvalid),
+      .m_axis_4_tlast (s_axis_vS4_tlast),
+      .m_axis_4_tready(s_axis_vS4_tready),
+
+      .m_axis_5_tdata (s_axis_vS5_tdata),
+      .m_axis_5_tkeep (s_axis_vS5_tkeep),
+      .m_axis_5_tuser (s_axis_vS5_tuser),
+      .m_axis_5_tvalid(s_axis_vS5_tvalid),
+      .m_axis_5_tlast (s_axis_vS5_tlast),
+      .m_axis_5_tready(s_axis_vS5_tready),
+
+      .m_axis_6_tdata (s_axis_vS6_tdata),
+      .m_axis_6_tkeep (s_axis_vS6_tkeep),
+      .m_axis_6_tuser (s_axis_vS6_tuser),
+      .m_axis_6_tvalid(s_axis_vS6_tvalid),
+      .m_axis_6_tlast (s_axis_vS6_tlast),
+      .m_axis_6_tready(s_axis_vS6_tready),
+
+      .m_axis_7_tdata (s_axis_vS7_tdata),
+      .m_axis_7_tkeep (s_axis_vS7_tkeep),
+      .m_axis_7_tuser (s_axis_vS7_tuser),
+      .m_axis_7_tvalid(s_axis_vS7_tvalid),
+      .m_axis_7_tlast (s_axis_vS7_tlast),
+      .m_axis_7_tready(s_axis_vS7_tready),
+      // Slave Stream Ports (interface to Rx queues)
       .s_axis_0_tdata (s_axis_0_tdata),
       .s_axis_0_tkeep (s_axis_0_tkeep),
       .s_axis_0_tuser (s_axis_0_tuser),
@@ -438,7 +522,7 @@ module nf_datapath #(
 
     // Control P4 Interface
       control_p4_interface_ip
-    control_p4_interface_0  (
+    CvSI  (
       // AXI4LITE Control Master
       .M_AXI_AWADDR(S1_AXI_AWADDR),
       .M_AXI_AWVALID(S1_AXI_AWVALID),
@@ -535,7 +619,7 @@ module nf_datapath #(
     );
 
 
-    // virtual Switch 1
+    // vS Array (Virtual Switch 0)
       nf_sdnet_vSwitch0_ip
     sdnet_vSwitch0  (
       .axis_aclk(axis_aclk),
@@ -582,7 +666,7 @@ module nf_datapath #(
     );
 
 
-    // virtual Switch 1
+    // vS Array (Virtual Switch 1)
       nf_sdnet_vSwitch1_ip
     sdnet_vSwitch1  (
       .axis_aclk(axis_aclk),
@@ -630,7 +714,7 @@ module nf_datapath #(
 
     //Output P4 Interface
       output_vs_interface
-    ovsi (
+    OvSI (
       // Global Ports
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
@@ -698,12 +782,33 @@ module nf_datapath #(
       .s_axis_3_tready(m_axis_vS3_tready),
       .s_axis_3_tlast (m_axis_vS3_tlast),
 
-      .s_axis_4_tdata (),
-      .s_axis_4_tkeep (),
-      .s_axis_4_tuser (),
-      .s_axis_4_tvalid(),
-      .s_axis_4_tready(),
-      .s_axis_4_tlast (),
+      .s_axis_4_tdata (m_axis_vS4_tdata),
+      .s_axis_4_tkeep (m_axis_vS4_tkeep),
+      .s_axis_4_tuser (m_axis_vS4_tuser),
+      .s_axis_4_tvalid(m_axis_vS4_tvalid),
+      .s_axis_4_tready(m_axis_vS4_tready),
+      .s_axis_4_tlast (m_axis_vS4_tlast),
+
+      .s_axis_5_tdata (m_axis_vS5_tdata),
+      .s_axis_5_tkeep (m_axis_vS5_tkeep),
+      .s_axis_5_tuser (m_axis_vS5_tuser),
+      .s_axis_5_tvalid(m_axis_vS5_tvalid),
+      .s_axis_5_tready(m_axis_vS5_tready),
+      .s_axis_5_tlast (m_axis_vS5_tlast),
+
+      .s_axis_6_tdata (m_axis_vS6_tdata),
+      .s_axis_6_tkeep (m_axis_vS6_tkeep),
+      .s_axis_6_tuser (m_axis_vS6_tuser),
+      .s_axis_6_tvalid(m_axis_vS6_tvalid),
+      .s_axis_6_tready(m_axis_vS6_tready),
+      .s_axis_6_tlast (m_axis_vS6_tlast),
+
+      .s_axis_7_tdata (m_axis_vS7_tdata),
+      .s_axis_7_tkeep (m_axis_vS7_tkeep),
+      .s_axis_7_tuser (m_axis_vS7_tuser),
+      .s_axis_7_tvalid(m_axis_vS7_tvalid),
+      .s_axis_7_tready(m_axis_vS7_tready),
+      .s_axis_7_tlast (m_axis_vS7_tlast),
       // TX Queues and stats signals (interface to vS Array)
       .nf0_q_size(nf0_q_size),
       .nf1_q_size(nf1_q_size),
