@@ -48,14 +48,7 @@ module input_vs_interface
   // Global Ports
   input                                                           axis_aclk,
   input                                                           axis_resetn,
-
-  // Master Stream Ports (interface to data path)
-  // output [C_M_AXIS_DATA_WIDTH - 1:0] m_axis_tdata,
-  // output [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0] m_axis_tkeep,
-  // output [C_M_AXIS_TUSER_WIDTH-1:0] m_axis_tuser,
-  // output m_axis_tvalid,
-  // input  m_axis_tready,
-  // output m_axis_tlast,
+  // Master Stream Ports (interface to vS0 ... vSN)
   output reg [C_M_AXIS_DATA_WIDTH - 1:0]                          m_axis_0_tdata,
   output reg [((C_M_AXIS_DATA_WIDTH / 8)) - 1:0]                  m_axis_0_tkeep,
   output reg [C_M_AXIS_TUSER_WIDTH-1:0]                           m_axis_0_tuser,
@@ -83,7 +76,6 @@ module input_vs_interface
   output reg                                                      m_axis_3_tvalid,
   output reg                                                      m_axis_3_tlast,
   input                                                           m_axis_3_tready,
-
   // Slave Stream Ports (interface to RX queues)
   input [C_S_AXIS_DATA_WIDTH - 1:0]                               s_axis_0_tdata,
   input [((C_S_AXIS_DATA_WIDTH / 8)) - 1:0]                       s_axis_0_tkeep,
@@ -119,7 +111,6 @@ module input_vs_interface
   input                                                           s_axis_4_tvalid,
   output                                                          s_axis_4_tready,
   input                                                           s_axis_4_tlast,
-
   // Slave AXI Ports
   input                                                           S_AXI_ACLK,
   input                                                           S_AXI_ARESETN,
@@ -142,7 +133,7 @@ module input_vs_interface
   output                                                          S_AXI_AWREADY,
 
   // stats
-   output reg pkt_fwd
+   output reg                                                     pkt_fwd
 );
 
   // ------------ Internal Params --------
