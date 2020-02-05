@@ -53,20 +53,25 @@ import sss_sdnet_tuples
 DEF_PKT_SIZE = 256  # default packet size (in bytes)
 HEADER_SIZE = 46    # headers size: Ether/IP/UDP
 DEF_PKT_NUM = 24    # default packets number to simulation
-DEF_HOST_NUM = 4    # default hosts number in network topology
+DEF_HOST_NUM = 8    # default hosts number in network topology
 src_host = 0        # packets sender host
 vlan_id = 0         # vlan identifier to matching with IPI architecture and nf_datapath.v
 vlan_prio = 0       # vlan priority
+sume_port = 0       # mapping N hosts in 4 SUME ports to get the ingress and egress
 
-dst_host_map = {0:1, 1:0, 2:3, 3:2}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
+dst_host_map = {0:1, 1:0, 2:3, 3:2, 4:5, 5:4, 6:7, 7:6}                   # map the sender and receiver Hosts H[0, 1, 2, 3] based in network topology
 inv_nf_id_map = {0:"nf0", 1:"nf1", 2:"nf2", 3:"nf3"}  # map the keys of dictionary nf_id_map
-vlan_id_map = {"l2_switch1":1, "l2_switch2":2}        # map the vlans of parrallel switches
+vlan_id_map = {"l2_switch1":1, "l2_switch2":2, "l2_switch3":3, "l2_switch4":4, "l2_switch5":5, "l2_switch6":6, "l2_switch7":7, "l2_switch8":8}        # map the vlans of parrallel switches
 
 port_slicing = {}                                     # map the slicing of ports of SUME nf[0, 1, 2, 3] based in network topology
 port_slicing[0] = "l2_switch1"
-port_slicing[1] = "l2_switch1"
-port_slicing[2] = "l2_switch2"
-port_slicing[3] = "l2_switch2"
+port_slicing[1] = "l2_switch2"
+port_slicing[2] = "l2_switch3"
+port_slicing[3] = "l2_switch4"
+port_slicing[4] = "l2_switch5"
+port_slicing[5] = "l2_switch6"
+port_slicing[6] = "l2_switch7"
+port_slicing[7] = "l2_switch8"
 
 ########################
 # pkt generation tools #
@@ -134,22 +139,34 @@ def write_pcap_files():
 #####################
 
 MAC_addr_H = {}
-MAC_addr_H[nf_id_map["nf0"]] = "08:11:11:11:11:08"
-MAC_addr_H[nf_id_map["nf1"]] = "08:22:22:22:22:08"
-MAC_addr_H[nf_id_map["nf2"]] = "08:33:33:33:33:08"
-MAC_addr_H[nf_id_map["nf3"]] = "08:44:44:44:44:08"
+MAC_addr_H[0] = "08:11:11:11:11:08"
+MAC_addr_H[1] = "08:22:22:22:22:08"
+MAC_addr_H[2] = "08:33:33:33:33:08"
+MAC_addr_H[3] = "08:44:44:44:44:08"
+MAC_addr_H[4] = "08:11:11:11:11:08"
+MAC_addr_H[5] = "08:22:22:22:22:08"
+MAC_addr_H[6] = "08:33:33:33:33:08"
+MAC_addr_H[7] = "08:44:44:44:44:08"
 
 IP_addr_H = {}
-IP_addr_H[nf_id_map["nf0"]] = "10.1.1.1"
-IP_addr_H[nf_id_map["nf1"]] = "10.2.2.2"
-IP_addr_H[nf_id_map["nf2"]] = "10.3.3.3"
-IP_addr_H[nf_id_map["nf3"]] = "10.4.4.4"
+IP_addr_H[0] = "10.1.1.1"
+IP_addr_H[1] = "10.2.2.2"
+IP_addr_H[2] = "10.3.3.3"
+IP_addr_H[3] = "10.4.4.4"
+IP_addr_H[4] = "10.1.1.1"
+IP_addr_H[5] = "10.2.2.2"
+IP_addr_H[6] = "10.3.3.3"
+IP_addr_H[7] = "10.4.4.4"
 
 MAC_addr_S = {}
-MAC_addr_S[nf_id_map["nf0"]] = "05:11:11:11:11:05"
-MAC_addr_S[nf_id_map["nf1"]] = "05:22:22:22:22:05"
-MAC_addr_S[nf_id_map["nf2"]] = "05:33:33:33:33:05"
-MAC_addr_S[nf_id_map["nf3"]] = "05:44:44:44:44:05"
+MAC_addr_S[0] = "05:11:11:11:11:05"
+MAC_addr_S[1] = "05:22:22:22:22:05"
+MAC_addr_S[2] = "05:33:33:33:33:05"
+MAC_addr_S[3] = "05:44:44:44:44:05"
+MAC_addr_S[4] = "05:11:11:11:11:05"
+MAC_addr_S[5] = "05:22:22:22:22:05"
+MAC_addr_S[6] = "05:33:33:33:33:05"
+MAC_addr_S[7] = "05:44:44:44:44:05"
 
 
 def get_rand_port():
@@ -160,15 +177,12 @@ dport = get_rand_port()
 
 # create some packets
 for time in range(DEF_PKT_NUM):
+    vlan_prio = sume_port
     vlan_id = vlan_id_map[port_slicing[src_host]]
     src_IP = IP_addr_H[src_host]
     dst_IP = IP_addr_H[dst_host_map[src_host]]
 
-    if ( vlan_id == vlan_id_map["l2_switch1"] ):
-        src_MAC = MAC_addr_H[src_host]
-        dst_MAC = MAC_addr_H[dst_host_map[src_host]]
-        pkt_exp = pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
-    elif( vlan_id == vlan_id_map["l2_switch2"] ):
+    if ( vlan_id == vlan_id_map["l2_switch1"] or vlan_id == vlan_id_map["l2_switch2"] or vlan_id == vlan_id_map["l2_switch3"] or vlan_id == vlan_id_map["l2_switch4"] or vlan_id == vlan_id_map["l2_switch5"] or vlan_id == vlan_id_map["l2_switch6"] or vlan_id == vlan_id_map["l2_switch7"] or vlan_id == vlan_id_map["l2_switch8"] ):
         src_MAC = MAC_addr_H[src_host]
         dst_MAC = MAC_addr_H[dst_host_map[src_host]]
         pkt_exp = pkt_app = Ether(src=src_MAC, dst=dst_MAC) / Dot1Q(vlan=vlan_id, prio=vlan_prio) / IP(src=src_IP, dst=dst_IP, ttl=64, chksum=0x7ce7) / UDP(sport=sport, dport=dport) / ((DEF_PKT_SIZE - HEADER_SIZE)*"A")
@@ -176,20 +190,19 @@ for time in range(DEF_PKT_NUM):
         print("\nERROR: vlan_id not mapped!\n")
         exit(1)
 
+    sume_port = src_host%4
     pkt_app = pad_pkt(pkt_app, DEF_PKT_SIZE)
-    ingress = inv_nf_id_map[src_host]
+    ingress = inv_nf_id_map[sume_port]
     applyPkt(pkt_app, ingress, time)
     pkt_exp = pad_pkt(pkt_exp, DEF_PKT_SIZE)
-    egress = inv_nf_id_map[dst_host_map[src_host]]
+    egress = inv_nf_id_map[dst_host_map[sume_port]]
     drop = False
     if (drop):
         egress = "none"
     expPkt(pkt_exp, egress, drop)
 
     src_host += 1
-    vlan_prio += 1
     if ( src_host > (DEF_HOST_NUM-1) ):
         src_host = 0
-        vlan_prio = 0
 
 write_pcap_files()
