@@ -156,11 +156,11 @@ reset_target all [get_ips identifier_ip]
 generate_target all [get_ips identifier_ip]
 
 
-read_verilog "./hdl/input_p4_interface.v"
-read_verilog "./hdl/control_p4_interface.v"
+read_verilog "./hdl/input_vs_interface.v"
+read_verilog "./hdl/control_vs_interface.v"
 read_verilog "./hdl/small_fifo.v"
 read_verilog "./hdl/fallthrough_small_fifo.v"
-read_verilog "./hdl/output_p4_interface.v"
+read_verilog "./hdl/output_vs_interface.v"
 read_verilog "./hdl/axi_clocking.v"
 read_verilog "./hdl/nf_datapath.v"
 read_verilog "./hdl/top.v"
