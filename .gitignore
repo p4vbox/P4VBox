@@ -7,7 +7,6 @@
 *.bak
 *.log
 *.backup.*
-*.bit
 core
 
 vivado.jou
