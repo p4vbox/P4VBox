@@ -38,7 +38,7 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-export P4_PROJECT_NAME=l2_l2_band
+export P4_PROJECT_NAME=int_band
 export NF_PROJECT_NAME=simple_sume_switch
 export SUME_FOLDER=${HOME}/projects/P4VBox
 export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch

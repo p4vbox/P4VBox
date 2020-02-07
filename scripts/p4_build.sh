@@ -52,6 +52,7 @@ if [ -z $verbose ]; then
   echo Generating IP: ${P4_SWITCH}
   cd ${P4_PROJECT_DIR}
   make >> log/build_${P4_SWITCH}.log
+  exit
   cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
   ./vivado_sim.bash >> ../../log/build_${P4_SWITCH}.log
   echo
@@ -62,6 +63,7 @@ else
   echo Generating IP: ${P4_SWITCH}
   cd ${P4_PROJECT_DIR}
   make | tee -a log/build_${P4_SWITCH}.log
+  exit
   cd ${P4_PROJECT_DIR}/${SDNET_OUT_DIR}/${VIRTUAL_SWITCH}/
   ./vivado_sim.bash | tee -a ../../log/build_${P4_SWITCH}.log
   echo
