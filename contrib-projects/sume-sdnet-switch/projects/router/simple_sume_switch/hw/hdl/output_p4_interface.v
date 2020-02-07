@@ -32,7 +32,7 @@
 module output_p4_interface
 #(
     // Number of parallel switches
-    parameter NUM_QUEUES=4,
+    parameter NUM_QUEUES=1,
     // Master AXI Stream Data Width
     parameter C_M_AXIS_DATA_WIDTH=256,
     parameter C_S_AXIS_DATA_WIDTH=256,

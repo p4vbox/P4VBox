@@ -52,12 +52,12 @@ folder=$pwd
 cd ${P4VBOX_SCRIPTS}/tools
 
 iface=eth4
-switch_ip=10.1.0.3
+switch_ip=10.0.0.3
 switch_log=admin
 switch_passw=admin
 config_file=config_switch_commands.sh
 
-ifconfig ${iface} 10.1.0.1
+ifconfig ${iface} 10.0.0.1
 
 sshpass -p ${switch_passw} ssh ${switch_log}@${switch_ip} < ${config_file}
 
