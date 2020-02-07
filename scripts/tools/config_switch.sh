@@ -51,7 +51,7 @@
 folder=$pwd
 cd ${P4VBOX_SCRIPTS}/tools
 
-iface=eth4
+iface=eth3
 switch_ip=10.0.0.3
 switch_log=admin
 switch_passw=admin
