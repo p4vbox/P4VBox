@@ -293,13 +293,8 @@ def main():
     parser.add_argument('sw_dir', type=str, help="the software directory that will contain the auto generated API folder")
     parser.add_argument('--base_address', type=str, default="0x44020000", help="the base address of the P4_SWITCH module")
     args = parser.parse_args()
-    print("\n"+args.switch_info_file+ "\n")
-    print("\n"+args.P4_SWITCH_dir+ "\n")
-    print("\n"+args.templates_dir+ "\n")
-    print("\n"+args.sw_dir+ "\n")
-    print("\n"+args.base_address+ "\n")
+
     P4_SWITCH = os.path.basename(os.path.normpath(args.P4_SWITCH_dir))
-    print("\n"+P4_SWITCH+ "\n\n")
 
     find_p4_externs(args.switch_info_file)
     get_extern_annotations()

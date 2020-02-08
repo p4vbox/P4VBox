@@ -30,7 +30,27 @@
 #define MY_SRC_MAC5	0x08
 
 #define DEFAULT_IF	"eth0"
-#define BUF_SIZ		1484
+#define BUF_SIZ		256
+#define SRC_IP "10.0.0.1"
+#define DST_IP "10.0.0.2"
+
+struct ip {
+        u_int8_t        ip_vhl;         /* header length, version */
+#define IP_V(ip)        (((ip)->ip_vhl & 0xf0) >> 4)
+#define IP_HL(ip)       ((ip)->ip_vhl & 0x0f)
+        u_int8_t        ip_tos;         /* type of service */
+        u_int16_t       ip_len;         /* total length */
+        u_int16_t       ip_id;          /* identification */
+        u_int16_t       ip_off;         /* fragment offset field */
+#define IP_DF 0x4000                    /* dont fragment flag */
+#define IP_MF 0x2000                    /* more fragments flag */
+#define IP_OFFMASK 0x1fff               /* mask for fragmenting bits */
+        u_int8_t        ip_ttl;         /* time to live */
+        u_int8_t        ip_p;           /* protocol */
+        u_int16_t       ip_sum;         /* checksum */
+        struct  in_addr ip_src,ip_dst;  /* source and dest address */
+};
+
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +60,7 @@ int main(int argc, char *argv[])
 	int tx_len = 0;
 	char sendbuf[BUF_SIZ];
 	struct ether_header *eh = (struct ether_header *) sendbuf;
-	struct iphdr *iph = (struct iphdr *) (sendbuf + sizeof(struct ether_header));
+	struct ip *iph = (struct ip *) (sendbuf + sizeof(struct ether_header));
 	struct sockaddr_ll socket_address;
 	char ifName[IFNAMSIZ];
 
@@ -93,9 +113,22 @@ int main(int argc, char *argv[])
 	eh->ether_type = htons(ETH_P_IP);
 	tx_len += sizeof(struct ether_header);
 
+	iph->ip_vhl = 69; /* Version and IHL */
+	iph->ip_tos = 0x10;         /* Type Of Service (TOS) */
+	iph->ip_len = htons(BUF_SIZ - sizeof(struct ether_header));       /* total length of the IP datagram */
+	iph->ip_id = htons(0); /* identification */
+	iph->ip_off = htons (IP_DF);  /* fragmentation flag */
+	iph->ip_ttl = 255;          /* Time To Live (TTL) */
+	iph->ip_p = IPPROTO_RAW; /* protocol used (TCP in this case) */
+	iph->ip_sum = 0;          /* IP checksum */
+	iph->ip_src.s_addr = inet_addr (SRC_IP);
+	iph->ip_dst.s_addr = inet_addr (DST_IP);  /* destination address */
+
+	tx_len += sizeof (struct ip);
+
 	/* Packet data */
         for (; tx_len < BUF_SIZ; tx_len++)
-          sendbuf[tx_len] = 'a';	
+          sendbuf[tx_len] = 'a';
 
 	/* Index of the network device */
 	socket_address.sll_ifindex = if_idx.ifr_ifindex;
@@ -110,7 +143,7 @@ int main(int argc, char *argv[])
 	socket_address.sll_addr[5] = MY_DEST_MAC5;
 
 	/* Send packet */
-	for (;;)
+	for (int i = 0; ; i++)
           if (sendto(sockfd, sendbuf, tx_len, 0, (struct sockaddr*)&socket_address, sizeof(struct sockaddr_ll)) < 0)
 	    printf("Send failed\n");
 
