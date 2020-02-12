@@ -10,14 +10,14 @@
 # by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
-# Copyright (c) 2019 Mateus Saquetti
+
 # All rights reserved.
 #
-# This software was modified by Institute of Informatics of the Federal
-# University of Rio Grande do Sul (INF-UFRGS)
+
+
 #
 # Description:
-#              Adapted to run in P4VBox architecture
+#              Adapted to run in PvS architecture
 # Create Date:
 #              31.05.2019
 #
@@ -41,8 +41,17 @@
 #
 
 xilinx_tool_path=`which vivado`
-bitimage=$1
-configWrites=$2
+
+if [ $# -ne 2 ]; then
+  echo
+  echo "Usage: $0 [bistream] [config_writes]"
+  echo
+  echo " e.g. $0 l2.bit config_writes_l2.sh"
+  echo
+  echo " This script program the SUME board with the bitstream (full or partial),"
+	echo " end initializes the switch tables."
+	echo
+fi
 
 if [ -z $1 ]; then
 	echo
@@ -56,20 +65,16 @@ if [ -z $2 ]; then
 	exit 1
 fi
 
+bitimage=$1
+configWrites=$2
 
 echo
-echo '			Project name = ' ${P4_PROJECT_NAME}
-echo '		Bitstream file = ' $bitimage
+echo '      Project name = ' ${P4_PROJECT_NAME}
+echo '    Bitstream file = ' $bitimage
 echo 'Config writes file = ' $configWrites
 echo
 
 rmmod sume_riffa
-
-# djtgcfg enum
-# djtgcfg init -d NetSUME
-# echo
-# djtgcfg prog -d NetSUME -i 0 -f $bitimage
-# echo
 
 echo
 xsct ${SUME_SDNET}/tools/run_xsct.tcl -tclargs $bitimage
@@ -77,7 +82,11 @@ echo
 
 lspci -vxx | grep -i xilinx
 
-bash ${SUME_SDNET}/tools/pci_rescan_run.sh
+${SUME_SDNET}/tools/pci_rescan_run.sh
+
+if [ $? -ne 0 ]; then
+	exit 1
+fi
 
 rmmod sume_riffa
 
