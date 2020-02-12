@@ -683,15 +683,7 @@ module nf_datapath #(
       .pkt_fwd()
     );
 
-    pkt_counter
-  packet_counter_inst (
-      .clk_200                (axis_aclk),
-      .resetn                 (axis_resetn),
-      .resetn_sw              (),
-      .axis_tvalid            (m_axis_opi_tvalid),
-      .axis_tlast             (m_axis_opi_tlast),
-      .packet_counter         (S2_AXI_RDATA)
-  );
+
     //Output queues
       sss_output_queues_ip
     bram_output_queues_1 (
@@ -766,7 +758,7 @@ module nf_datapath #(
       .S_AXI_ARVALID(S2_AXI_ARVALID),
       .S_AXI_RREADY(S2_AXI_RREADY),
       .S_AXI_ARREADY(S2_AXI_ARREADY),
-      .S_AXI_RDATA(),
+      .S_AXI_RDATA(S2_AXI_RDATA),
       .S_AXI_RRESP(S2_AXI_RRESP),
       .S_AXI_RVALID(S2_AXI_RVALID),
       .S_AXI_WREADY(S2_AXI_WREADY),
