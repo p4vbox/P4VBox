@@ -75,11 +75,46 @@ if {[llength [get_files app.elf]]} {
 	set_property SCOPED_TO_CELLS nf_mbsys/mbsys/microblaze_0 [get_files -all -of_objects [get_fileset sources_1] ${elf_file}]
 }
 
+# # Original code runs begin
+# # Create bitstream with up-to-date elf files
+# reset_run impl_1 -prev_step
+# launch_runs impl_1 -to_step write_bitstream
+# wait_on_run impl_1
+# open_run impl_1
+# write_bitstream -force ../bitfiles/$design.bit
+# # Original code runs end
+
+# Partial Reconfiguration Map
+# +-------------------------------------------------------------------+
+# |      Run Name  |     Config Name  |  Partition 0  |  Partition 1  |
+# +----------------+------------------+---------------+---------------+
+# | impl_1         | config_router    | router        | router        |
+# | child_0_impl_1 | config_l2_router | l2            | router        |
+# | child_1_impl_1 | config_l2        | l2            | l2            |
+# +----------------+------------------+---------------+---------------+
+
+# Set these set_property to not gererate the full bitstream
+set_property GEN_FULL_BITSTREAM 0 [get_runs child_1_impl_1]
+set_property GEN_FULL_BITSTREAM 0 [get_runs impl_1]
+
 # Create bitstream with up-to-date elf files
 reset_run impl_1 -prev_step
+reset_run child_0_impl_1 -prev_step
+reset_run child_1_impl_1 -prev_step
 launch_runs impl_1 -to_step write_bitstream
 wait_on_run impl_1
 open_run impl_1
-write_bitstream -force ../bitfiles/$design.bit
+write_bitstream -force ../bitfiles/${design}_impl1.bit
+launch_runs child_0_impl_1 -to_step write_bitstream
+wait_on_run child_0_impl_1
+open_run child_0_impl_1
+write_bitstream -force ../bitfiles/${design}_ch0.bit
+launch_runs child_1_impl_1 -to_step write_bitstream
+wait_on_run child_1_impl_1
+open_run child_1_impl_1
+write_bitstream -force ../bitfiles/${design}_ch1.bit
+close_design
+close_design
+close_design
 
 exit
