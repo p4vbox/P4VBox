@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module wrapper_RP0 // Reconfigurable Partition 0
+module wrapper_vSwitch
 #(
     //Master AXI Stream Data Width
     parameter                                                      C_M_AXIS_DATA_WIDTH = 256,
@@ -55,8 +55,8 @@ module wrapper_RP0 // Reconfigurable Partition 0
     output                                                          S_AXI_AWREADY
 );
 
-    nf_sdnet_vSwitch0_ip
-  sdnet_vSwitch0  (
+    nf_sdnet_vSwitch1_ip
+  sdnet_vSwitch1  (
     .axis_aclk(axis_aclk),
     .axis_resetn(axis_resetn),
     // Master from vS to IvSI
@@ -95,4 +95,4 @@ module wrapper_RP0 // Reconfigurable Partition 0
     .S_AXI_ARESETN(S_AXI_ARESETN)
   );
 
-endmodule // wrapper_RP0
+endmodule // wrapper_vSwitch

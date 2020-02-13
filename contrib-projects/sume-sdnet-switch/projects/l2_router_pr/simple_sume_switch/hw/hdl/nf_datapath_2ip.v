@@ -764,8 +764,8 @@ module nf_datapath #(
 
 
     // vS Array (Virtual Switch 0)
-      nf_sdnet_vSwitch0_ip
-    sdnet_vSwitch0  (
+      wrapper_vSwitch // Reconfigurable Partition 0
+    wrapper_vSwitch0  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       // Master from vS to IvSI
@@ -811,8 +811,8 @@ module nf_datapath #(
 
 
     // vS Array (Virtual Switch 1)
-      nf_sdnet_vSwitch1_ip
-    sdnet_vSwitch1  (
+    wrapper_vSwitch // Reconfigurable Partition 1
+  wrapper_vSwitch1  (
       .axis_aclk(axis_aclk),
       .axis_resetn(axis_resetn),
       // Master from vS to IvSI

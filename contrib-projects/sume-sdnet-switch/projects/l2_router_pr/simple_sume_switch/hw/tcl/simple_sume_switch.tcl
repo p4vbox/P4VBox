@@ -54,6 +54,7 @@ set repo_dir ./ip_repo
 set bit_settings $::env(CONSTRAINTS)/generic_bit.xdc
 set project_constraints ./constraints/nf_sume_general.xdc
 set nf_10g_constraints ./constraints/nf_sume_10g.xdc
+set part_reconf_constraints ./constraints/partial_reconfig.xdc
 
 #####################################
 # Read IP Addresses and export registers
@@ -79,9 +80,11 @@ set_property ip_repo_paths ${repo_dir} [current_fileset]
 add_files -fileset constraints -norecurse ${bit_settings}
 add_files -fileset constraints -norecurse ${project_constraints}
 add_files -fileset constraints -norecurse ${nf_10g_constraints}
+add_files -fileset constraints -norecurse ${part_reconf_constraints}
 set_property is_enabled true [get_files ${project_constraints}]
 set_property is_enabled true [get_files ${bit_settings}]
 set_property is_enabled true [get_files ${nf_10g_constraints}]
+set_property is_enabled true [get_files ${part_reconf_constraints}]
 set_property constrset constraints [get_runs synth_1]
 set_property constrset constraints [get_runs impl_1]
 
@@ -161,6 +164,7 @@ read_verilog "./hdl/control_vs_interface.v"
 read_verilog "./hdl/small_fifo.v"
 read_verilog "./hdl/fallthrough_small_fifo.v"
 read_verilog "./hdl/output_vs_interface.v"
+read_verilog "./hdl/wrapper_vSwitch1.v"
 read_verilog "./hdl/axi_clocking.v"
 read_verilog "./hdl/nf_datapath.v"
 read_verilog "./hdl/top.v"
@@ -185,8 +189,8 @@ set_property STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore [
 ### Solves synthesis crash in 2013.2
 ##set_param synth.filterSetMaxDelayWithDataPathOnly true
 set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
-launch_runs synth
-wait_on_run synth
-launch_runs impl_1 -to_step write_bitstream
-wait_on_run impl_1
+# launch_runs synth
+# wait_on_run synth
+# launch_runs impl_1 -to_step write_bitstream
+# wait_on_run impl_1
 exit

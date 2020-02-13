@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module wrapper_RP0 // Reconfigurable Partition 0
+module wrapper_vSwitch
 #(
     //Master AXI Stream Data Width
     parameter                                                      C_M_AXIS_DATA_WIDTH = 256,
@@ -95,4 +95,4 @@ module wrapper_RP0 // Reconfigurable Partition 0
     .S_AXI_ARESETN(S_AXI_ARESETN)
   );
 
-endmodule // wrapper_RP0
+endmodule // wrapper_vSwitch
