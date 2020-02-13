@@ -53,6 +53,6 @@ all:    clean
 
 
 clean:
-	make -C ${HW} distclean
-	make -C ${SW} distclean
-	rm -rfv vivado*;\
+	# make -C ${HW} distclean
+	# make -C ${SW} distclean
+	# rm -rfv vivado*;\

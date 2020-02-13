@@ -119,30 +119,8 @@ set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets {control_sub_i/dma_sub/pcie3_
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
 set_false_path -from [get_clocks sys_clk] -to [get_clocks clk_200]
+set_false_path -from [get_clocks clk_200] -to [get_clocks sys_clk]
 
 set_false_path -from [get_clocks axi_clk] -to [get_clocks clk_200]
 set_false_path -from [get_clocks clk_200] -to [get_clocks axi_clk]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
