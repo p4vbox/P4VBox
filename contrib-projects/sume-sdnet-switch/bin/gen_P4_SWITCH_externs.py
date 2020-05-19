@@ -207,7 +207,7 @@ def copy_support_files(src_dir, dst_dir, no_cp_filename):
 """
 Creates the extern hdl modules from the templates
 """
-def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
+def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir, P4_SWITCH):
     global p4_externs
     for extern_name, extern_dict in p4_externs.items():
         extern_type = extern_dict['extern_type']
@@ -217,7 +217,7 @@ def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
         except IOError as e:
             print >> sys.stderr, "ERROR: Could not open hdl template file for extern: {}".format(extern_name)
             sys.exit(1)
-        extern_dir = find_extern_hdl_dir(extern_name, P4_SWITCH_dir)
+        extern_dir = find_extern_hdl_dir(P4_SWITCH+extern_name, P4_SWITCH_dir)
         module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".HDL", "")
         extern_dict['module_name'] = module_name
         file_name = module_name + ".v"
@@ -299,7 +299,7 @@ def main():
     find_p4_externs(args.switch_info_file)
     get_extern_annotations()
     get_extern_address(args.P4_SWITCH_dir, P4_SWITCH, int(args.base_address,0))
-    make_hdl_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
+    make_hdl_extern_modules(args.templates_dir, args.P4_SWITCH_dir, P4_SWITCH)
     make_cpp_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
 
     dump_extern_defines(args.P4_SWITCH_dir, args.testdata_dir, args.sw_dir, int(args.base_address,0), P4_SWITCH)

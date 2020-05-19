@@ -4,11 +4,6 @@ All rights reserved.
 This software was developed by Institute of Informatics of the Federal
 University of Rio Grande do Sul (INF-UFRGS)
 
-Description:
-             Simple readme for P4VBox
-Create Date:
-             31.05.2019
-
 @NETFPGA_LICENSE_HEADER_START@
 
 Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
@@ -27,31 +22,128 @@ specific language governing permissions and limitations under the License.
 
 @NETFPGA_LICENSE_HEADER_END@
 
+## P4VBox
 
-How to clone this repo:
+P4 Virtual Box (P4VBox) Forwarding Engine is a Hard-Virtualization (HDL-hypervisor) solution to programmable data planes. It enables virtualization by directly defining a parallel architecture for accommodating multiple programmable switch programs and their individual on FPGA-based devices [NetFPGA SUME](https://reference.digilentinc.com/reference/programmable-logic/netfpga-sume/start).
 
-git clone https://github.com/mateussaquetti/P4VBox.git
+To more info, please see the links:
+[P4VBox: Enabling P4-Based Switch Virtualization](https://ieeexplore.ieee.org/document/8895999)
+[Virtualization in Programmable Data Plane: A Survey and Open Challenges](https://ieeexplore.ieee.org/abstract/document/9078127)
+[NetFPGA SUME Datasheet](https://reference.digilentinc.com/_media/sume:netfpga-sume_rm.pdf)
 
-git pull --tags
+The source code of the P4VBox forwarding engine is a fork of [P4-NetFPGA Project](https://github.com/NetFPGA/P4-NetFPGA-public) and use Xilinx P4-SDNet toolchain. Kindly note that this code is under development and may be unstable.
+
+To more info about dependencies and installation:
+[P4->NetFPGA - Getting Started](https://github.com/NetFPGA/P4-NetFPGA-public/wiki/Getting-Started)
+[NetFPGA Project - Reference Operating System Setup Guide](https://github.com/NetFPGA/NetFPGA-SUME-public/wiki/Reference-Operating-System-Setup-Guide)
 
 
-Add this lines at your enviroment viriables file (~/.bashrc)
+### Installation Ubuntu 16.04
 
-#### P4VBox #####
+How to clone this repository:
+
+```sh
+$  git clone https://github.com/p4vbox/P4VBox.git
+$  git pull --tags
+```
+
+Add these lines at your environment variables file: `vi ~/.bashrc`
+
+```sh
 export P4VBOX=~/projects/P4VBox/scripts/settings.sh
-source ${P4VBOX}
+source $P4VBOX
+```
 
+Updating environment:
+
+```sh
+$  source ~/.bashrc
+```
+
+Instaling all dependencies:
+
+```sh
+$  sudo $P4VBOX_SCRIPTS/tools/setup_SUME.sh  
+```
+
+Making the library and installing the SUME driver:
+
+```sh
+$  $P4VBOX_MAKE_LIBRARY
+$  $P4VBOX_INSTALL_DRIVER
+```
+
+### Usage
 
 How to create a new P4VBox project:
-$ $P4VBOX_NEWPROJ <name_project>
 
-Like this:
-$ $P4VBOX_NEWPROJ l2_switch
+```sh
+$  $P4VBOX_NEWPROJ <project_name>
+```
 
-Modify the p4vbox_settings.sh with the correctly P4_PROJECT_NAME
-Write yours p4 program (with extension <name_p4_switch>.p4) on src/ folder
-Write your commands file with topology (witch name: commands_<name_p4_switch>.txt)
-Write your gen_testdata.py (with name: gen_testdata_<num_of_parallel_p4_switchs>ip.py)
-Modify the nf_datapath.v replecing <P4_SWITCH> with each name of p4 modules. Add new instances if necessary (with name: nf_datapath_<num_of_parallel_p4_switchs>ip.v)
-Modify the nf_datapath.v with correctly signals of p4_switch_ip from IPI and signals to OPI
-In templates/sss_wraper folder, replace <p4_switch> with the name of each p4_switch instance in name of nf_sdnet_<p4_switch>.v file and into this file! Create new  nf_sdnet_<p4_switch>.v if necessary.
+Update environment variables, change the `$P4VBOX_SCRIPTS/settings.sh` with the correct project name: `vi $P4VBOX`
+
+```sh
+...
+export P4_PROJECT_NAME=<project_name>
+...
+```
+
+Then update the environment with the new project name:
+
+```sh
+$  source $P4VBOX
+```
+
+#### Building a project - P4 switches Flow
+
+Enter in the project folder to create virtual switches:
+
+```sh
+$  cd $P4_PROJECT_DIR
+```
+
+Write:
+  - The virtual switch in P4 code (.p4), for example, on `src/` folder.
+  - The commands file `commands_<name_p4_switch>.txt` with switch tables.
+  - The script generator for data tes on `testdata/` folder. **Warning:** *each switch should have a test data named: `gen_testdata_<switch_name>.py` and your project must have your propely test data named: gen_testdata_<project_name>.py*
+
+#### Running the Project - P4 switches Flow
+
+Generate your test data, you can run this option with `--pp` option to see the packets:
+
+```sh
+cd $P4VBOX_SCRIPTS
+
+$  ./p4vbox.py <virtual_switch_0> <virtual_switch_1> .. <virtual_switch_N> -name <project_name> -t
+```
+
+Verify your P4 Code sintaxe:
+
+```sh
+$  ./p4vbox.py <virtual_switch_0> <virtual_switch_1> .. <virtual_switch_N> -name <project_name> -c
+```
+
+Run the P4 switch simulation, you can run `-v` flag to see in terminal, the standart output is the log file in `$P4_PROJECT_DIR/log/`:
+
+```sh
+$  ./p4vbox.py <virtual_switch_0> <virtual_switch_1> .. <virtual_switch_N> -name <project_name> -s
+```
+
+Run the SUME simulation to all virtual switches:
+
+```sh
+$  ./p4vbox.py <virtual_switch_0> <virtual_switch_1> .. <virtual_switch_N> -name <project_name>
+```
+
+Implement your design:
+
+```sh
+$  ./p4vbox.py <virtual_switch_0> <virtual_switch_1> .. <virtual_switch_N> -name <project_name> --imp
+```
+
+Programming the SUME board:
+
+```sh
+$  sudo $P4VBOX_PROGSUME
+```
