@@ -26,8 +26,11 @@
 # @NETFPGA_LICENSE_HEADER_END@
 
 set bitimage [lindex $argv 1]
+puts ""
 puts "RUN loading image file."
-puts $bitimage
+puts ""
+# puts "Bitstream file = $bitimage"
+# puts ""
 connect
 targets 1
 fpga -f $bitimage

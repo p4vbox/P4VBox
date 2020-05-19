@@ -13,10 +13,10 @@
 #  Description:
 #        This makefile is used to generate and compile SDK project for reference projects.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -92,4 +92,3 @@ distclean:
 	rm -rf `find . -name "${WS}"`
 	rm -rf `find . -name "*.log"`
 	rm -rf `find . -name "*.jou"`
-

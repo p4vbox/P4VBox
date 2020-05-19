@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="top_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axis_sim_pkg" />
+            <top_module name="glbl" />
+            <top_module name="lib_pkg" />
+            <top_module name="top_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="286331357946fs"></ZoomStartTime>
+      <ZoomEndTime time="286455210275fs"></ZoomEndTime>
+      <Cursor1Time time="286400000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="232"></NameColumnWidth>
+      <ValueColumnWidth column_width="70"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="4" />
+   <wvobject fp_name="divider541" type="divider">
+      <obj_property name="label">Output Top</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group540">
+      <obj_property name="label">top_sim_output</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/clk_200">
+         <obj_property name="ElementShortName">clk_200</obj_property>
+         <obj_property name="ObjectShortName">clk_200</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/sys_rst_n_c">
+         <obj_property name="ElementShortName">sys_rst_n_c</obj_property>
+         <obj_property name="ObjectShortName">sys_rst_n_c</obj_property>
+      </wvobject>
+      <wvobject type="group" fp_name="group603">
+         <obj_property name="label">nf_0_TX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_o_0_tdata">
+            <obj_property name="ElementShortName">axis_o_0_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_o_0_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_o_0_tvalid">
+            <obj_property name="ElementShortName">axis_o_0_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_o_0_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group605">
+         <obj_property name="label">nf_1_TX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_o_1_tdata">
+            <obj_property name="ElementShortName">axis_o_1_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_o_1_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_o_1_tvalid">
+            <obj_property name="ElementShortName">axis_o_1_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_o_1_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group607">
+         <obj_property name="label">nf_2_TX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_o_2_tdata">
+            <obj_property name="ElementShortName">axis_o_2_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_o_2_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_o_2_tvalid">
+            <obj_property name="ElementShortName">axis_o_2_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_o_2_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group609">
+         <obj_property name="label">nf_3_TX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_o_3_tdata">
+            <obj_property name="ElementShortName">axis_o_3_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_o_3_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_o_3_tvalid">
+            <obj_property name="ElementShortName">axis_o_3_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_o_3_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group611">
+         <obj_property name="label">nf_DMA_TX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_o_tdata">
+            <obj_property name="ElementShortName">axis_dma_o_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_o_tkeep">
+            <obj_property name="ElementShortName">axis_dma_o_tkeep[31:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tkeep[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_o_tlast">
+            <obj_property name="ElementShortName">axis_dma_o_tlast</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tlast</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_o_tready">
+            <obj_property name="ElementShortName">axis_dma_o_tready</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tready</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_o_tuser">
+            <obj_property name="ElementShortName">axis_dma_o_tuser[127:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tuser[127:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_o_tvalid">
+            <obj_property name="ElementShortName">axis_dma_o_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_o_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="divider612" type="divider">
+      <obj_property name="label">Input Top</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group613">
+      <obj_property name="label">top_sim_input</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/clk_200">
+         <obj_property name="ElementShortName">clk_200</obj_property>
+         <obj_property name="ObjectShortName">clk_200</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/top_tb/top_sim/sys_rst_n_c">
+         <obj_property name="ElementShortName">sys_rst_n_c</obj_property>
+         <obj_property name="ObjectShortName">sys_rst_n_c</obj_property>
+      </wvobject>
+      <wvobject type="group" fp_name="group602">
+         <obj_property name="label">nf_0_RX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_i_0_tdata">
+            <obj_property name="ElementShortName">axis_i_0_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_i_0_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_i_0_tvalid">
+            <obj_property name="ElementShortName">axis_i_0_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_i_0_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group604">
+         <obj_property name="label">nf_1_RX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_i_1_tdata">
+            <obj_property name="ElementShortName">axis_i_1_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_i_1_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_i_1_tvalid">
+            <obj_property name="ElementShortName">axis_i_1_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_i_1_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group606">
+         <obj_property name="label">nf_2_RX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_i_2_tdata">
+            <obj_property name="ElementShortName">axis_i_2_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_i_2_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_i_2_tvalid">
+            <obj_property name="ElementShortName">axis_i_2_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_i_2_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group608">
+         <obj_property name="label">nf_3_RX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_i_3_tdata">
+            <obj_property name="ElementShortName">axis_i_3_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_i_3_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_i_3_tvalid">
+            <obj_property name="ElementShortName">axis_i_3_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_i_3_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="group" fp_name="group610">
+         <obj_property name="label">nf_DMA_RX</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_i_tdata">
+            <obj_property name="ElementShortName">axis_dma_i_tdata[255:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tdata[255:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_i_tkeep">
+            <obj_property name="ElementShortName">axis_dma_i_tkeep[31:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tkeep[31:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_i_tlast">
+            <obj_property name="ElementShortName">axis_dma_i_tlast</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tlast</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_i_tready">
+            <obj_property name="ElementShortName">axis_dma_i_tready</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tready</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/top_tb/top_sim/axis_dma_i_tuser">
+            <obj_property name="ElementShortName">axis_dma_i_tuser[127:0]</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tuser[127:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/top_tb/top_sim/axis_dma_i_tvalid">
+            <obj_property name="ElementShortName">axis_dma_i_tvalid</obj_property>
+            <obj_property name="ObjectShortName">axis_dma_i_tvalid</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+</wave_config>

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #
 # Copyright (c) 2017 Stephen Ibanez
@@ -72,6 +72,13 @@ def get_extern_annotations():
             sys.exit(1)
         extern_dict['max_cycles'] = int(extern_dict['annotations']['Xilinx_MaxLatency'][0])
 
+def get_extern_annotation(annotation_name, extern_dict):
+    global p4_externs
+    if annotation_name not in extern_dict['annotations'].keys():
+        print >> sys.stderr, "ERROR: @{} annotation unspecified for extern: {}".format(annotation_name, extern_dict['p4_name'])
+        sys.exit(1)
+    return int(extern_dict['annotations'][annotation_name][0])
+
 """
 Read P4_SWITCH.h to determine the offset address and compute the base address
 """
@@ -139,6 +146,11 @@ def run_replace_cmd(contents, pattern, cmd, extern_dict):
         field_name = searchObj.group(1)
         width = get_field_width(field_name, extern_dict['output_fields'])
         return contents.replace(pattern, str(width))
+    searchObj = re.search(r"annotation\((.*)\)", cmd)
+    if searchObj is not None:
+        annotation_name = searchObj.group(1)
+        annotation_content = get_extern_annotation(annotation_name, extern_dict)
+        return contents.replace(pattern, str(annotation_content))
     elif (cmd == 'extern_name'):
         return contents.replace(pattern, extern_dict['prefix_name'] + '_' + extern_dict['extern_type'])
     elif (cmd == 'module_name'):
@@ -195,7 +207,7 @@ def copy_support_files(src_dir, dst_dir, no_cp_filename):
 """
 Creates the extern hdl modules from the templates
 """
-def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
+def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir, P4_SWITCH):
     global p4_externs
     for extern_name, extern_dict in p4_externs.items():
         extern_type = extern_dict['extern_type']
@@ -205,7 +217,7 @@ def make_hdl_extern_modules(templates_dir, P4_SWITCH_dir):
         except IOError as e:
             print >> sys.stderr, "ERROR: Could not open hdl template file for extern: {}".format(extern_name)
             sys.exit(1)
-        extern_dir = find_extern_hdl_dir(extern_name, P4_SWITCH_dir)
+        extern_dir = find_extern_hdl_dir(P4_SWITCH+extern_name, P4_SWITCH_dir)
         module_name = os.path.basename(os.path.normpath(extern_dir)).replace(".HDL", "")
         extern_dict['module_name'] = module_name
         file_name = module_name + ".v"
@@ -262,14 +274,14 @@ def dump_extern_defines(P4_SWITCH_dir, testdata_dir, sw_dir, P4_SWITCH_base_addr
         extern_defines[extern_dict['prefix_name']] = extern_dict
 
     # dump to testdata directory
-    with open(os.path.join(testdata_dir, EXTERN_DEFINES_FILE.format(P4_SWITCH)), 'w') as f:
+    with open(os.path.join(testdata_dir, EXTERN_DEFINES_FILE.format(os.environ['P4_SWITCH'])), 'w') as f:
         json.dump(extern_defines, f)
 
     # dump to CLI directory
     cli_dir = os.path.join(sw_dir, CLI_dir)
     if not os.path.exists(cli_dir):
         os.makedirs(cli_dir)
-    with open(os.path.join(cli_dir, EXTERN_DEFINES_FILE.format(P4_SWITCH)), 'w') as f:
+    with open(os.path.join(cli_dir, EXTERN_DEFINES_FILE.format(os.environ['P4_SWITCH'])), 'w') as f:
         json.dump(extern_defines, f)
 
 def main():
@@ -287,7 +299,7 @@ def main():
     find_p4_externs(args.switch_info_file)
     get_extern_annotations()
     get_extern_address(args.P4_SWITCH_dir, P4_SWITCH, int(args.base_address,0))
-    make_hdl_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
+    make_hdl_extern_modules(args.templates_dir, args.P4_SWITCH_dir, P4_SWITCH)
     make_cpp_extern_modules(args.templates_dir, args.P4_SWITCH_dir)
 
     dump_extern_defines(args.P4_SWITCH_dir, args.testdata_dir, args.sw_dir, int(args.base_address,0), P4_SWITCH)

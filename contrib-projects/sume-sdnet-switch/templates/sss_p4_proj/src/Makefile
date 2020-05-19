@@ -2,11 +2,22 @@
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
+#
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
 #
 # @NETFPGA_LICENSE_HEADER_START@
 #
@@ -27,13 +38,11 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-
-# Makefile to convert the P4 into PX and P4 commands into SDNet tables
+top_name=vSwitch${P4_SWITCH_ID}
 
 all:
-	p4c-sdnet -o ${P4_PROJECT_NAME}.sdnet --sdnet_info .sdnet_switch_info.dat ${P4_PROJECT_NAME}.p4
-	${SUME_SDNET}/bin/p4_px_tables.py commands.txt .sdnet_switch_info.dat
+	p4c-sdnet -o ${P4_SWITCH}.sdnet --toplevel_name ${top_name} --sdnet_info .sdnet_switch_info_${P4_SWITCH}.dat ${P4_SWITCH}.p4
+	${SUME_SDNET}/bin/p4_px_tables.py commands_${P4_SWITCH}.txt .sdnet_switch_info_${P4_SWITCH}.dat
 
 clean:
-	rm -f *.sdnet *.tbl .sdnet_switch_info.dat
-
+	rm -f *.sdnet *.tbl .*.dat

@@ -8,12 +8,12 @@
 #        and associate it with the microblaze in the system. The script generates
 #        bitstreams with microblaze BRAM initialized with the elf file.
 #        useage:
-#        $ vivado -source tcl/load_elf.tcl 
+#        $ vivado -source tcl/load_elf.tcl
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -34,9 +34,25 @@
 #
 # @NETFPGA_LICENSE_HEADER_END@
 #
+##################################################################################
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Modified by:
+#       Mateus Saquetti
+#
+# Description:
+#       Modified to generate the bitstream correct name
+#
+# Create date:
+#       05.06.2019
+#
+# Additional Comments:
+#
+#
+##################################################################################
 
-
-set design [lindex $argv 0] 
+set design [lindex $argv 0]
 set ws "SDK_Workspace"
 
 # open project
@@ -54,7 +70,7 @@ if {[llength [get_files app.elf]]} {
 	puts "ELF File [get_files app.elf] is already associated"
 	exit
 } else {
-	add_files -norecurse -force ${elf_file} 
+	add_files -norecurse -force ${elf_file}
 	set_property SCOPED_TO_REF [current_bd_design] [get_files -all -of_objects [get_fileset sources_1] ${elf_file}]
 	set_property SCOPED_TO_CELLS nf_mbsys/mbsys/microblaze_0 [get_files -all -of_objects [get_fileset sources_1] ${elf_file}]
 }

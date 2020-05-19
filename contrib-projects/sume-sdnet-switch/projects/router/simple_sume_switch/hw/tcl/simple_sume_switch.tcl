@@ -8,6 +8,17 @@
 # by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
+#
 # @NETFPGA_LICENSE_HEADER_START@
 #
 # Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
@@ -27,6 +38,10 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
+# Get P4VBox variables from enviroment
+set arg_p4_switches $::env(P4_PROJ_SWITCHES)
+set p4_switches [split $arg_p4_switches :]
+
 # Vivado Launch Script
 #### Change design settings here #######
 set design $::env(NF_PROJECT_NAME)
@@ -43,8 +58,8 @@ set nf_10g_constraints ./constraints/nf_sume_10g.xdc
 #####################################
 # Read IP Addresses and export registers
 #####################################
-source ./tcl/$::env(NF_PROJECT_NAME)_defines.tcl
-source ./tcl/export_registers.tcl
+source ./tcl/$::env(NF_PROJECT_NAME)_defines.tcl -notrace
+source ./tcl/export_registers.tcl -notrace
 #####################################
 # set IP paths
 #####################################
@@ -54,7 +69,7 @@ source ./tcl/export_registers.tcl
 create_project -name ${design} -force -dir "./${proj_dir}" -part ${device}
 set_property source_mgmt_mode DisplayOnly [current_project]
 set_property top ${top} [current_fileset]
-puts "Creating User Datapath reference project"
+puts "\n Creating User Datapath reference project \n"
 #####################################
 # Project Constraints
 #####################################
@@ -74,10 +89,10 @@ set_property constrset constraints [get_runs impl_1]
 # Project
 #####################################
 update_ip_catalog
-create_ip -name input_arbiter -vendor NetFPGA -library NetFPGA -module_name input_arbiter_ip
-set_property generate_synth_checkpoint false [get_files input_arbiter_ip.xci]
-reset_target all [get_ips input_arbiter_ip]
-generate_target all [get_ips input_arbiter_ip]
+create_ip -name input_arbiter_drr -vendor NetFPGA -library NetFPGA -module_name input_arbiter_drr_ip
+set_property generate_synth_checkpoint false [get_files input_arbiter_drr_ip.xci]
+reset_target all [get_ips input_arbiter_drr_ip]
+generate_target all [get_ips input_arbiter_drr_ip]
 
 create_ip -name sss_output_queues -vendor NetFPGA -library NetFPGA -module_name sss_output_queues_ip
 set_property generate_synth_checkpoint false [get_files sss_output_queues_ip.xci]
@@ -86,30 +101,40 @@ generate_target all [get_ips sss_output_queues_ip]
 
 
 #create the IPI Block Diagram
-source ./tcl/control_sub.tcl
+source ./tcl/control_sub.tcl -notrace
 
 
-#source ../hw/create_ip/nf_sume_sdnet1.tcl   # only need this if sdnet_to_sume has fifo in wrapper
-create_ip -name nf_sume_sdnet1 -vendor NetFPGA -library NetFPGA -module_name nf_sume_sdnet1_ip
-set_property generate_synth_checkpoint false [get_files nf_sume_sdnet1_ip.xci]
-reset_target all [get_ips nf_sume_sdnet1_ip]
-generate_target all [get_ips nf_sume_sdnet1_ip]
+puts "\n All P4 switches = ${p4_switches} \n"
+set vswitch_id 0
+foreach p4_switch $p4_switches {
+  set vswitch_name vSwitch${vswitch_id}
+  set p4_switch_name nf_sdnet_${vswitch_name}
+  puts "Creating P4 Switch IP: ${p4_switch}. With name: ${p4_switch_name}"
+  #source ../hw/create_ip/nf_sume_sdnet.tcl  # only need this if have sdnet_to_sume fifo in wrapper
+  create_ip -name ${p4_switch_name} -vendor NetFPGA -library NetFPGA -module_name ${p4_switch_name}_ip
+  set_property generate_synth_checkpoint false [get_files ${p4_switch_name}_ip.xci]
+  reset_target all [get_ips ${p4_switch_name}_ip]
+  generate_target all [get_ips ${p4_switch_name}_ip]
+  incr vswitch_id
+  puts ""
+}
 
-source ./create_ip/nf_10ge_interface.tcl
+
+source ./create_ip/nf_10ge_interface.tcl -notrace
 create_ip -name nf_10ge_interface -vendor NetFPGA -library NetFPGA -module_name nf_10g_interface_ip
 set_property generate_synth_checkpoint false [get_files nf_10g_interface_ip.xci]
 reset_target all [get_ips nf_10g_interface_ip]
 generate_target all [get_ips nf_10g_interface_ip]
 
 
-source ./create_ip/nf_10ge_interface_shared.tcl
+source ./create_ip/nf_10ge_interface_shared.tcl -notrace
 create_ip -name nf_10ge_interface_shared -vendor NetFPGA -library NetFPGA -module_name nf_10g_interface_shared_ip
 set_property generate_synth_checkpoint false [get_files nf_10g_interface_shared_ip.xci]
 reset_target all [get_ips nf_10g_interface_shared_ip]
 generate_target all [get_ips nf_10g_interface_shared_ip]
 
 #Add a clock wizard
-create_ip -name clk_wiz -vendor xilinx.com -library ip -version 5.3 -module_name clk_wiz_ip
+create_ip -name clk_wiz -vendor xilinx.com -library ip -version 6.0 -module_name clk_wiz_ip
 set_property -dict [list CONFIG.PRIM_IN_FREQ {200.00} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {200.000} CONFIG.USE_SAFE_CLOCK_STARTUP {true} CONFIG.RESET_TYPE {ACTIVE_LOW} CONFIG.CLKIN1_JITTER_PS {50.0} CONFIG.CLKOUT1_DRIVES {BUFGCE} CONFIG.CLKOUT2_DRIVES {BUFGCE} CONFIG.CLKOUT3_DRIVES {BUFGCE} CONFIG.CLKOUT4_DRIVES {BUFGCE} CONFIG.CLKOUT5_DRIVES {BUFGCE} CONFIG.CLKOUT6_DRIVES {BUFGCE} CONFIG.CLKOUT7_DRIVES {BUFGCE} CONFIG.MMCM_CLKFBOUT_MULT_F {5.000} CONFIG.MMCM_CLKIN1_PERIOD {5.0} CONFIG.MMCM_CLKOUT0_DIVIDE_F {5.000} CONFIG.RESET_PORT {resetn} CONFIG.CLKOUT1_JITTER {98.146} CONFIG.CLKOUT1_PHASE_ERROR {89.971}] [get_ips clk_wiz_ip]
 set_property generate_synth_checkpoint false [get_files clk_wiz_ip.xci]
 reset_target all [get_ips clk_wiz_ip]
@@ -124,31 +149,27 @@ generate_target all [get_ips proc_sys_reset_ip]
 
 
 #Add ID block
-create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.3 -module_name identifier_ip
+create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.4 -module_name identifier_ip
 set_property -dict [list CONFIG.Interface_Type {AXI4} CONFIG.AXI_Type {AXI4_Lite} CONFIG.AXI_Slave_Type {Memory_Slave} CONFIG.Use_AXI_ID {false} CONFIG.Load_Init_File {true} CONFIG.Coe_File {/../../../../../../create_ip/id_rom16x32.coe} CONFIG.Fill_Remaining_Memory_Locations {true} CONFIG.Remaining_Memory_Locations {DEADDEAD} CONFIG.Memory_Type {Simple_Dual_Port_RAM} CONFIG.Use_Byte_Write_Enable {true} CONFIG.Byte_Size {8} CONFIG.Assume_Synchronous_Clk {true} CONFIG.Write_Width_A {32} CONFIG.Write_Depth_A {4096} CONFIG.Read_Width_A {32} CONFIG.Operating_Mode_A {READ_FIRST} CONFIG.Write_Width_B {32} CONFIG.Read_Width_B {32} CONFIG.Operating_Mode_B {READ_FIRST} CONFIG.Enable_B {Use_ENB_Pin} CONFIG.Register_PortA_Output_of_Memory_Primitives {false} CONFIG.Register_PortB_Output_of_Memory_Primitives {false} CONFIG.Use_RSTB_Pin {true} CONFIG.Reset_Type {ASYNC} CONFIG.Port_A_Write_Rate {50} CONFIG.Port_B_Clock {100} CONFIG.Port_B_Enable_Rate {100}] [get_ips identifier_ip]
 set_property generate_synth_checkpoint false [get_files identifier_ip.xci]
 reset_target all [get_ips identifier_ip]
 generate_target all [get_ips identifier_ip]
 
 
-
+read_verilog "./hdl/input_p4_interface.v"
+read_verilog "./hdl/control_p4_interface.v"
+read_verilog "./hdl/small_fifo.v"
+read_verilog "./hdl/fallthrough_small_fifo.v"
+read_verilog "./hdl/output_p4_interface.v"
 read_verilog "./hdl/axi_clocking.v"
-
-## MOD SAQUETTI
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/input_p4_interface.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/small_fifo.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/fallthrough_small_fifo.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/output_p4_interface.v"
-read_verilog "$::env(NF_DESIGN_DIR)/hw/hdl/nf_datapath.v"
-##
-
+read_verilog "./hdl/nf_datapath.v"
 read_verilog "./hdl/top.v"
 
 
 #Setting Synthesis options
-create_run -flow {Vivado Synthesis 2016} synth
+create_run -flow {Vivado Synthesis 2018} synth
 #Setting Implementation options
-create_run impl -parent_run synth -flow {Vivado Implementation 2016}
+create_run impl -parent_run synth -flow {Vivado Implementation 2018}
 #set_property strategy Performance_LateBlockPlacement [get_runs impl_1]
 set_property steps.phys_opt_design.is_enabled true [get_runs impl_1]
 #set_property STEPS.PHYS_OPT_DESIGN.ARGS.DIRECTIVE Explore [get_runs impl_1]

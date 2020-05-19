@@ -1,13 +1,13 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 #
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -162,8 +162,8 @@ def get_table_info(P4_SWITCH_dir, table_name, P4_SWITCH, table_info_fmat):
         print >> sys.stderr, "ERROR: could not find table_info for {}".format(table_name)
         sys.exit(1)
     table_info = searchObj.groupdict()
-   
-    # get base address 
+
+    # get base address
     with open(os.path.join(P4_SWITCH_dir, P4_SWITCH + '.h')) as f:
         fmat = r"#define  {}__{}__START_ADDRESS   (\S*)".format(P4_SWITCH, table_name)
         contents = f.read()
@@ -199,12 +199,12 @@ def find_tables(switch_info_file, P4_SWITCH_dir, P4_SWITCH):
 Write the table_defines json file
 """
 def write_table_defines(tables, P4_SWITCH, cli_dir):
-    outfile = os.path.join(cli_dir, '{}_table_defines.json'.format(P4_SWITCH))
+    outfile = os.path.join(cli_dir, '{}_table_defines.json'.format(os.environ['P4_SWITCH']))
     with open(outfile, 'w') as f:
         json.dump(tables, f)
 
 """
-Builds the necessary table libraries 
+Builds the necessary table libraries
 """
 def make_table_libs(tables, P4_SWITCH_dir, sw_dir, base_address, P4_SWITCH, cli_dir):
     for table_type, tables_dict in tables.iteritems():
@@ -243,7 +243,7 @@ def main():
     if not os.path.exists(cli_dir):
         os.makedirs(cli_dir)
 
-    rc = os.system("cp {0} {1}".format(os.path.join(args.templates_dir, "CLI_template/*"), cli_dir))   
+    rc = os.system("cp {0} {1}".format(os.path.join(args.templates_dir, "CLI_template/*"), cli_dir))
     if rc != 0:
         print >> sys.stderr, "ERROR: could not copy over CLI_template directory"
         sys.exit(1)
@@ -254,5 +254,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

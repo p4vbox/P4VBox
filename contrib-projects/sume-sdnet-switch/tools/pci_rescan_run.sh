@@ -29,7 +29,7 @@ PcieBusPath=/sys/bus/pci/devices
 PcieDeviceList=`ls /sys/bus/pci/devices/`
 
 for BusNo in $PcieDeviceList
-do	
+do
 	VenderId=`cat $PcieBusPath/$BusNo/device`
 	if [ "$VenderId" = "0x7028" ]; then
 		echo 1 > /sys/bus/pci/devices/$BusNo/remove
@@ -38,10 +38,10 @@ do
 		echo
 		echo "Completed rescan PCIe information !"
 		echo
-		exit 1
+		exit 0
 	fi
 done
 
 echo "Check programming FPGA or Reboot machine !"
-
-
+echo
+exit 1

@@ -1,14 +1,25 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 #
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
+#
+# Copyright (c) 2019 Mateus Saquetti
+# All rights reserved.
+#
+# This software was modified by Institute of Informatics of the Federal
+# University of Rio Grande do Sul (INF-UFRGS)
+#
+# Description:
+#              Adapted to run in P4VBox architecture
+# Create Date:
+#              31.05.2019
 #
 # @NETFPGA_LICENSE_HEADER_START@
 #
@@ -31,8 +42,8 @@
 
 
 """
-This script creates a new P4 project targeting the SimpleSumeSwitch 
-in the projects/ directory 
+This script creates a new P4 project targeting the SimpleSumeSwitch
+in the projects/ directory
 """
 
 import argparse, sys, re, os
@@ -64,10 +75,24 @@ def main():
     if rc != 0:
         print >> sys.stderr, "ERROR: could not rename template project P4 source file to desired name"
         sys.exit(1)
+    rc = os.system('mv {0} {1}'.format(os.path.join(src_dir, 'commands_' + TEMPLATE_PROJ + '.txt'), os.path.join(src_dir, 'commands_' + args.P4_PROJECT_NAME + '.txt')))
+    if rc != 0:
+        print >> sys.stderr, "ERROR: could not rename template project commands file to desired name"
+        sys.exit(1)
+
+    testdata_dir = os.path.expandvars('$SUME_SDNET/projects/{0}/testdata'.format(args.P4_PROJECT_NAME))
+    rc = os.system('mv {0} {1}'.format(os.path.join(testdata_dir, 'gen_testdata_' + TEMPLATE_PROJ + '.py'), os.path.join(testdata_dir, 'gen_testdata_' + args.P4_PROJECT_NAME + '_1ip.py')))
+    if rc != 0:
+        print >> sys.stderr, "ERROR: could not rename template project testdata file to desired name"
+        sys.exit(1)
+
+    sw_dir = os.path.expandvars('$SUME_SDNET/projects/{0}/sw/hw_test_tool'.format(args.P4_PROJECT_NAME))
+    rc = os.system('mv {0} {1}'.format(os.path.join(sw_dir, TEMPLATE_PROJ + '_tester.py'), os.path.join(sw_dir, args.P4_PROJECT_NAME + '_tester.py')))
+    if rc != 0:
+        print >> sys.stderr, "ERROR: could not rename template project hw_test_tool file to desired name"
+        sys.exit(1)
 
     print "{0} P4 project directory successfully created in projects folder".format(args.P4_PROJECT_NAME)
 
 if __name__ == "__main__":
     main()
-
-

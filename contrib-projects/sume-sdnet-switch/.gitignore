@@ -1,19 +1,14 @@
+*.pcap
 *.dat
 *.sdnet
 *.tbl
 *.json
-
 Tuple_*.txt
 config_writes.*
 nf_datapath.v
+sw/sume/rwaxi
 simple_sume_switch.hdf
 
-sw/sume/rwaxi
-
-projects/contrib-examples/*/simple_sume_switch/hw/project/
-projects/contrib-examples/*/simple_sume_switch/hw/ip_repo/
-projects/contrib-examples/*/simple_sume_switch/test/ip_repo/
-projects/contrib-examples/*/simple_sume_switch/test/
 
 projects/*/simple_sume_switch/hw/project/
 projects/*/simple_sume_switch/hw/ip_repo/
@@ -22,7 +17,15 @@ projects/*/simple_sume_switch/test/Makefile
 projects/*/simple_sume_switch/test/min_area_pfile.tmp
 projects/*/simple_sume_switch/test/portconfig.sim
 projects/*/simple_sume_switch/test/reg_defines_simple_sume_switch.py
-projects/*/simple_sume_switch/test/sim_switch_default/reg_defines_simple_sume_switch.py
+projects/*/simple_sume_switch/test/*/reg_defines_simple_sume_switch.py
+projects/*/simple_sume_switch/hw/project/
+projects/contrib-examples/*/simple_sume_switch/hw/ip_repo/
+projects/contrib-examples/*/simple_sume_switch/test/ip_repo/
+projects/contrib-examples/*/simple_sume_switch/test/Makefile
+projects/contrib-examples/*/simple_sume_switch/test/min_area_pfile.tmp
+projects/contrib-examples/*/simple_sume_switch/test/portconfig.sim
+projects/contrib-examples/*/simple_sume_switch/test/reg_defines_simple_sume_switch.py
+projects/contrib-examples/*/simple_sume_switch/test/sim_switch_default/reg_defines_simple_sume_switch.py
 
 
 nf_sume_sdnet_ip/
@@ -31,5 +34,6 @@ config_writes/
 SDK_Workspace/
 log/
 API/
-CLI/
+CLI*/
+!CLI_template/
 seed

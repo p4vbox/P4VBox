@@ -4,10 +4,10 @@
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -35,7 +35,7 @@ from collections import OrderedDict
 from pprint import pprint
 import p4_regs_api, p4_tables_api
 
-# defines the table_*_add_entry command 
+# defines the table_*_add_entry command
 # also defines convert_to_int()
 from p4_px_tables import *
 
@@ -52,26 +52,26 @@ PX_TCAM_TABLES = p4_tables_api.PX_TCAM_TABLES
 PX_LPM_TABLES = p4_tables_api.PX_LPM_TABLES
 
 class SimpleSumeSwitch(cmd.Cmd):
-    """The SimpleSumeSwitch interactive command line tool"""
+    """The Virtual Switch interactive command line tool"""
 
     prompt = ">> "
-    intro = "The SimpleSumeSwitch interactive command line tool\n type help to see all commands"
+    intro = "The "+ os.environ["P4VBOX_VSWITCH"] +" interactive command line tool\n type help to see all commands"
 
     ##########################
     ### Register Functions ###
     ##########################
     """
-    List the registers defined in the SimpleSumeSwitch
+    List the registers defined in the Virtual Switch
     """
     def do_list_regs(self, line):
         for reg_name, reg_dict in P4_REGS.items():
             print '-'*len(reg_name), '\n', reg_name, ':\n', '-'*len(reg_name)
             pprint(reg_dict)
- 
+
     def help_list_regs(self):
         print """
 list_regs
-DESCRIPTION: List the registers defined in the SimpleSumeSwitch and their relevant compile time information
+DESCRIPTION: List the registers defined in the """+ os.environ["P4VBOX_VSWITCH"] +""" and their relevant compile time information
 """
 
     def do_reg_read(self, line):
@@ -90,7 +90,7 @@ DESCRIPTION: List the registers defined in the SimpleSumeSwitch and their releva
         print """
 reg_read <REG_NAME>[<INDEX>]
 DESCRIPTION: Read the current value of the provided register at the given index
-""" 
+"""
 
     def complete_reg_read(self, text, line, begidx, endidx):
         if not text:
@@ -109,7 +109,7 @@ DESCRIPTION: Read the current value of the provided register at the given index
         else:
             print >> sys.stderr, "ERROR: usage ..."
             self.help_reg_write()
-            return 
+            return
         result = p4_regs_api.reg_write(reg_name, index, val)
         print result
 
@@ -117,7 +117,7 @@ DESCRIPTION: Read the current value of the provided register at the given index
         print """
 writeReg <REG_NAME>[<INDEX>] <VALUE>
 DESCRIPTION: Write VALUE to the provided register at the given INDEX
-""" 
+"""
 
     def complete_reg_write(self, text, line, begidx, endidx):
         if not text:
@@ -141,7 +141,7 @@ DESCRIPTION: Write VALUE to the provided register at the given INDEX
     def help_list_cam_tables(self):
         print """
 list_cam_tables
-DESCRIPTION: List the exact match tables defined in the SimpleSumeSwitch and their relevant compile time information
+DESCRIPTION: List the exact match tables defined in the """+ os.environ["P4VBOX_VSWITCH"] +""" and their relevant compile time information
 """
 
     """
@@ -155,7 +155,7 @@ DESCRIPTION: List the exact match tables defined in the SimpleSumeSwitch and the
             print >> sys.stderr, "ERROR: usage ... "
             self.help_table_cam_read_entry()
             return
-        table_name = args[0] 
+        table_name = args[0]
         keys = map(convert_to_int, args[1:])
         (found, val) = p4_tables_api.table_cam_read_entry(table_name, keys)
         print "Entry found: ", found
@@ -187,7 +187,7 @@ PARAMS:
 
     def help_table_cam_add_entry(self):
         # defined in p4_px_tables.py
-        print help_table_cam_add_entry() 
+        print help_table_cam_add_entry()
 
     def complete_table_cam_add_entry(self, text, line, begidx, endidx):
         if not text:
@@ -200,7 +200,7 @@ PARAMS:
                 if table_name in PX_CAM_TABLES.keys():
                     # the table name is recognized
                     actions = PX_CAM_TABLES[table_name].actions
-                    completions = [a['p4_name'] for a in actions] 
+                    completions = [a['p4_name'] for a in actions]
             else:
                 completions = []
         else:
@@ -217,7 +217,7 @@ PARAMS:
             else:
                 completions = []
         return completions
- 
+
     """
     Delete an entry from a table
     """
@@ -267,7 +267,7 @@ DESCRIPTION: Get the current number of entries in the specified table
             completions = [ t for t in p4_tables.keys() if t.startswith(text)]
         return completions
 
-    def do_EOF(self, line):
+    def do_exit(self, line):
         return True
 
 
@@ -286,12 +286,12 @@ DESCRIPTION: Get the current number of entries in the specified table
     def help_list_tcam_tables(self):
         print """
 list_tcam_tables
-DESCRIPTION: List the ternary match tables defined in the SimpleSumeSwitch and their relevant compile time information
+DESCRIPTION: List the ternary match tables defined in the """+ os.environ["P4VBOX_VSWITCH"] +""" and their relevant compile time information
 """
 
     def do_table_tcam_clean(self, line):
         table_name = line.strip()
-        p4_tables_api.table_tcam_clean(table_name) 
+        p4_tables_api.table_tcam_clean(table_name)
 
     def help_table_tcam_clean(self):
         print """
@@ -304,8 +304,8 @@ DESCRIPTION: performs table self-initialization, erasing and invalidating all st
 
     def help_table_tcam_get_addr_size(self):
         print """
-table_tcam_get_addr_size 
-DESCRIPTION: returns the TCAM_ADDR_SIZE 
+table_tcam_get_addr_size
+DESCRIPTION: returns the TCAM_ADDR_SIZE
 """
 
     def do_table_tcam_set_log_level(self, line):
@@ -313,7 +313,7 @@ DESCRIPTION: returns the TCAM_ADDR_SIZE
         if (len(args) < 2):
             print >> sys.stderr, "ERROR: usage..."
             self.help_table_tcam_set_log_level()
-            return 
+            return
         table_name = args[0]
         try:
             msg_level = int(args[1], 0)
@@ -325,7 +325,7 @@ DESCRIPTION: returns the TCAM_ADDR_SIZE
     def help_table_tcam_set_log_level(self):
         print """
 table_tcam_set_log_level <table_name> <msg_level>
-DESCRIPTION: Update the logging level of the table 
+DESCRIPTION: Update the logging level of the table
 """
 
     def do_table_tcam_add_entry(self, line):
@@ -336,7 +336,7 @@ DESCRIPTION: Update the logging level of the table
     def help_table_tcam_add_entry(self):
         # defined in p4_px_tables.py
         print help_table_tcam_add_entry()
- 
+
     def do_table_tcam_erase_entry(self, line):
         args = line.strip().split()
         if (len(args) < 2):
@@ -366,7 +366,7 @@ DESCRIPTION: invalidates(removes) an entry in the TCAM
     def help_table_tcam_verify_entry(self):
         print """
 table_tcam_verify_entry <table_name> <address> <action_name> <key1/mask1 ... keyN/maskN> => <action_data>
-DESCRIPTION: verifies whether an entry exists in TCAM 
+DESCRIPTION: verifies whether an entry exists in TCAM
 PARAMS:
     <table_name> : name of the table to add an entry to
     <address> : address in table at which to add the entry
@@ -390,7 +390,7 @@ PARAMS:
     def help_list_lpm_tables(self):
         print """
 list_lpm_tables
-DESCRIPTION: List the longest prefix match tables defined in the SimpleSumeSwitch and their relevant compile time information
+DESCRIPTION: List the longest prefix match tables defined in the """+ os.environ["P4VBOX_VSWITCH"] +""" and their relevant compile time information
 """
 
     def do_table_lpm_get_addr_size(self, line):
@@ -398,9 +398,9 @@ DESCRIPTION: List the longest prefix match tables defined in the SimpleSumeSwitc
 
     def help_table_lpm_get_addr_size(self):
         print """
-table_lpm_get_addr_size 
-DESCRIPTION: returns the LPM_ADDR_SIZE 
-"""    
+table_lpm_get_addr_size
+DESCRIPTION: returns the LPM_ADDR_SIZE
+"""
 
     def do_table_lpm_set_log_level(self, line):
         args = line.strip().split()
@@ -419,7 +419,7 @@ DESCRIPTION: returns the LPM_ADDR_SIZE
     def help_table_lpm_set_log_level(self):
         print """
 table_lpm_set_log_level <table_name> <msg_level>
-DESCRIPTION: Update the logging level of the table 
+DESCRIPTION: Update the logging level of the table
 """
 
     def do_table_lpm_load_dataset(self, line):
@@ -435,7 +435,7 @@ DESCRIPTION: Update the logging level of the table
     def help_table_lpm_load_dataset(self):
         print """
 table_lpm_load_dataset <table_name> <filename>
-DESCRIPTION: Load new dataset into table 
+DESCRIPTION: Load new dataset into table
 """
 
     def do_table_lpm_verify_dataset(self, line):
@@ -452,7 +452,7 @@ DESCRIPTION: Load new dataset into table
     def help_table_lpm_verify_dataset(self):
         print """
 table_lpm_verify_dataset <table_name> <filename>
-DESCRIPTION: Verify that dataset is in table 
+DESCRIPTION: Verify that dataset is in table
 """
 
     def do_table_lpm_set_active_lookup_bank(self, line):
@@ -481,4 +481,3 @@ if __name__ == '__main__':
         SimpleSumeSwitch().onecmd(' '.join(sys.argv[1:]))
     else:
         SimpleSumeSwitch().cmdloop()
-

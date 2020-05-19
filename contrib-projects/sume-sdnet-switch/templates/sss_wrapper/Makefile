@@ -28,7 +28,7 @@
 # @NETFPGA_LICENSE_HEADER_END@
 
 all: clean
-	vivado -mode batch -source nf_sume_sdnet${P4_ID}.tcl
+	vivado -mode batch -source nf_sume_sdnet.tcl -notrace
 
 clean:
 	rm -rf ip_*  vivado*.* *.xml xgui/ .Xil* *.*~ *.zip

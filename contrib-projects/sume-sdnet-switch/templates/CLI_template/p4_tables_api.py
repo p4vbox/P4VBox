@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 #
-# Copyright (c) 2017 Stephen Ibanez 
+# Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -34,7 +34,9 @@ import sys, os, re, json
 from fcntl import *
 from ctypes import *
 
-SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info.dat")
+VSWITCH = os.environ["P4VBOX_VSWITCH"]
+
+SWITCH_INFO_FILE = os.path.expandvars("$P4_PROJECT_DIR/src/.sdnet_switch_info_" + VSWITCH + ".dat")
 
 # sets PX_TABLES
 import p4_px_tables
@@ -57,8 +59,8 @@ split_px_tables()
 
 if (len(PX_CAM_TABLES) > 0):
     print "loading libcam.."
-    libcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/libcam.so'))
-    
+    libcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/libcam.so'))
+
     # argtypes for the functions called from  C
     libcam.cam_read_entry.argtypes = [c_uint, c_char_p, c_char_p, c_char_p]
     libcam.cam_add_entry.argtypes = [c_uint, c_char_p, c_char_p]
@@ -70,8 +72,8 @@ if (len(PX_CAM_TABLES) > 0):
 
 if (len(PX_TCAM_TABLES) > 0):
     print "loading libtcam.."
-    libtcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/libtcam.so'))
-    
+    libtcam=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/libtcam.so'))
+
     # argtypes for the functions called from  C
     libtcam.tcam_clean.argtypes = [c_uint]
     libtcam.tcam_get_addr_size.argtypes = []
@@ -85,8 +87,8 @@ if (len(PX_TCAM_TABLES) > 0):
 
 if (len(PX_LPM_TABLES) > 0):
     print "loading liblpm.."
-    liblpm=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI/liblpm.so'))
-    
+    liblpm=cdll.LoadLibrary(os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/liblpm.so'))
+
     # argtypes for the functions called from  C
     liblpm.lpm_get_addr_size.argtypes = []
     liblpm.lpm_set_log_level.argtypes = [c_uint, c_uint]
@@ -96,7 +98,7 @@ if (len(PX_LPM_TABLES) > 0):
     liblpm.lpm_error_decode.argtypes = [c_int]
     liblpm.lpm_error_decode.restype = c_char_p
 
-TABLE_DEFINES_FILE = os.path.expandvars("$P4_PROJECT_DIR/sw/CLI/SimpleSumeSwitch_table_defines.json")
+TABLE_DEFINES_FILE = os.path.expandvars('$P4_PROJECT_DIR/sw/CLI_'+ VSWITCH +'/' + VSWITCH + '_table_defines.json')
 
 ########################
 ### Helper Functions ###
@@ -148,11 +150,11 @@ def table_cam_read_entry(table_name, keys):
     if not check_valid_cam_table_name(table_name):
         return "NA", "NA"
 
-    tableID = int(p4_tables_info['EM'][table_name]['tableID']) 
-    key = PX_CAM_TABLES[table_name].hexify_key(keys) 
+    tableID = int(p4_tables_info['EM'][table_name]['tableID'])
+    key = PX_CAM_TABLES[table_name].hexify_key(keys)
     hex_key_buf = create_string_buffer("{:X}".format(key))
-    value = create_string_buffer(1024) # TODO: Fix this ... Must be large enough to hold entire value 
-    found = create_string_buffer(10)  # Should only need to hold "True" or "False"  
+    value = create_string_buffer(1024) # TODO: Fix this ... Must be large enough to hold entire value
+    found = create_string_buffer(10)  # Should only need to hold "True" or "False"
     rc = libcam.cam_read_entry(tableID, hex_key_buf, value, found)
     print libcam.cam_error_decode(rc)
     return found.value, value.value
@@ -175,12 +177,12 @@ def table_cam_delete_entry(table_name, keys):
     key = PX_CAM_TABLES[table_name].hexify_key(keys)
     rc = libcam.cam_delete_entry(tableID, "{:X}".format(key))
     print libcam.cam_error_decode(rc)
- 
+
 def table_cam_get_size(table_name):
     if not check_valid_cam_table_name(table_name):
         return 0
 
-    tableID = int(p4_tables_info['EM'][table_name]['tableID']) 
+    tableID = int(p4_tables_info['EM'][table_name]['tableID'])
     return libcam.cam_get_size(tableID)
 
 
@@ -269,7 +271,7 @@ def table_lpm_verify_dataset(table_name, filename):
         return
 
     tableID = int(p4_tables_info['LPM'][table_name]['tableID'])
-    return liblpm.lpm_verify_dataset(tableID, filename)   
+    return liblpm.lpm_verify_dataset(tableID, filename)
 
 def table_lpm_set_active_lookup_bank(table_name, bank):
     if not check_valid_lpm_table_name(table_name):
@@ -281,5 +283,3 @@ def table_lpm_set_active_lookup_bank(table_name, bank):
 
 def table_lpm_error_decode(error):
     return liblpm.lpm_error_decode(error)
-
-

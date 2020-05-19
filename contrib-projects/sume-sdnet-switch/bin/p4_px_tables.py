@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #
 # Copyright (c) 2017 Stephen Ibanez
 # All rights reserved.
 #
-# This software was developed by Stanford University and the University of Cambridge Computer Laboratory 
+# This software was developed by Stanford University and the University of Cambridge Computer Laboratory
 # under National Science Foundation under Grant No. CNS-0855268,
 # the University of Cambridge Computer Laboratory under EPSRC INTERNET Project EP/H040536/1 and
-# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"), 
+# by the University of Cambridge Computer Laboratory under DARPA/AFRL contract FA8750-11-C-0249 ("MRC2"),
 # as part of the DARPA MRC research programme.
 #
 # @NETFPGA_LICENSE_HEADER_START@
@@ -35,7 +35,7 @@ Run the commands in commands.txt file to fill out the *.tbl files
 which contain the initial entries in each table
 """
 
-import sys, os, argparse, re, json
+import sys, os, argparse, re, json, ast
 import struct, socket
 from collections import OrderedDict
 
@@ -55,7 +55,7 @@ class PXTable(object):
 
         # request_tuple:
         self.request_tuple = table_dict['request_fields']
-    
+
         # response_tuple:
         self.response_tuple = table_dict['response_fields']
 
@@ -70,6 +70,10 @@ class PXTable(object):
             print >> sys.stderr, "ERROR: not enough fields provided to complete _hexify()"
             sys.exit(1)
 
+        # convert field_vals to int
+        field_vals = map(convert_to_int, field_vals)
+
+        # combine field_vals using field sizes
         ret = 0
         for val, bits in zip(field_vals, field_sizes):
             mask = 2**bits -1
@@ -89,7 +93,7 @@ class PXTable(object):
             elif field['type'] == 'struct':
                 for f in field['fields']:
                     result.append((f['px_name'], f['size']))
-        return result 
+        return result
 
     """
     Get the action_ID of the given action_name for the table
@@ -144,12 +148,12 @@ class PXCAMTable(PXTable):
         self.entries[key] = value
 
     """
-    Write the entries of the table to a file that can be used in the SDNet simulations 
+    Write the entries of the table to a file that can be used in the SDNet simulations
     """
     def write_px_file(self):
         with open(self.name + ".tbl", 'w+') as fout:
             for key, value in self.entries.items():
-                fout.write("{:X} {:X}\n".format(key, value)) 
+                fout.write("{:X} {:X}\n".format(key, value))
 
 
 class PXTCAMTable(PXTable):
@@ -161,7 +165,7 @@ class PXTCAMTable(PXTable):
         super(PXTCAMTable, self).__init__(block_name, table_dict)
 
         # Each entry is a list with the following format:
-        # format       ==> [address, mask, key, value] 
+        # format       ==> [address, mask, key, value]
         self.entries = []
 
     """
@@ -182,12 +186,12 @@ class PXTCAMTable(PXTable):
         self.entries.append([address, mask, key, value])
 
     """
-    Write the entries of the table to a file that can be used in the SDNet simulations 
+    Write the entries of the table to a file that can be used in the SDNet simulations
     """
     def write_px_file(self):
         with open(self.name + ".tbl", 'w+') as fout:
             for addr, mask, key, value in self.entries:
-                fout.write("{:d} {:X} {:X} {:X}\n".format(addr, key, mask, value)) 
+                fout.write("{:d} {:X} {:X} {:X}\n".format(addr, key, mask, value))
 
 
 class PXLPMTable(PXTable):
@@ -199,7 +203,7 @@ class PXLPMTable(PXTable):
         super(PXLPMTable, self).__init__(block_name, table_dict)
 
         # Each entry is a list with the following format:
-        # format       ==> [prefix, length, value] 
+        # format       ==> [prefix, length, value]
         self.entries = []
 
     """
@@ -210,7 +214,7 @@ class PXLPMTable(PXTable):
         self.entries.append([prefix, length, value])
 
     """
-    Write the entries of the table to a file that can be used in the SDNet simulations 
+    Write the entries of the table to a file that can be used in the SDNet simulations
     """
     def write_px_file(self):
         with open(self.name + ".tbl", 'w+') as fout:
@@ -239,7 +243,7 @@ def make_px_tables(switch_info_file):
                     PX_TABLES[table_name] = PXLPMTable(block, table_dict)
                 else:
                     print >> sys.stderr, "ERROR: {} uses an unsupported match type".format(table_name)
-                    sys.exit(1) 
+                    sys.exit(1)
 
 
 def help_table_cam_add_entry():
@@ -272,7 +276,7 @@ DESCRIPTION: Add an entry to the specified table
 PARAMS:
     <table_name> : name of the table to add an entry to
     <action_name> : name of the action to use in the entry (must be listed in the table's actions list)
-    <prefix/length> : prefix - either in dot or colon separated format (i.e. IPv4 or IPv6 address format), length - length of prefix 
+    <prefix/length> : prefix - either in dot or colon separated format (i.e. IPv4 or IPv6 address format), length - length of prefix
     <action_data> : space separated list of values to provide as input to the action
 """
 
@@ -282,26 +286,33 @@ def ip2int(addr):
 def mac2int(addr):
     return int(addr.translate(None, ":"), 16)
 
-def convert_to_int(string):
-    mac_fmat = r'([\dA-Fa-f]{2}:){5}[\dA-Fa-f]{2}'
-    ip_fmat = r'([0-9]{1,3}\.){3}[0-9]{1,3}'
-    if re.match(mac_fmat, string):
-        return mac2int(string)
-    elif re.match(ip_fmat, string):
-        return ip2int(string)
+def convert_to_int(val):
+    if type(val) == str:
+        mac_fmat = r'([\dA-Fa-f]{2}:){5}[\dA-Fa-f]{2}'
+        ip_fmat = r'([0-9]{1,3}\.){3}[0-9]{1,3}'
+        if re.match(mac_fmat, val):
+            return mac2int(val)
+        elif re.match(ip_fmat, val):
+            return ip2int(val)
+        else:
+            try:
+                return int(val, 0)
+            except ValueError as e:
+                print >> sys.stderr, "ERROR: failed to convert {} of type {} to an integer".format(val, type(val))
+                sys.exit(1)
+    elif type(val) == int:
+        return val
     else:
-        try:
-            return int(string, 0)
-        except ValueError as e:
-            print >> sys.stderr, "ERROR: failed to convert {} to an integer".format(string) 
+        print >> sys.stderr, "ERROR: failed to convert {} of type {} to an integer".format(val, type(val))
+        sys.exit(1)
 
 def parse_table_cam_add_entry(line):
     stmt = line.split('=>')
     if len(stmt) != 2:
-        print >> sys.stderr, "ERROR: ", help_table_cam_add_entry() 
+        print >> sys.stderr, "ERROR: ", help_table_cam_add_entry()
         print stmt
-        sys.exit(1) 
-    
+        sys.exit(1)
+
     lhs = stmt[0].split()
     rhs = stmt[1].split()
     if (len(lhs) < 3):
@@ -309,9 +320,18 @@ def parse_table_cam_add_entry(line):
         sys.exit(1)
     table_name = lhs[0]
     action_name = lhs[1]
-    keys = map(convert_to_int, lhs[2:])
-    action_data = map(convert_to_int, rhs)
-    return (table_name, keys, action_name, action_data)
+    keys = lhs[2:]
+    # test = keys[0].encode('UTF8')
+    result_list = ast.literal_eval(json.dumps(keys))
+    # print(result_list)
+    action_data = rhs
+    action_list = ast.literal_eval(json.dumps(action_data))
+    # print(action_list)
+    table_name_s = table_name.encode('ascii','replace')
+    # keys_m = "['" + keys[0].encode('UTF8') + "']"
+    action_name_s = action_name.encode('ascii','replace')
+    # print(table_name_s, result_list, action_name_s, action_list)
+    return (table_name_s, result_list, action_name_s, action_list)
 
 def parse_table_tcam_add_entry(line):
     fmat = r"(?P<table_name>[\S]+) (?P<address>[\S]+) (?P<action_name>[\S]+) (?P<key_list>.+) =>(?P<action_data>.*)"
@@ -319,12 +339,12 @@ def parse_table_tcam_add_entry(line):
     if searchObj is None:
         print >> sys.stderr, "ERROR: ", help_table_tcam_add_entry()
         sys.exit(1)
-    table_name = searchObj.groupdict()['table_name'] 
+    table_name = searchObj.groupdict()['table_name']
     try:
         address = int(searchObj.groupdict()['address'], 0)
     except:
         print >> sys.stderr, "ERROR: TCAM entry address could not be converted to integer"
-        sys.exit(1) 
+        sys.exit(1)
     action_name = searchObj.groupdict()['action_name']
     key_list = searchObj.groupdict()['key_list'].strip().split()
     keys = []
@@ -334,10 +354,10 @@ def parse_table_tcam_add_entry(line):
         if (len(key_mask) != 2):
             print >> sys.stderr, "ERROR: must specify exactly one mask for each key"
             sys.exit(1)
-        keys.append(convert_to_int(key_mask[0]))
-        masks.append(convert_to_int(key_mask[1]))
+        keys.append(key_mask[0])
+        masks.append(key_mask[1])
     rhs = searchObj.groupdict()['action_data'].split()
-    action_data = map(convert_to_int, rhs)
+    action_data = rhs
     return (table_name, address, keys, masks, action_name, action_data)
 
 
@@ -354,13 +374,9 @@ def parse_table_lpm_add_entry(line):
         print >> sys.stderr, "ERROR: must specify exactly one length for each prefix"
         sys.exit(1)
     prefix = prefix_len[0]
-    try:
-        length = convert_to_int(prefix_len[1])
-    except:
-        print >> sys.stderr, "ERROR: could not convert prefix length to int"
-        sys.exit(1)
+    length = prefix_len[1]
     rhs = searchObj.groupdict()['action_data'].split()
-    action_data = map(convert_to_int, rhs)
+    action_data = rhs
     return (table_name, prefix, length, action_name, action_data)
 
 """
@@ -381,7 +397,7 @@ def run_table_tcam_add_entry(line):
     (table_name, address, keys, masks, action_name, action_data) = parse_table_tcam_add_entry(line)
     if (table_name not in PX_TABLES.keys()):
         print >> sys.stderr, "ERROR: {} is not a recognized table name".format(table_name)
-        sys.exit(1)   
+        sys.exit(1)
     PX_TABLES[table_name].add_entry(address, keys, masks, action_name, action_data)
 
 
@@ -392,7 +408,7 @@ def run_table_lpm_add_entry(line):
     (table_name, prefix, length, action_name, action_data) = parse_table_lpm_add_entry(line)
     if (table_name not in PX_TABLES.keys()):
         print >> sys.stderr, "ERROR: {} is not a recognized table name".format(table_name)
-        sys.exit(1)       
+        sys.exit(1)
     PX_TABLES[table_name].add_entry(prefix, length, action_name, action_data)
 
 """
@@ -429,4 +445,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
