@@ -27,15 +27,15 @@ specific language governing permissions and limitations under the License.
 P4 Virtual Box (P4VBox) Forwarding Engine is a Hard-Virtualization (HDL-hypervisor) solution to programmable data planes. It enables virtualization by directly defining a parallel architecture for accommodating multiple programmable switch programs and their individual on FPGA-based devices [NetFPGA SUME](https://reference.digilentinc.com/reference/programmable-logic/netfpga-sume/start).
 
 To more info, please see the links:
-[P4VBox: Enabling P4-Based Switch Virtualization](https://ieeexplore.ieee.org/document/8895999)
-[Virtualization in Programmable Data Plane: A Survey and Open Challenges](https://ieeexplore.ieee.org/abstract/document/9078127)
-[NetFPGA SUME Datasheet](https://reference.digilentinc.com/_media/sume:netfpga-sume_rm.pdf)
+- [P4VBox: Enabling P4-Based Switch Virtualization](https://ieeexplore.ieee.org/document/8895999)
+- [Virtualization in Programmable Data Plane: A Survey and Open Challenges](https://ieeexplore.ieee.org/abstract/document/9078127)
+- [NetFPGA SUME Datasheet](https://reference.digilentinc.com/_media/sume:netfpga-sume_rm.pdf)
 
 The source code of the P4VBox forwarding engine is a fork of [P4-NetFPGA Project](https://github.com/NetFPGA/P4-NetFPGA-public) and use Xilinx P4-SDNet toolchain. Kindly note that this code is under development and may be unstable.
 
 To more info about dependencies and installation:
-[P4->NetFPGA - Getting Started](https://github.com/NetFPGA/P4-NetFPGA-public/wiki/Getting-Started)
-[NetFPGA Project - Reference Operating System Setup Guide](https://github.com/NetFPGA/NetFPGA-SUME-public/wiki/Reference-Operating-System-Setup-Guide)
+- [P4->NetFPGA - Getting Started](https://github.com/NetFPGA/P4-NetFPGA-public/wiki/Getting-Started)
+- [NetFPGA Project - Reference Operating System Setup Guide](https://github.com/NetFPGA/NetFPGA-SUME-public/wiki/Reference-Operating-System-Setup-Guide)
 
 
 ### Installation Ubuntu 16.04
