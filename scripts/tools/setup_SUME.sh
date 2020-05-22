@@ -1,14 +1,14 @@
 #!/bin/bash
 
 #
-# Copyright (c) 2019 Mateus Saquetti
+
 # All rights reserved.
 #
-# This software was modified by Institute of Informatics of the Federal
-# University of Rio Grande do Sul (INF-UFRGS)
+
+
 #
 # Description:
-#              Adapted to run in P4VBox architecture
+#              Adapted to run in PvS architecture
 # Create Date:
 #              31.05.2019
 #
@@ -69,21 +69,12 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   echo " " >> ~/.bashrc
   echo " " >> ~/.bashrc
   echo "#### Vivado and SDNet Floating License ####" >> ~/.bashrc
-  echo "export XILINXD_LICENSE_FILE=2100@143.54.12.195" >> ~/.bashrc
+  echo "export XILINXD_LICENSE_FILE=" >> ~/.bashrc
   echo "#### SDNet ####" >> ~/.bashrc
   echo "export PATH=/opt/Xilinx/SDNet/2018.2/bin:$PATH" >> ~/.bashrc
   echo "source /opt/Xilinx/SDNet/2018.2/settings64.sh" >> ~/.bashrc
   echo "##### Vivado 2018 & SDK #####" >> ~/.bashrc
   echo "source /opt/Xilinx/Vivado/2018.2/settings64.sh" >> ~/.bashrc
-  echo "#### P4VBox #####" >> ~/.bashrc
-  echo "export P4VBOX=${HOME}/projects/P4VBox/scripts/settings.sh" >> ~/.bashrc
-  echo "source ${P4VBOX}" >> ~/.bashrc
-  echo "#### P4-NetFPGA #####" >> ~/.bashrc
-  echo "export P4_NETFPGA=${HOME}/projects/P4-NetFPGA/tools/settings.sh" >> ~/.bashrc
-  echo "# source ${P4_NETFPGA}" >> ~/.bashrc
-  echo "#### NetFPGA-SUME-live ####" >> ~/.bashrc
-  echo "# export NETFPGA_SUME=${HOME}/projects/NetFPGA-SUME/tools/settings.sh" >> ~/.bashrc
-  echo "# source ${NETFPGA_SUME}" >> ~/.bashrc
   echo "# Set DISPLAY env variable so that xsct works properly from cmdline" >> ~/.bashrc
   echo "if [ -z "$DISPLAY" ]; then" >> ~/.bashrc
   echo "    export DISPLAY=dummy" >> ~/.bashrc
@@ -101,80 +92,14 @@ if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
   sudo pip install ascii_graph
 fi
 
-read -p "Would you like clone P4-NetFPGA? (Y/N): " confirm
-if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-  echo " " && echo " "
-  mkdir ~/projects
-  cd ~/projects
-  git clone https://github.com/NetFPGA/P4-NetFPGA-live.git P4-NetFPGA
-  cd P4-NetFPGA
-  git pull --tags
-  export P4_PROJECT_NAME=switch_calc
-  export NF_PROJECT_NAME=simple_sume_switch
-  export SUME_FOLDER=${HOME}/projects/P4-NetFPGA
-  export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
-  export P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
-  export LD_LIBRARY_PATH=${SUME_SDNET}/sw/sume:${LD_LIBRARY_PATH}
-  export PROJECTS=${SUME_FOLDER}/projects
-  export DEV_PROJECTS=${SUME_FOLDER}/contrib-projects
-  export IP_FOLDER=${SUME_FOLDER}/lib/hw/std/cores
-  export CONTRIB_IP_FOLDER=${SUME_FOLDER}/lib/hw/contrib/cores
-  export CONSTRAINTS=${SUME_FOLDER}/lib/hw/std/constraints
-  export XILINX_IP_FOLDER=${SUME_FOLDER}/lib/hw/xilinx/cores
-  export NF_DESIGN_DIR=${P4_PROJECT_DIR}/${NF_PROJECT_NAME}
-  export NF_WORK_DIR=/tmp/${USER}
-  export PYTHONPATH=.:${SUME_SDNET}/bin:${SUME_FOLDER}/tools/scripts/:${NF_DESIGN_DIR}/lib/Python:${SUME_FOLDER}/tools/scripts/NFTest
-  export DRIVER_NAME=sume_riffa_v1_0_0
-  export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
-  export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
-  export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
-  cd $SUME_FOLDER/lib/hw/xilinx/cores/tcam_v1_1_0/ && make update && make
-  cd $SUME_FOLDER/lib/hw/xilinx/cores/cam_v1_1_0/ && make update && make
-  cd $SUME_SDNET/sw/sume && make
-  cd $SUME_FOLDER && make
-fi
+echo " "
+echo " "
+echo "##########################"
+echo "  Installation completed"
+echo "##########################"
+cd $folder
 
-echo " " && echo " "
-read -p "Would you like clone P4VBox? (Y/N): " confirm
-if [[ "$confirm" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-  echo " " && echo " "
-  mkdir ~/projects
-  cd ~/projects
-  git clone https://github.com/mateussaquetti/P4VBox.git P4VBOX
-  cd P4VBOX
-  git pull --tags
-  export P4_PROJECT_NAME=l2_router
-  export NF_PROJECT_NAME=simple_sume_switch
-  export SUME_FOLDER=${HOME}/projects/P4VBox
-  export SUME_SDNET=${SUME_FOLDER}/contrib-projects/sume-sdnet-switch
-  export P4_PROJECT_DIR=${SUME_SDNET}/projects/${P4_PROJECT_NAME}
-  export LD_LIBRARY_PATH=${SUME_SDNET}/sw/sume:${LD_LIBRARY_PATH}
-  export PROJECTS=${SUME_FOLDER}/projects
-  export DEV_PROJECTS=${SUME_FOLDER}/contrib-projects
-  export IP_FOLDER=${SUME_FOLDER}/lib/hw/std/cores
-  export CONTRIB_IP_FOLDER=${SUME_FOLDER}/lib/hw/contrib/cores
-  export CONSTRAINTS=${SUME_FOLDER}/lib/hw/std/constraints
-  export XILINX_IP_FOLDER=${SUME_FOLDER}/lib/hw/xilinx/cores
-  export NF_DESIGN_DIR=${P4_PROJECT_DIR}/${NF_PROJECT_NAME}
-  export NF_WORK_DIR=/tmp/${USER}
-  export PYTHONPATH=.:${SUME_SDNET}/bin:${SUME_FOLDER}/tools/scripts/:${NF_DESIGN_DIR}/lib/Python:${SUME_FOLDER}/tools/scripts/NFTest
-  export DRIVER_NAME=sume_riffa_v1_0_0
-  export DRIVER_FOLDER=${SUME_FOLDER}/lib/sw/std/driver/${DRIVER_NAME}
-  export APPS_FOLDER=${SUME_FOLDER}/lib/sw/std/apps/${DRIVER_NAME}
-  export HWTESTLIB_FOLDER=${SUME_FOLDER}/lib/sw/std/hwtestlib
-  export P4VBOX=${SUME_FOLDER}/scripts/settings.sh
-  export P4VBOX_VSWITCH=${P4_PROJECT_NAME}
-  export P4VBOX_CLI_VSWITCH=${P4_PROJECT_NAME}/sw/CLI_${P4VBOX_VSWITCH}/P4_SWITCH_CLI.py
-  export P4VBOX_SCRIPTS=${SUME_FOLDER}/scripts
-  export P4VBOX_NEWPROJ=${SUME_SDNET}/bin/make_new_p4_proj.py
-  export P4VBOX_PROGRAM_SUME=${P4VBOX_SCRIPTS}/tools/program_sume.sh
-  export P4VBOX_MAKE_LIBRARY=${P4VBOX_SCRIPTS}/tools/make_library.sh
-  export P4VBOX_CONFIG_SWITCH=${P4VBOX_SCRIPTS}/tools/config_switch.sh
-  cd $SUME_FOLDER/lib/hw/xilinx/cores/tcam_v1_1_0/ && make update && make
-  cd $SUME_FOLDER/lib/hw/xilinx/cores/cam_v1_1_0/ && make update && make
-  cd $SUME_SDNET/sw/sume && make
-  cd $SUME_FOLDER && make
-fi
+exit 0
 
 echo " " && echo " "
 read -p "Would you like to run the System Setup [ONLY IF SUME BOARD WERE INSTALLED IN THIS HOST]? (Y/N): " confirm
