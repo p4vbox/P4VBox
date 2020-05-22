@@ -1,17 +1,6 @@
 #!/bin/bash
 
 #
-
-# All rights reserved.
-#
-
-
-#
-# Description:
-#              Adapted to run in PvS architecture
-# Create Date:
-#              31.05.2019
-#
 # @NETFPGA_LICENSE_HEADER_START@
 #
 # Licensed to NetFPGA C.I.C. (NetFPGA) under one or more contributor
@@ -31,10 +20,12 @@
 # @NETFPGA_LICENSE_HEADER_END@
 #
 
-set folder=$PWD
+cd $DRIVER_FOLDER
+make all
+make install
+modprobe sume_riffa
+lsmod | grep sume_riffa
 
-cd $NF_DESIGN_DIR/bitfiles/
-./program_switch.sh
+cd $PVS_SCRIPTS
 
-cd $folder
 exit 0
